@@ -11,39 +11,13 @@ namespace MIDDerivationLibrary.Repository
     //public sealed class SQLRepository : ISQLRepository
     public class SQLRepository : ISQLRepository
     {
-        private static readonly object objlock = new object();
-        private static SQLRepository sqlRepository;
         private IConfiguration Configuration;
-        // private string _connectionString;
 
-
-        public SQLRepository(IConfiguration _configuration)
+        public  SQLRepository(IConfiguration _configuration)
         {
             Configuration = _configuration;
         }
-        /// <summary>
-        /// Singleton instance
-        /// </summary>
-        public static SQLRepository Instance
-        {
-            get
-            {
-                if (null == sqlRepository)
-                {
-                    lock (objlock)
-                    {
-                        if (null == sqlRepository)
-                        {
-                            sqlRepository = new SQLRepository();
-                        }
-                    }
-                }
-                return sqlRepository;
-            }
-        }
-
-        //Add singleton method to get only one instance
-        private SQLRepository() { }
+       
 
 
         /// <summary>

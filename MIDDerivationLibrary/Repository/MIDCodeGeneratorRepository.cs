@@ -16,17 +16,10 @@ namespace MIDCodeGenerator.Repository
 {
     public class MIDCodeGeneratorRepository : IMIDCodeGeneratorRepository
     {
-        //private IConfiguration Configuration;
-        //private string _connectionString;
-        //ISQLRepository sqlRepository;
         private readonly ISQLRepository sqlRepository;
 
-        public MIDCodeGeneratorRepository(
-            //IConfiguration _configuration, 
-            ISQLRepository _sqlRepository)
+        public MIDCodeGeneratorRepository(ISQLRepository _sqlRepository)
         {
-            //Configuration = _configuration;
-            //sqlRepository = SQLRepository.Instance;
             sqlRepository = _sqlRepository;
         }
         

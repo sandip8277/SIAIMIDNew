@@ -1,24 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SIAI-MID- New 14-04\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj": {}
+    "D:\\Projects\\SIAI MID Derivation\\MIDDerivationLibrary\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj": {}
   },
   "projects": {
-    "D:\\SIAI-MID- New 14-04\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj": {
+    "D:\\Projects\\SIAI MID Derivation\\MIDDerivationLibrary\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SIAI-MID- New 14-04\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj",
+        "projectUniqueName": "D:\\Projects\\SIAI MID Derivation\\MIDDerivationLibrary\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj",
         "projectName": "MIDDerivationLibrary",
-        "projectPath": "D:\\SIAI-MID- New 14-04\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj",
-        "packagesPath": "C:\\Users\\sandip.patil\\.nuget\\packages\\",
-        "outputPath": "D:\\SIAI-MID- New 14-04\\MIDDerivationLibrary\\obj\\",
+        "projectPath": "D:\\Projects\\SIAI MID Derivation\\MIDDerivationLibrary\\MIDDerivationLibrary\\MIDDerivationLibrary.csproj",
+        "packagesPath": "C:\\Users\\vishal.dhure\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\SIAI MID Derivation\\MIDDerivationLibrary\\MIDDerivationLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\sandip.patil\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\vishal.dhure\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -57,6 +60,10 @@
                 "NU1605"
               ]
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
@@ -84,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MIDDerivationLibrary.Business
 {
-    interface IMIDCodeGeneratorService
+    public interface IMIDCodeGeneratorService
     {
         public MIDCodeDetails GenerareMIDCodes(string xmlContent);
     }

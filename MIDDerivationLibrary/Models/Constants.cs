@@ -8,5 +8,8 @@ namespace MIDDerivationLibrary.Models
     public class Constants
     {
         public static string xmlInput = "xmlInput";
+
+        public static string generareMIDCodesSPName = "spGenerateMIDDerivation";
+        
     }
 }

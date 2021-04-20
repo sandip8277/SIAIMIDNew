@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace MIDDerivationLibrary.Repository
 {
-    public sealed class SQLRepository : ISQLRepository
+    //public sealed class SQLRepository : ISQLRepository
+    public class SQLRepository : ISQLRepository
     {
         private static readonly object objlock = new object();
-        private static SQLRepository sqlRepository = null;
+        private static SQLRepository sqlRepository;
         private IConfiguration Configuration;
-        private string _connectionString;
+        // private string _connectionString;
 
 
         public SQLRepository(IConfiguration _configuration)
@@ -40,7 +41,7 @@ namespace MIDDerivationLibrary.Repository
                 return sqlRepository;
             }
         }
-        
+
         //Add singleton method to get only one instance
         private SQLRepository() { }
 
@@ -51,7 +52,7 @@ namespace MIDDerivationLibrary.Repository
         /// <returns>SqlConnection</returns>
         private SqlConnection GetConnection()
         {
-            string connectionString = this.Configuration.GetConnectionString("ConnectionString");
+            string connectionString = this.Configuration.GetConnectionString("DefaultConnection");
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
             return sqlConnection;
@@ -66,22 +67,31 @@ namespace MIDDerivationLibrary.Repository
         public DataSet ExecuteQuery(string storedProcName, List<SqlParameter> parameters)
         {
             DataSet dataSet = new DataSet();
-            using (SqlConnection connection = GetConnection())
+
+            try
             {
-                using (SqlCommand command = connection.CreateCommand())
+                using (SqlConnection connection = GetConnection())
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = storedProcName;
-                    //assign parameters passed in to the command
-                    foreach (object parameter in parameters)
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        command.Parameters.Add(parameter);
-                    }
-                    using (SqlDataAdapter da = new SqlDataAdapter(command))
-                    {
-                        da.Fill(dataSet);
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = storedProcName;
+                        //assign parameters passed in to the command
+                        foreach (object parameter in parameters)
+                        {
+                            command.Parameters.Add(parameter);
+                        }
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(dataSet);
+                        }
                     }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
             }
             return dataSet;
         }

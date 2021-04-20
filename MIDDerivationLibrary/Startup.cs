@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MIDCodeGenerator.Repository;
+using MIDDerivationLibrary.Business;
+using MIDDerivationLibrary.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +35,10 @@ namespace MIDDerivationLibrary
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MIDDerivationLibrary", Version = "v1" });
             });
+            services.AddTransient<IMIDCodeGeneratorService, MIDCodeGeneratorService>();
+            services.AddTransient<IMIDCodeGeneratorRepository, MIDCodeGeneratorRepository>();
+            services.AddScoped(typeof(ISQLRepository), typeof(SQLRepository));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

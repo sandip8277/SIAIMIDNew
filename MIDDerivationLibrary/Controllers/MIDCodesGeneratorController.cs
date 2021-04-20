@@ -18,11 +18,10 @@ namespace MIDDerivationLibrary.Controllers
     [ApiController]
     public class MIDCodesGeneratorController : ControllerBase
     {
-        MIDCodeGeneratorService service = null;
-        private IConfiguration _configuration;
-        public MIDCodesGeneratorController()
+        private readonly IMIDCodeGeneratorService _service;
+        public MIDCodesGeneratorController(IMIDCodeGeneratorService service)
         {
-            service = new MIDCodeGeneratorService();
+            this._service = service;
         }
 
         [HttpPost]
@@ -35,7 +34,7 @@ namespace MIDDerivationLibrary.Controllers
                 {
                     string xmlString = XmlHelper.ConvertObjectToXML(model);
                     XElement xElement = XElement.Parse(xmlString);
-                    MIDCodeDetails details = service.GenerareMIDCodes(xElement.ToString());
+                    MIDCodeDetails details = _service.GenerareMIDCodes(xElement.ToString());
                     if (details != null)
                     {
                         return Ok(details);

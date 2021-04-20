@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace MIDDerivationLibrary.Repository
 {
-    interface ISQLRepository
+    public interface ISQLRepository
     {
         /// <summary>
         /// Execute stored procedure with parameters

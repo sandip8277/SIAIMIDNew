@@ -8,18 +8,26 @@ using System.Threading.Tasks;
 
 namespace MIDDerivationLibrary.Business
 {
-    public class MIDCodeGeneratorService
+    public class MIDCodeGeneratorService : IMIDCodeGeneratorService
     {
-        IMIDCodeGeneratorRepository repository = null;
-        private IConfiguration configuration;
-        public MIDCodeGeneratorService()
+        private readonly IMIDCodeGeneratorRepository _MIDCodeGeneratorRepository;
+        public MIDCodeGeneratorService(IMIDCodeGeneratorRepository MIDCodeGeneratorRepository)
         {
-            repository = new MIDCodeGeneratorRepository(configuration);
+            this._MIDCodeGeneratorRepository = MIDCodeGeneratorRepository;
         }
 
         public MIDCodeDetails GenerareMIDCodes(string xmlContent)
         {
-            MIDCodeDetails codeDetails=repository.GenerareMIDCodes(xmlContent);
+            MIDCodeDetails codeDetails = null;
+            try
+            {
+                 codeDetails = _MIDCodeGeneratorRepository.GenerareMIDCodes(xmlContent);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+
             return codeDetails;
         }
     }

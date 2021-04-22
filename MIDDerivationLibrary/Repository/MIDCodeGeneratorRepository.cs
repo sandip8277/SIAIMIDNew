@@ -71,6 +71,7 @@ namespace MIDCodeGenerator.Repository
             catch (Exception ex)
             {
                 ex.ToString();
+                return null;
             }
             return details;
         }

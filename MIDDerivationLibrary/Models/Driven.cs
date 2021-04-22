@@ -41,7 +41,7 @@ namespace MIDDerivationLibrary.Models
         public string thrustBearing { get; set; }
         public string drivenBy { get; set; }
         public decimal? rpm { get; set; }
-        public string specialFaultCodeType { get; set; }
-        public int? specialFaultCodeCount { get; set; }
+        public List<SpecialFaultCodesInput> specialFaultCodesInput { get; set; }
+
     }
 }

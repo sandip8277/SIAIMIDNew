@@ -8,7 +8,7 @@ namespace MIDDerivationLibrary.Models
 {
     public class Driver
     {
-        [Required]
+        //[Required]
         public string componentType { get; set; }
         public int? locations { get; set; }
         public string driverType { get; set; }
@@ -25,5 +25,6 @@ namespace MIDDerivationLibrary.Models
         public bool? turbineThrustBearing { get; set; }
         public bool? turbineThrustBearingIsBall { get; set; }
         public decimal? rpm { get; set; }
+        public List<SpecialFaultCodesInput> specialFaultCodesInput { get; set; }
     }
 }

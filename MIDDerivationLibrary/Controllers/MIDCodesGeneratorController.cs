@@ -36,9 +36,9 @@ namespace MIDDerivationLibrary.Controllers
                     XElement xElement = XElement.Parse(xmlString);
                     MIDCodeDetails details = _service.GenerareMIDCodes(xElement.ToString());
                     if (details != null)
-                    {
                         return Ok(details);
-                    }
+                    else
+                        return StatusCode(500, "Something went wrong");
                 }
                 catch (Exception)
                 {

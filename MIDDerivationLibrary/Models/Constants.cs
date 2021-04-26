@@ -13,5 +13,13 @@ namespace MIDDerivationLibrary.Models
 
         public static string saveDriver = "spSaveDriverDetails";
 
+        public static string getAllDriverDetails = "spGetAllDriverDetails";
+
+        public static string componentType = "componentType";
+
+        public static string driverType = "driverType";
+
+        public static string Id = "Id";
+
     }
 }

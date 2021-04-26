@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using MIDCodeGenerator.Helper;
 using MIDDerivationLibrary.Business;
 using MIDDerivationLibrary.Business.Driver;
+using MIDDerivationLibrary.Models.APIResponse;
+using MIDDerivationLibrary.Models.DriverModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,36 +26,99 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddDriverDetails(object value)
+        public ActionResult AddDriverDetails(DriverDetails model)
         {
+            long id = 0;
             try
             {
-                _service.AddDriverDetails(null);
+                string xmlString = XmlHelper.ConvertObjectToXML(model);
+                XElement xElement = XElement.Parse(xmlString);
+                id = _service.AddOrUpdateDriverDetails(xElement.ToString());
+                if (id > 0)
+                    return Ok(new ApiOkResponse(id));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
             }
             catch (Exception ex)
             {
                 ex.ToString();
             }
-            return null;
+            return Ok(new ApiOkResponse(id));
         }
 
         [HttpPut]
-        public ActionResult UpdateDriver(object value)
+        public ActionResult UpdateDriver(DriverDetails model)
         {
-            return null;
+            long id = 0;
+            try
+            {
+                string xmlString = XmlHelper.ConvertObjectToXML(model);
+                XElement xElement = XElement.Parse(xmlString);
+                id = _service.AddOrUpdateDriverDetails(xElement.ToString());
+                if (id > 0)
+                    return Ok(new ApiOkResponse(id));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return Ok(new ApiOkResponse(id));
         }
 
         [HttpGet]
-        public ActionResult GetAllDriver()
+        public ActionResult GetDriverDetails(string componentType, string driverType)
         {
-            return null;
+            try
+            {
+                List<DriverDetails> detailsList = _service.GetAllDriverDetails(componentType, driverType);
+                if (detailsList != null)
+                    return Ok(new ApiOkResponse(detailsList));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
         }
 
         [HttpGet]
-        public ActionResult GetDriver(string componentType,string driverType)
+        public ActionResult GetDriverDetailsById(long id)
         {
-            return null;
+            try
+            {
+                DriverDetails details = _service.GetDriverDetailsById(id);
+                if (details != null)
+                    return Ok(new ApiOkResponse(details));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
         }
-        
+
+        //[HttpGet]
+        //public ActionResult DeleteDriverDetailsById(long id)
+        //{
+        //    try
+        //    {
+        //        DriverDetails details = _service.DeleteDriverDetailsById(id);
+        //        if (details != null)
+        //            return Ok(new ApiOkResponse(details));
+        //        else
+        //            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.ToString();
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+        //    }
+        //}
     }
 }

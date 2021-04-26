@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MIDCodeGenerator.Helper;
@@ -27,6 +28,7 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("GenerateCodes")]
         public ActionResult<MIDCodeDetails> GenerateCodes([FromBody] MIDCodeCreatorRequest model)
         {

@@ -9,7 +9,7 @@ namespace MIDDerivationLibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
     }
 }

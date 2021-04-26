@@ -103,22 +103,23 @@ namespace MIDDerivationLibrary.Controllers
             }
         }
 
-        //[HttpGet]
-        //public ActionResult DeleteDriverDetailsById(long id)
-        //{
-        //    try
-        //    {
-        //        DriverDetails details = _service.DeleteDriverDetailsById(id);
-        //        if (details != null)
-        //            return Ok(new ApiOkResponse(details));
-        //        else
-        //            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ex.ToString();
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-        //    }
-        //}
+        [HttpGet]
+        public ActionResult DeleteDriverDetailsById(long id)
+        {
+            long Id = 0;
+            try
+            {
+                Id = _service.DeleteDriverDetailsById(id);
+                if (Id > 0)
+                    return Ok(new ApiOkResponse(id));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+        }
     }
 }

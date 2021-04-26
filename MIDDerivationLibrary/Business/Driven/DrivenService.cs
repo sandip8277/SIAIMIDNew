@@ -1,4 +1,5 @@
-﻿using MIDDerivationLibrary.Repository.Driven;
+﻿using MIDDerivationLibrary.Models.DrivenModels;
+using MIDDerivationLibrary.Repository.Driven;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,51 @@ namespace MIDDerivationLibrary.Business.Driven
             try
             {
                 id = _drivenRepository.AddOrUpdateDrivenDetails(xmlContent);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+
+            return id;
+        }
+
+        public List<DrivenDetails> GetAllDrivenDetails(string componentType, string driverType)
+        {
+            List<DrivenDetails> detailsList = null;
+            try
+            {
+                detailsList = _drivenRepository.GetAllDrivenDetails(componentType, driverType);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+
+            return detailsList;
+        }
+
+        public DrivenDetails GetDrivenDetailsById(long id)
+        {
+            DrivenDetails details = null;
+            try
+            {
+                details = _drivenRepository.GetDrivenDetailsById(id);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+
+            return details;
+        }
+
+        public long DeleteDrivenDetailsById(long id)
+        {
+            long Id = 0;
+            try
+            {
+                Id = _drivenRepository.DeleteDrivenDetailsById(id);
             }
             catch (Exception ex)
             {

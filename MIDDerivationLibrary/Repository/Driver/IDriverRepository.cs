@@ -11,5 +11,6 @@ namespace MIDDerivationLibrary.Repository.Driver
         long AddOrUpdateDriverDetails(string xml);
         List<DriverDetails> GetAllDriverDetails(string componentType, string driverType);
         DriverDetails GetDriverDetailsById(long id);
+        long DeleteDriverDetailsById(long id);
     }
 }

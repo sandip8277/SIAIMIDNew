@@ -67,15 +67,58 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAllDriven()
+        public ActionResult GetDrivenDetails(string componentType, string driverType)
         {
-            return null;
+            try
+            {
+                List<DrivenDetails> detailsList = _service.GetAllDrivenDetails(componentType, driverType);
+                if (detailsList != null)
+                    return Ok(new ApiOkResponse(detailsList));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
         }
 
         [HttpGet]
-        public ActionResult GetDriven(string componentType, string driverType)
+        public ActionResult GetDrivenDetailsById(long id)
         {
-            return null;
+            try
+            {
+                DrivenDetails details = _service.GetDrivenDetailsById(id);
+                if (details != null)
+                    return Ok(new ApiOkResponse(details));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteDrivenDetailsById(long id)
+        {
+            long Id = 0;
+            try
+            {
+                Id = _service.DeleteDrivenDetailsById(id);
+                if (Id > 0)
+                    return Ok(new ApiOkResponse(id));
+                else
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+            }
         }
     }
 }

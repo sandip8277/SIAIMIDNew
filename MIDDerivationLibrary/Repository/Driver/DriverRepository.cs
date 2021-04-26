@@ -99,6 +99,23 @@ namespace MIDDerivationLibrary.Repository.Driver
             }
             return details;
         }
+
+        public long DeleteDriverDetailsById(long id)
+        {
+            long Id = 0;
+            try
+            {
+                string spName = MIDDerivationLibrary.Models.Constants.saveDriver;
+                List<SqlParameter> allParams = new List<SqlParameter>() { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.Id}", id) };
+                id = sqlRepository.ExecuteNonQuery(spName, allParams);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return 0;
+            }
+            return Id;
+        }
     }
 
 }

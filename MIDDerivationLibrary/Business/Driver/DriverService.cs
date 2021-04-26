@@ -58,5 +58,21 @@ namespace MIDDerivationLibrary.Business.Driver
 
             return details;
         }
+
+        public long DeleteDriverDetailsById(long id)
+        {
+            long Id = 0;
+            try
+            {
+                Id = _driverRepository.DeleteDriverDetailsById(id);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+
+            return id;
+        }
+
     }
 }

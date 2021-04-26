@@ -12,4 +12,11 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\DrivenModels\" />
+    <Folder Include="Models\DriverModels\" />
+    <Folder Include="Models\Intermediate\" />
+    <Folder Include="Repository\Intermediate\" />
+  </ItemGroup>
+
 </Project>

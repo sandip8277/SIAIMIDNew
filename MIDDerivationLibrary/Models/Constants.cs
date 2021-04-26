@@ -10,6 +10,8 @@ namespace MIDDerivationLibrary.Models
         public static string xmlInput = "xmlInput";
 
         public static string generareMIDCodesSPName = "spGenerateMIDDerivation";
-        
+
+        public static string saveDriver = "spSaveDriverDetails";
+
     }
 }

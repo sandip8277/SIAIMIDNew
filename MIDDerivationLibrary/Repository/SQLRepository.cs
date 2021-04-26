@@ -76,9 +76,9 @@ namespace MIDDerivationLibrary.Repository
         /// <param name="storedProcName">storedProcName</param>
         /// <param name="parameters">parameters</param>
         /// <returns>No of rows affected</returns>
-        public int ExecuteNonQuery(string storedProcName, List<SqlParameter> parameters)
+        public long ExecuteNonQuery(string storedProcName, List<SqlParameter> parameters)
         {
-            int rowCount;
+            long rowCount;
             using (SqlConnection connection = GetConnection())
             {
                 // create a SQL command to execute the stored procedure
@@ -91,7 +91,8 @@ namespace MIDDerivationLibrary.Repository
                     {
                         command.Parameters.Add(parameter);
                     }
-                    rowCount = command.ExecuteNonQuery();
+                   // rowCount = command.ExecuteNonQuery();
+                    rowCount = Convert.ToInt64(command.ExecuteScalar());
                 }
             }
             return rowCount;

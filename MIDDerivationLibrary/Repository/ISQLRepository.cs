@@ -23,6 +23,6 @@ namespace MIDDerivationLibrary.Repository
         /// <param name="storedProcName">storedProcName</param>
         /// <param name="parameters">parameters</param>
         /// <returns>No of rows affected</returns>
-        int ExecuteNonQuery(string storedProcName, List<SqlParameter> parameters);
+        long ExecuteNonQuery(string storedProcName, List<SqlParameter> parameters);
     }
 }

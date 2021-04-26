@@ -39,6 +39,12 @@ namespace MIDDerivationLibrary
             services.AddTransient<IMIDCodeGeneratorRepository, MIDCodeGeneratorRepository>();
             services.AddScoped(typeof(ISQLRepository), typeof(SQLRepository));
 
+            //services.Configure<ApiBehaviorOptions>(o =>
+            //{
+            //    o.InvalidModelStateResponseFactory = actionContext =>
+            //        new BadRequestObjectResult(actionContext.ModelState);
+            //});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

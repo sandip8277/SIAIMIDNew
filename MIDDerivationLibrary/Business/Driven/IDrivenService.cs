@@ -7,5 +7,6 @@ namespace MIDDerivationLibrary.Business.Driven
 {
     public interface IDrivenService
     {
+        long AddOrUpdateDrivenDetails(string xmlContent);
     }
 }

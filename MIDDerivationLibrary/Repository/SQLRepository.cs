@@ -41,7 +41,6 @@ namespace MIDDerivationLibrary.Repository
         public DataSet ExecuteQuery(string storedProcName, List<SqlParameter> parameters)
         {
             DataSet dataSet = new DataSet();
-
             try
             {
                 using (SqlConnection connection = GetConnection())

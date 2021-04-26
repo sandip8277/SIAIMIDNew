@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DrivenModels\" />
-    <Folder Include="Models\DriverModels\" />
     <Folder Include="Models\Intermediate\" />
     <Folder Include="Repository\Intermediate\" />
   </ItemGroup>

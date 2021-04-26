@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using MIDCodeGenerator.Helper;
+﻿using Microsoft.AspNetCore.Mvc;
 using MIDDerivationLibrary.Business;
 using MIDDerivationLibrary.Business.Driver;
-using MIDDerivationLibrary.Models.APIResponse;
-using MIDDerivationLibrary.Models.DriverModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,17 +21,11 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddDriverDetails(DriverDetails model)
+        public ActionResult AddDriverDetails(object value)
         {
             try
             {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-                long id = _service.AddOrUpdateDriverDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
-                else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                _service.AddDriverDetails(null);
             }
             catch (Exception ex)
             {
@@ -46,22 +35,8 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPut]
-        public ActionResult UpdateDriver(DriverDetails model)
+        public ActionResult UpdateDriver(object value)
         {
-            try
-            {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-                long id = _service.AddOrUpdateDriverDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
-                else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
             return null;
         }
 

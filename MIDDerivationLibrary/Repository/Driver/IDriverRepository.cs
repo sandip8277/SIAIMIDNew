@@ -7,6 +7,6 @@ namespace MIDDerivationLibrary.Repository.Driver
 {
     public interface IDriverRepository 
     {
-        long AddOrUpdateDriverDetails(string xml);
+        long AddDriverDetails(string xml);
     }
 }

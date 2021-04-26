@@ -7,6 +7,6 @@ namespace MIDDerivationLibrary.Business.Driver
 {
     public interface IDriverService
     {
-        long AddOrUpdateDriverDetails(string xmlContent);
+        long AddDriverDetails(string xmlContent);
     }
 }

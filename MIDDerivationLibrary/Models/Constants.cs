@@ -13,9 +13,5 @@ namespace MIDDerivationLibrary.Models
 
         public static string saveDriver = "spSaveDriverDetails";
 
-        public static string saveDriven = "spSaveDrivenDetails";
-
-        public static string getDriverDetails = "spGetDriverDetails";
-
     }
 }

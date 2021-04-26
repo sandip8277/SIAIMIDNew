@@ -13,17 +13,18 @@ namespace MIDDerivationLibrary.Business.Driver
         {
             this._driverRepository = driverRepository;
         }
-        public long AddOrUpdateDriverDetails(string xmlContent)
+        public long AddDriverDetails(string xmlContent)
         {
             long id = 0;
             try
             {
-                id = _driverRepository.AddOrUpdateDriverDetails(xmlContent);
+                id = _driverRepository.AddDriverDetails(xmlContent);
             }
             catch (Exception ex)
             {
                 ex.ToString();
             }
+
             return id;
         }
     }

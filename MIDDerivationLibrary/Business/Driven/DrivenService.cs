@@ -13,18 +13,5 @@ namespace MIDDerivationLibrary.Business.Driven
         {
             this._drivenRepository = drivenRepository;
         }
-        public long AddOrUpdateDrivenDetails(string xmlContent)
-        {
-            long id = 0;
-            try
-            {
-                id = _drivenRepository.AddOrUpdateDrivenDetails(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return id;
-        }
     }
 }

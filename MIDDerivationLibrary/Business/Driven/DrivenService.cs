@@ -29,12 +29,12 @@ namespace MIDDerivationLibrary.Business.Driven
             return id;
         }
 
-        public List<DrivenDetails> GetAllDrivenDetails(string componentType, string driverType)
+        public List<DrivenDetails> GetAllDrivenDetails(string componentType, string drivenType)
         {
             List<DrivenDetails> detailsList = null;
             try
             {
-                detailsList = _drivenRepository.GetAllDrivenDetails(componentType, driverType);
+                detailsList = _drivenRepository.GetAllDrivenDetails(componentType, drivenType);
             }
             catch (Exception ex)
             {
@@ -73,5 +73,41 @@ namespace MIDDerivationLibrary.Business.Driven
 
             return id;
         }
+
+        public bool CheckIsDrivenDetailsExist(long id)
+        {
+            bool flag = true;
+            DrivenDetails details = null;
+            try
+            {
+                details = _drivenRepository.GetDrivenDetailsById(id);
+                if (details != null && details.id == 0)
+                    flag = false;
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return flag;
+        }
+
+        public bool CheckIsDrivenDetailsExist(string xmlContent)
+        {
+            bool flag = false;
+            DrivenDetails details = null;
+            try
+            {
+                details = _drivenRepository.GetDrivenDetails(xmlContent);
+                if (details != null && details.id > 0)
+                    flag = true;
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return flag;
+        }
+
+
     }
 }

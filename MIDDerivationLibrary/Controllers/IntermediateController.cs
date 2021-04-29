@@ -27,18 +27,27 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddIntermediateDetails(IntermediateDetails model)
+        [Route("AddIntermediateDetails")]
+        public ActionResult AddIntermediateDetails([FromBody]IntermediateDetails model)
         {
             long id = 0;
             try
             {
                 string xmlString = XmlHelper.ConvertObjectToXML(model);
                 XElement xElement = XElement.Parse(xmlString);
-               // id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
+
+                bool isExist = _service.CheckIsIntermediateDetailsExist(xmlString);
+
+                if (isExist == true)
+                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
+                    if (id > 0)
+                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {
@@ -47,19 +56,29 @@ namespace MIDDerivationLibrary.Controllers
             return Ok(new ApiOkResponse(id));
         }
 
+
         [HttpPut]
-        public ActionResult UpdateIntermediate(IntermediateDetails model)
+        [Route("UpdateIntermediateDetails")]
+        public ActionResult UpdateIntermediateDetails(IntermediateDetails model)
         {
             long id = 0;
             try
             {
                 string xmlString = XmlHelper.ConvertObjectToXML(model);
                 XElement xElement = XElement.Parse(xmlString);
-                //id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
+
+                bool isExist = _service.CheckIsIntermediateDetailsExist(xmlString);
+
+                if (isExist == true)
+                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
+                    if (id > 0)
+                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {
@@ -69,12 +88,12 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetIntermediateDetails(string componentType, string driverType)
+        [Route("GetIntermediateDetails")]
+        public ActionResult GetIntermediateDetails(string componentType, string intermediateType)
         {
-            List<IntermediateDetails> detailsList = null;
             try
             {
-                //detailsList = _service.GetAllIntermediateDetails(componentType, driverType);
+                List<IntermediateDetails> detailsList = _service.GetAllIntermediateDetails(componentType, intermediateType);
                 if (detailsList != null)
                     return Ok(new ApiOkResponse(detailsList));
                 else
@@ -88,16 +107,27 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpGet]
+        [Route("GetIntermediateDetailsById")]
         public ActionResult GetIntermediateDetailsById(long id)
         {
-            IntermediateDetails details = null;
             try
             {
-                //details = _service.GetIntermediateDetailsById(id);
-                if (details != null)
-                    return Ok(new ApiOkResponse(details));
+                if (id <= 0)
+                    return BadRequest(new ApiBadRequestResponse());
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    bool isExist = _service.CheckIsIntermediateDetailsExist(id);
+                    if (isExist == false)
+                        return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
+
+                    IntermediateDetails details = _service.GetIntermediateDetailsById(id);
+
+                    if (details != null)
+                        return Ok(new ApiOkResponse(details));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+
+                }
             }
             catch (Exception ex)
             {
@@ -106,17 +136,27 @@ namespace MIDDerivationLibrary.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpDelete]
+        [Route("DeleteIntermediateDetailsById")]
         public ActionResult DeleteIntermediateDetailsById(long id)
         {
             long Id = 0;
             try
             {
-                //Id = _service.DeleteIntermediateDetailsById(id);
-                if (Id > 0)
-                    return Ok(new ApiOkResponse(id));
+                if (id <= 0)
+                    return BadRequest(new ApiBadRequestResponse());
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    bool isExist = _service.CheckIsIntermediateDetailsExist(id);
+                    if (isExist == false)
+                        return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
+
+                    Id = _service.DeleteIntermediateDetailsById(id);
+                    if (Id > 0)
+                        return Ok(new ApiOkResponse(null, Constants.recordDeleted));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {

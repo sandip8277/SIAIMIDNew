@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MIDCodeGenerator.Helper;
 using MIDDerivationLibrary.Business;
 using MIDDerivationLibrary.Business.Driven;
+using MIDDerivationLibrary.Models;
 using MIDDerivationLibrary.Models.APIResponse;
 using MIDDerivationLibrary.Models.DrivenModels;
 using System;
@@ -26,38 +27,57 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
+        [Route("AddDrivenDetails")]
         public ActionResult AddDrivenDetails(DrivenDetails model)
-        {
-            try
-            {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-                long id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
-                else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return null;
-        }
-
-        [HttpPut]
-        public ActionResult UpdateDriven(DrivenDetails model)
         {
             long id = 0;
             try
             {
                 string xmlString = XmlHelper.ConvertObjectToXML(model);
                 XElement xElement = XElement.Parse(xmlString);
-                id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
+
+                bool isExist = _service.CheckIsDrivenDetailsExist(xmlString);
+
+                if (isExist == true)
+                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
+                    if (id > 0)
+                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return Ok(new ApiOkResponse(id));
+        }
+
+        [HttpPut]
+        [Route("UpdateDrivenDetails")]
+        public ActionResult UpdateDrivenDetails(DrivenDetails model)
+        {
+            long id = 0;
+            try
+            {
+                string xmlString = XmlHelper.ConvertObjectToXML(model);
+                XElement xElement = XElement.Parse(xmlString);
+
+                bool isExist = _service.CheckIsDrivenDetailsExist(xmlString);
+
+                if (isExist == true)
+                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
+                else
+                {
+                    id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
+                    if (id > 0)
+                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {
@@ -67,6 +87,7 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpGet]
+        [Route("GetDrivenDetails")]
         public ActionResult GetDrivenDetails(string componentType, string driverType)
         {
             try
@@ -85,15 +106,27 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetDrivenDetailsById(long id)
+        [Route("GetDrivenDetailsById")]
+        public ActionResult GetDriverDetailsById(long id)
         {
             try
             {
-                DrivenDetails details = _service.GetDrivenDetailsById(id);
-                if (details != null)
-                    return Ok(new ApiOkResponse(details));
+                if (id <= 0)
+                    return BadRequest(new ApiBadRequestResponse());
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    bool isExist = _service.CheckIsDrivenDetailsExist(id);
+                    if (isExist == false)
+                        return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
+
+                    DrivenDetails details = _service.GetDrivenDetailsById(id);
+
+                    if (details != null)
+                        return Ok(new ApiOkResponse(details));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+
+                }
             }
             catch (Exception ex)
             {
@@ -102,17 +135,27 @@ namespace MIDDerivationLibrary.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpDelete]
+        [Route("DeleteDrivenDetailsById")]
         public ActionResult DeleteDrivenDetailsById(long id)
         {
             long Id = 0;
             try
             {
-                Id = _service.DeleteDrivenDetailsById(id);
-                if (Id > 0)
-                    return Ok(new ApiOkResponse(id));
+                if (id <= 0)
+                    return BadRequest(new ApiBadRequestResponse());
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    bool isExist = _service.CheckIsDrivenDetailsExist(id);
+                    if (isExist == false)
+                        return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
+
+                    Id = _service.DeleteDrivenDetailsById(id);
+                    if (Id > 0)
+                        return Ok(new ApiOkResponse(null, Constants.recordDeleted));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {

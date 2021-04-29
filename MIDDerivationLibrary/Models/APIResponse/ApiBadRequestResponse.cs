@@ -11,7 +11,7 @@ namespace MIDDerivationLibrary.Models.APIResponse
     {
         public object Result { get; }
         public IEnumerable<ValidationError> ValidationErrors { get; set; }
-        public ApiBadRequestResponse(ModelStateDictionary modelState) : base(400)
+        public ApiBadRequestResponse(ModelStateDictionary modelState = null) : base(400, "Invalid input")
         {
             if (modelState.IsValid)
             {

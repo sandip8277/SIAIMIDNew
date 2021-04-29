@@ -74,5 +74,39 @@ namespace MIDDerivationLibrary.Business.Driver
             return id;
         }
 
+        public bool CheckIsDriverDetailsExist(long id)
+        {
+            bool flag = true;
+            DriverDetails details = null;
+            try
+            {
+                details = _driverRepository.GetDriverDetailsById(id);
+                if (details != null && details.id == 0)
+                    flag = false;
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return flag;
+        }
+
+        public bool CheckIsDriverDetailsExist(string xmlContent)
+        {
+            bool flag = false;
+            DriverDetails details = null;
+            try
+            {
+                details = _driverRepository.GetDriverDetails(xmlContent);
+                if (details != null && details.id > 0)
+                    flag = true;
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return flag;
+        }
+
     }
 }

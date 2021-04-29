@@ -10,8 +10,8 @@ namespace MIDDerivationLibrary.Models.APIResponse
     {
         public object Result { get; }
 
-        public ApiOkResponse(object result)
-        : base(200)
+        public ApiOkResponse(object result, string message = null)
+        : base(200, message)
         {
             Result = result;
         }

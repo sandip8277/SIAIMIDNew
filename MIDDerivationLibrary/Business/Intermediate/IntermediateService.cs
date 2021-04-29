@@ -19,7 +19,7 @@ namespace MIDDerivationLibrary.Business.Intermediate
             long id = 0;
             try
             {
-                //id = _intermediateRepository.AddOrUpdateDriverDetails(xmlContent);
+                id = _intermediateRepository.AddOrUpdateIntermediateDetails(xmlContent);
             }
             catch (Exception ex)
             {
@@ -29,12 +29,12 @@ namespace MIDDerivationLibrary.Business.Intermediate
             return id;
         }
 
-        public List<IntermediateDetails> GetAllIntermediateDetails(string componentType, string driverType)
+        public List<IntermediateDetails> GetAllIntermediateDetails(string componentType, string intermediateType)
         {
             List<IntermediateDetails> detailsList = null;
             try
             {
-                //detailsList = _driverRepository.GetAllIntermediateDetails(componentType, driverType);
+                detailsList = _intermediateRepository.GetAllIntermediateDetails(componentType, intermediateType);
             }
             catch (Exception ex)
             {
@@ -44,12 +44,12 @@ namespace MIDDerivationLibrary.Business.Intermediate
             return detailsList;
         }
 
-        public IntermediateDetails GetDriverDetailsById(long id)
+        public IntermediateDetails GetIntermediateDetailsById(long id)
         {
             IntermediateDetails details = null;
             try
             {
-               // details = _driverRepository.GetDriverDetailsById(id);
+                details = _intermediateRepository.GetIntermediateDetailsById(id);
             }
             catch (Exception ex)
             {
@@ -59,12 +59,12 @@ namespace MIDDerivationLibrary.Business.Intermediate
             return details;
         }
 
-        public long DeleteDriverDetailsById(long id)
+        public long DeleteIntermediateDetailsById(long id)
         {
             long Id = 0;
             try
             {
-                //Id = _driverRepository.DeleteDriverDetailsById(id);
+                Id = _intermediateRepository.DeleteIntermediateDetailsById(id);
             }
             catch (Exception ex)
             {
@@ -72,6 +72,40 @@ namespace MIDDerivationLibrary.Business.Intermediate
             }
 
             return id;
+        }
+
+        public bool CheckIsIntermediateDetailsExist(long id)
+        {
+            bool flag = true;
+            IntermediateDetails details = null;
+            try
+            {
+                details = _intermediateRepository.GetIntermediateDetailsById(id);
+                if (details != null && details.id == 0)
+                    flag = false;
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return flag;
+        }
+
+        public bool CheckIsIntermediateDetailsExist(string xmlContent)
+        {
+            bool flag = false;
+            IntermediateDetails details = null;
+            try
+            {
+                details = _intermediateRepository.GetIntermediateDetails(xmlContent);
+                if (details != null && details.id > 0)
+                    flag = true;
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return flag;
         }
     }
 }

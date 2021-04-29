@@ -15,5 +15,6 @@ namespace MIDDerivationLibrary.Models
         public int? locations { get; set; }
         public string coupledComponentType1 { get; set; }
         public string coupledComponentType2 { get; set; }
+        public decimal? speedratio { get; set; } 
     }
 }

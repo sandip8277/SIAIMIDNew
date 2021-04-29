@@ -23,7 +23,7 @@ namespace MIDDerivationLibrary.Repository.Driver
             long id = 0;
             try
             {
-                string spName = MIDDerivationLibrary.Models.Constants.saveDriver;
+                string spName = MIDDerivationLibrary.Models.Constants.spAddOrUpdateDriverDetails;
                 List<SqlParameter> allParams = new List<SqlParameter>() { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.xmlInput}", xml) };
                 id = sqlRepository.ExecuteNonQuery(spName, allParams);
             }
@@ -35,29 +35,39 @@ namespace MIDDerivationLibrary.Repository.Driver
             return id;
         }
 
-        public List<DriverDetails> GetAllDriverDetails(string componentType, string driverType)
+        public List<DriverDetails> GetAllDriverDetails(string componentType = null, string driverType = null)
         {
             List<DriverDetails> detailsLst = new List<DriverDetails>();
             try
             {
-                string spName = MIDDerivationLibrary.Models.Constants.getAllDriverDetails;
+                string spName = MIDDerivationLibrary.Models.Constants.spGetAllDriverDetails;
                 List<SqlParameter> allParams = new List<SqlParameter>()
-                { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.componentType}", componentType),
-                  new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.driverType}", driverType)};
+                { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.componentType}", componentType == null ? DBNull.Value : componentType ),
+                  new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.driverType}", driverType == null ? DBNull.Value : driverType  )};
 
                 DataSet result = sqlRepository.ExecuteQuery(spName, allParams);
                 if (result != null && result.Tables[0].Rows.Count > 0)
                 {
-                    var FaultCodeData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "FaultCodeMatrix").FirstOrDefault();
-                    if (FaultCodeData != null)
+                    detailsLst = result.Tables[0].AsEnumerable().Select(dataRow => new DriverDetails
                     {
-                        var FaultCodeMatrixJsonString = FaultCodeData[4].ToString();
-                        if (!string.IsNullOrEmpty(FaultCodeMatrixJsonString))
-                        {
-                            //details.FaultCodeMatrix = JsonConvert.DeserializeObject<FaultCodeMatrix>(FaultCodeMatrixJsonString);
-                        }
-                    }
-
+                        id = dataRow.Field<long>("id"),
+                        componentType = dataRow.Field<string>("componentType"),
+                        locations = dataRow.Field<int?>("locations"),
+                        driverType = dataRow.Field<string>("driverType"),
+                        cylinders = dataRow.Field<int?>("cylinders"),
+                        motorDrive = dataRow.Field<string>("motorDrive"),
+                        motorFan = dataRow.Field<bool?>("motorFan"),
+                        motorBallBearings = dataRow.Field<bool?>("motorBallBearings"),
+                        drivenBallBearings = dataRow.Field<bool?>("drivenBallBearings"),
+                        drivenBalanceable = dataRow.Field<bool?>("drivenBalanceable"),
+                        mortorPoles = dataRow.Field<int?>("mortorPoles"),
+                        turbineReductionGear = dataRow.Field<bool?>("turbineReductionGear"),
+                        turbineRotorSupported = dataRow.Field<bool?>("turbineRotorSupported"),
+                        turbineBallBearing = dataRow.Field<bool?>("turbineBallBearing"),
+                        turbineThrustBearing = dataRow.Field<bool?>("turbineThrustBearing"),
+                        turbineThrustBearingIsBall = dataRow.Field<bool?>("turbineThrustBearingIsBall"),
+                        componentCode = dataRow.Field<decimal?>("componentCode")
+                    }).ToList();
                 }
             }
             catch (Exception ex)
@@ -73,23 +83,33 @@ namespace MIDDerivationLibrary.Repository.Driver
             DriverDetails details = new DriverDetails();
             try
             {
-                string spName = MIDDerivationLibrary.Models.Constants.getAllDriverDetails;
+                string spName = MIDDerivationLibrary.Models.Constants.spGetDriverDetailsById;
                 List<SqlParameter> allParams = new List<SqlParameter>()
                 { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.Id}", id)};
 
                 DataSet result = sqlRepository.ExecuteQuery(spName, allParams);
                 if (result != null && result.Tables[0].Rows.Count > 0)
                 {
-                    var FaultCodeData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "FaultCodeMatrix").FirstOrDefault();
-                    if (FaultCodeData != null)
+                    details = result.Tables[0].AsEnumerable().Select(dataRow => new DriverDetails
                     {
-                        var FaultCodeMatrixJsonString = FaultCodeData[4].ToString();
-                        if (!string.IsNullOrEmpty(FaultCodeMatrixJsonString))
-                        {
-                            //details.FaultCodeMatrix = JsonConvert.DeserializeObject<FaultCodeMatrix>(FaultCodeMatrixJsonString);
-                        }
-                    }
-
+                        id = dataRow.Field<long>("id"),
+                        componentType = dataRow.Field<string>("componentType"),
+                        locations = dataRow.Field<int?>("locations"),
+                        driverType = dataRow.Field<string>("driverType"),
+                        cylinders = dataRow.Field<int?>("cylinders"),
+                        motorDrive = dataRow.Field<string>("motorDrive"),
+                        motorFan = dataRow.Field<bool?>("motorFan"),
+                        motorBallBearings = dataRow.Field<bool?>("motorBallBearings"),
+                        drivenBallBearings = dataRow.Field<bool?>("drivenBallBearings"),
+                        drivenBalanceable = dataRow.Field<bool?>("drivenBalanceable"),
+                        mortorPoles = dataRow.Field<int?>("mortorPoles"),
+                        turbineReductionGear = dataRow.Field<bool?>("turbineReductionGear"),
+                        turbineRotorSupported = dataRow.Field<bool?>("turbineRotorSupported"),
+                        turbineBallBearing = dataRow.Field<bool?>("turbineBallBearing"),
+                        turbineThrustBearing = dataRow.Field<bool?>("turbineThrustBearing"),
+                        turbineThrustBearingIsBall = dataRow.Field<bool?>("turbineThrustBearingIsBall"),
+                        componentCode = dataRow.Field<decimal?>("componentCode")
+                    }).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -105,7 +125,7 @@ namespace MIDDerivationLibrary.Repository.Driver
             long Id = 0;
             try
             {
-                string spName = MIDDerivationLibrary.Models.Constants.saveDriver;
+                string spName = MIDDerivationLibrary.Models.Constants.spDeleteDriverDetailsById;
                 List<SqlParameter> allParams = new List<SqlParameter>() { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.Id}", id) };
                 id = sqlRepository.ExecuteNonQuery(spName, allParams);
             }
@@ -115,6 +135,47 @@ namespace MIDDerivationLibrary.Repository.Driver
                 return 0;
             }
             return Id;
+        }
+
+        public DriverDetails GetDriverDetails(string xml)
+        {
+            DriverDetails details = new DriverDetails();
+            try
+            {
+                string spName = MIDDerivationLibrary.Models.Constants.spCheckIsDriverDetailsExist;
+                List<SqlParameter> allParams = new List<SqlParameter>()
+                { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.xmlInput}", xml)};
+
+                DataSet result = sqlRepository.ExecuteQuery(spName, allParams);
+                if (result != null && result.Tables[0].Rows.Count > 0)
+                {
+                    details = result.Tables[0].AsEnumerable().Select(dataRow => new DriverDetails
+                    {
+                        id = dataRow.Field<long>("id"),
+                        componentType = dataRow.Field<string>("componentType"),
+                        locations = dataRow.Field<int?>("locations"),
+                        driverType = dataRow.Field<string>("driverType"),
+                        cylinders = dataRow.Field<int?>("cylinders"),
+                        motorDrive = dataRow.Field<string>("motorDrive"),
+                        motorFan = dataRow.Field<bool?>("motorFan"),
+                        motorBallBearings = dataRow.Field<bool?>("motorBallBearings"),
+                        drivenBallBearings = dataRow.Field<bool?>("drivenBallBearings"),
+                        drivenBalanceable = dataRow.Field<bool?>("drivenBalanceable"),
+                        mortorPoles = dataRow.Field<int?>("mortorPoles"),
+                        turbineReductionGear = dataRow.Field<bool?>("turbineReductionGear"),
+                        turbineRotorSupported = dataRow.Field<bool?>("turbineRotorSupported"),
+                        turbineBallBearing = dataRow.Field<bool?>("turbineBallBearing"),
+                        turbineThrustBearing = dataRow.Field<bool?>("turbineThrustBearing"),
+                        turbineThrustBearingIsBall = dataRow.Field<bool?>("turbineThrustBearingIsBall"),
+                        componentCode = dataRow.Field<decimal?>("componentCode")
+                    }).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return details;
         }
     }
 

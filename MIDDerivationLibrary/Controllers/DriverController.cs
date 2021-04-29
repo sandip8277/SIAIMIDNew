@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MIDCodeGenerator.Helper;
 using MIDDerivationLibrary.Business;
 using MIDDerivationLibrary.Business.Driver;
+using MIDDerivationLibrary.Models;
 using MIDDerivationLibrary.Models.APIResponse;
 using MIDDerivationLibrary.Models.DriverModels;
 using System;
@@ -26,6 +27,7 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
+        [Route("AddDriverDetails")]
         public ActionResult AddDriverDetails(DriverDetails model)
         {
             long id = 0;
@@ -33,11 +35,19 @@ namespace MIDDerivationLibrary.Controllers
             {
                 string xmlString = XmlHelper.ConvertObjectToXML(model);
                 XElement xElement = XElement.Parse(xmlString);
-                id = _service.AddOrUpdateDriverDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
+
+                bool isExist = _service.CheckIsDriverDetailsExist(xmlString);
+
+                if (isExist == true)
+                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    id = _service.AddOrUpdateDriverDetails(xElement.ToString());
+                    if (id > 0)
+                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {
@@ -47,18 +57,27 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPut]
-        public ActionResult UpdateDriver(DriverDetails model)
+        [Route("UpdateDriverDetails")]
+        public ActionResult UpdateDriverDetails(DriverDetails model)
         {
             long id = 0;
             try
             {
                 string xmlString = XmlHelper.ConvertObjectToXML(model);
                 XElement xElement = XElement.Parse(xmlString);
-                id = _service.AddOrUpdateDriverDetails(xElement.ToString());
-                if (id > 0)
-                    return Ok(new ApiOkResponse(id));
+
+                bool isExist = _service.CheckIsDriverDetailsExist(xmlString);
+
+                if (isExist == true)
+                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    id = _service.AddOrUpdateDriverDetails(xElement.ToString());
+                    if (id > 0)
+                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {
@@ -68,6 +87,7 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpGet]
+        [Route("GetDriverDetails")]
         public ActionResult GetDriverDetails(string componentType, string driverType)
         {
             try
@@ -86,15 +106,27 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpGet]
+        [Route("GetDriverDetailsById")]
         public ActionResult GetDriverDetailsById(long id)
         {
             try
             {
-                DriverDetails details = _service.GetDriverDetailsById(id);
-                if (details != null)
-                    return Ok(new ApiOkResponse(details));
+                if (id <= 0)
+                    return BadRequest(new ApiBadRequestResponse());
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    bool isExist = _service.CheckIsDriverDetailsExist(id);
+                    if (isExist == false)
+                        return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
+
+                    DriverDetails details = _service.GetDriverDetailsById(id);
+
+                    if (details != null)
+                        return Ok(new ApiOkResponse(details));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+
+                }
             }
             catch (Exception ex)
             {
@@ -103,17 +135,27 @@ namespace MIDDerivationLibrary.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpDelete]
+        [Route("DeleteDriverDetailsById")]
         public ActionResult DeleteDriverDetailsById(long id)
         {
             long Id = 0;
             try
             {
-                Id = _service.DeleteDriverDetailsById(id);
-                if (Id > 0)
-                    return Ok(new ApiOkResponse(id));
+                if (id <= 0)
+                    return BadRequest(new ApiBadRequestResponse());
                 else
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                {
+                    bool isExist = _service.CheckIsDriverDetailsExist(id);
+                    if (isExist == false)
+                        return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
+
+                    Id = _service.DeleteDriverDetailsById(id);
+                    if (Id > 0)
+                        return Ok(new ApiOkResponse(null, Constants.recordDeleted));
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                }
             }
             catch (Exception ex)
             {

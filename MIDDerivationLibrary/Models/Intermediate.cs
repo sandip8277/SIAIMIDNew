@@ -13,7 +13,7 @@ namespace MIDDerivationLibrary.Models
         public string drivenBy { get; set; }
         public int? speedChangesMax { get; set; }
         public int? gearBoxLocations { get; set; }
-        public string inputBearing { get; set; }
+        public int? inputBearing { get; set; }
         public string intermediateBearing1st { get; set; }
         public string intermediateBearing2nd { get; set; }
         public string outputBearing { get; set; }

@@ -11,7 +11,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MIDCodeGenerator.Repository;
 using MIDDerivationLibrary.Business;
+using MIDDerivationLibrary.Business.Driven;
+using MIDDerivationLibrary.Business.Driver;
+using MIDDerivationLibrary.Business.Intermediate;
 using MIDDerivationLibrary.Repository;
+using MIDDerivationLibrary.Repository.Driven;
+using MIDDerivationLibrary.Repository.Driver;
+using MIDDerivationLibrary.Repository.Intermediate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +46,12 @@ namespace MIDDerivationLibrary
             });
             services.AddTransient<IMIDCodeGeneratorService, MIDCodeGeneratorService>();
             services.AddTransient<IMIDCodeGeneratorRepository, MIDCodeGeneratorRepository>();
+            services.AddTransient<IDriverService, DriverService>();
+            services.AddTransient<IDrivenService, DrivenService>();
+            services.AddTransient<IIntermediateService, IntermediateService>();
+            services.AddTransient<IDrivenRepository, DrivenRepository>();
+            services.AddTransient<IDriverRepository, DriverRepository>();
+            services.AddTransient<IIntermediateRepository, IntermediateRepository>();
             services.AddScoped(typeof(ISQLRepository), typeof(SQLRepository));
 
             //services.Configure<ApiBehaviorOptions>(o =>

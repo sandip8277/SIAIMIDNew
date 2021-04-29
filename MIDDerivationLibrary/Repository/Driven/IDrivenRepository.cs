@@ -12,5 +12,6 @@ namespace MIDDerivationLibrary.Repository.Driven
         List<DrivenDetails> GetAllDrivenDetails(string componentType, string driverType);
         DrivenDetails GetDrivenDetailsById(long id);
         long DeleteDrivenDetailsById(long id);
+        DrivenDetails GetDrivenDetails(string xml);
     }
 }

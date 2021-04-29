@@ -28,7 +28,7 @@ namespace MIDCodeGenerator.Repository
             MIDCodeDetails details = new MIDCodeDetails();
             try
             {
-                string spName = Constants.generareMIDCodesSPName;
+                string spName = Constants.spGenerareMIDCodesSPName;
                 List<SqlParameter> allParams = new List<SqlParameter>(){new SqlParameter($"@{Constants.xmlInput}", xml)};
                 DataSet result = sqlRepository.ExecuteQuery(spName, allParams);
 
@@ -59,7 +59,7 @@ namespace MIDCodeGenerator.Repository
 
                     if (FaultCodeData != null)
                     {
-                        var FaultCodeMatrixJsonString = FaultCodeData[4].ToString();
+                        var FaultCodeMatrixJsonString = FaultCodeData[3].ToString();
                         if (!string.IsNullOrEmpty(FaultCodeMatrixJsonString))
                         {
                             details.FaultCodeMatrix = JsonConvert.DeserializeObject<FaultCodeMatrix>(FaultCodeMatrixJsonString);

@@ -43,12 +43,35 @@ namespace MIDDerivationLibrary.Models
 
         public static string spGetAllIntermediateDetails = "spGetAllIntermediateDetails";
 
+        
+        public static string spAddOrUpdateCoupling1Details = "spAddOrUpdateCoupling1Details";
+
+        public static string spCheckIsCoupling1DetailsExist = "spGetCoupling1Details";
+
+        public static string spDeleteCoupling1DetailsById = "spDeleteCoupling1DetailsById";
+
+        public static string spGetCoupling1DetailsById = "spGetCoupling1DetailsById";
+
+        public static string spGetAllCoupling1Details = "spGetAllCoupling1Details";
+
+
+        public static string spAddOrUpdateCoupling2Details = "spAddOrUpdateCoupling2Details";
+
+        public static string spCheckIsCoupling2DetailsExist = "spGetCoupling2Details";
+
+        public static string spDeleteCoupling2DetailsById = "spDeleteCoupling2DetailsById";
+
+        public static string spGetCoupling2DetailsById = "spGetCoupling2DetailsById";
+
+        public static string spGetAllCoupling2Details = "spGetAllCoupling2Details";
 
         public static string componentType = "componentType";
 
         public static string driverType = "driverType";
 
         public static string drivenType = "drivenType";
+
+        public static string couplingType = "couplingType";
 
         public static string intermediateType = "intermediateType";
 

@@ -85,5 +85,27 @@ namespace MIDDerivationLibrary.Models
 
         public static string recordExist = "Record already exist";
 
+        public static string locationRequiredMessage = "Locations is required";
+
+        public static string driverTypeRequiredMessage = "DriverType is required";
+
+        public static string couplingPositionTypeRequiredMessage = "CouplingPosition is required";
+
+        public static string couplingTypeRequiredMessage = "CouplingType is required";
+
+        public static string speedRatioRequiredMessage = "Speed ratio is required";
+
+        public static string intermediateTypeRequiredMessage = "IntermediateType is required";
+
+        public static string drivenTypeRequiredMessage = "DrivenType is required";
+
+        public static string c1AndC2CouplingValidationMessage = "Any one coupling speedratio value should be <> 1";
+
+
+
+
+
+
+
     }
 }

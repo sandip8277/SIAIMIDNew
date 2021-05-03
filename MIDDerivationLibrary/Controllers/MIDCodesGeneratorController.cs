@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using MIDCodeGenerator.Helper;
 using MIDCodeGenerator.Models;
 using MIDDerivationLibrary.Business;
-
+using MIDDerivationLibrary.Models;
 using MIDDerivationLibrary.Models.APIResponse;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace MIDDerivationLibrary.Controllers
         [Route("GenerateCodes")]
         public ActionResult<MIDCodeDetails> GenerateCodes([FromBody] MIDCodeCreatorRequest model)
         {
-      
+
 
             if (model.machineComponentsForMIDgeneration == null)
                 ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration), "Machine components for MID generation shoulde not be null.");
@@ -41,66 +41,69 @@ namespace MIDDerivationLibrary.Controllers
             if (model.machineComponentsForMIDgeneration.driver != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driver.componentType))
             {
                 if (model.machineComponentsForMIDgeneration.driver.locations == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.locations), "Locations is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.locations), Constants.locationRequiredMessage);
 
                 if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driver.driverType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.driverType), "DriverType is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.driverType), Constants.driverTypeRequiredMessage);
             }
 
             //Validations for coupling1 component
             if (model.machineComponentsForMIDgeneration.coupling1 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.componentType))
             {
                 if (model.machineComponentsForMIDgeneration.coupling1.couplingPosition == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingPosition), "CouplingPosition is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingPosition), Constants.couplingPositionTypeRequiredMessage);
 
                 if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.couplingType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingType), "CouplingType is required");
-                
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingType), Constants.couplingTypeRequiredMessage);
+
                 if (model.machineComponentsForMIDgeneration.coupling1.speedratio == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.speedratio), "Speed ratio is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.speedratio), Constants.speedRatioRequiredMessage);
             }
 
             //Validations for intermediate component
             if (model.machineComponentsForMIDgeneration.intermediate != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.intermediate.componentType))
             {
                 if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.intermediate.immediateType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.immediateType), "ImmediateType is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.immediateType), Constants.intermediateTypeRequiredMessage);
             }
 
             //Validations for coupling2 component
             if (model.machineComponentsForMIDgeneration.coupling2 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.componentType))
             {
                 if (model.machineComponentsForMIDgeneration.coupling2.couplingPosition == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingPosition), "CouplingPosition is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingPosition), Constants.couplingPositionTypeRequiredMessage);
 
                 if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.couplingType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingType), "CouplingType is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingType), Constants.couplingTypeRequiredMessage);
 
                 if (model.machineComponentsForMIDgeneration.coupling2.speedratio == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.speedratio), "Speed ratio is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.speedratio), Constants.speedRatioRequiredMessage);
             }
 
             //Validations for driven component
             if (model.machineComponentsForMIDgeneration.driven != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driven.componentType))
             {
-              
+
                 if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driven.drivenType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivenType), "DrivenType is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivenType), Constants.drivenTypeRequiredMessage);
 
                 if (model.machineComponentsForMIDgeneration.driven.locations == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.locations), "Locations is required");
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.locations), Constants.locationRequiredMessage);
 
             }
 
             //Validations for speed ratio of coupling 1 and coupling 2 component
-            if (model.machineComponentsForMIDgeneration.coupling1.speedratio != null &&
-                model.machineComponentsForMIDgeneration.coupling2.speedratio != null &&
-                model.machineComponentsForMIDgeneration.coupling1.speedratio != 1 &&
-                model.machineComponentsForMIDgeneration.coupling2.speedratio != 1)
-            { 
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.speedratio), "Any one coupling speedratio value should be <> 1");
+            if ((model.machineComponentsForMIDgeneration.coupling1 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.componentType)) &&
+                (model.machineComponentsForMIDgeneration.coupling2 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.componentType)))
+            {
+                if (model.machineComponentsForMIDgeneration.coupling1.speedratio != null &&
+                    model.machineComponentsForMIDgeneration.coupling2.speedratio != null &&
+                    model.machineComponentsForMIDgeneration.coupling1.speedratio != 1 &&
+                    model.machineComponentsForMIDgeneration.coupling2.speedratio != 1)
+                {
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.speedratio), Constants.c1AndC2CouplingValidationMessage);
+                }
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -111,7 +114,7 @@ namespace MIDDerivationLibrary.Controllers
                     if (details != null)
                         return Ok(new ApiOkResponse(details));
                     else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500,null));
+                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
                 }
                 catch (Exception ex)
                 {

@@ -65,6 +65,7 @@ namespace MIDDerivationLibrary.Models
 
         public static string spGetAllCoupling2Details = "spGetAllCoupling2Details";
 
+
         public static string componentType = "componentType";
 
         public static string driverType = "driverType";

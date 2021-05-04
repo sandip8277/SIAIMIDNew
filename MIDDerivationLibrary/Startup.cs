@@ -56,7 +56,8 @@ namespace MIDDerivationLibrary
             services.AddTransient<IIntermediateRepository, IntermediateRepository>();
             services.AddTransient<ICoupling1Service, Coupling1Service>();
             services.AddTransient<ICoupling1Repository, Coupling1Repository>();
-
+            services.AddTransient<ICoupling2Service, Coupling2Service>();
+            services.AddTransient<ICoupling2Repository, Coupling2Repository>();
             services.AddScoped(typeof(ISQLRepository), typeof(SQLRepository));
 
             //services.Configure<ApiBehaviorOptions>(o =>

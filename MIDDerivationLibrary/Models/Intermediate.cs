@@ -17,5 +17,6 @@ namespace MIDDerivationLibrary.Models
         public string intermediateBearing1st { get; set; }
         public string intermediateBearing2nd { get; set; }
         public string outputBearing { get; set; }
+        public decimal? speedratio { get; set; }
     }
 }

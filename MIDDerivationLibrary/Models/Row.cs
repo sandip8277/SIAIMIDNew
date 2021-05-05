@@ -9,6 +9,6 @@ namespace MIDDerivationLibrary.Models
     {
         public int rowId { get; set; }
         public string frequencyCode { get; set; }
-        public double? faultcode { get; set; }
+        public decimal? faultcode { get; set; }
     }
 }

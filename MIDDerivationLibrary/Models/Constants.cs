@@ -66,6 +66,19 @@ namespace MIDDerivationLibrary.Models
         public static string spGetAllCoupling2Details = "spGetAllCoupling2Details";
 
 
+
+        public static string spAddOrUpdateSpecialFaultCodesDetails = "spAddOrUpdateSpecialFaultCodesDetails";
+
+        public static string spCheckIsSpecialFaultCodesDetailsExist = "spGetSpecialFaultCodesDetails";
+
+        public static string spDeleteSpecialFaultCodesDetailsById = "spDeleteSpecialFaultCodesDetailsById";
+
+        public static string spGetSpecialFaultCodesDetailsById = "spGetSpecialFaultCodesDetailsById";
+
+        public static string spGetAllSpecialFaultCodesDetails = "spGetAllSpecialFaultCodesDetails";
+
+
+
         public static string componentType = "componentType";
 
         public static string driverType = "driverType";
@@ -77,6 +90,10 @@ namespace MIDDerivationLibrary.Models
         public static string intermediateType = "intermediateType";
 
         public static string Id = "Id";
+
+        public static string specialFaultCodesType = "specialFaultCodesType";
+
+        public static string specialCode = "specialCode";
 
         public static string recordSaved = "Record saved successfully";
 

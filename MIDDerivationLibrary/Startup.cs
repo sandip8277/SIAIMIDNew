@@ -15,11 +15,13 @@ using MIDDerivationLibrary.Business.Coupling;
 using MIDDerivationLibrary.Business.Driven;
 using MIDDerivationLibrary.Business.Driver;
 using MIDDerivationLibrary.Business.Intermediate;
+using MIDDerivationLibrary.Business.SpecialFaultCodes;
 using MIDDerivationLibrary.Repository;
 using MIDDerivationLibrary.Repository.Coupling;
 using MIDDerivationLibrary.Repository.Driven;
 using MIDDerivationLibrary.Repository.Driver;
 using MIDDerivationLibrary.Repository.Intermediate;
+using MIDDerivationLibrary.Repository.SpecialFaultCodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +60,9 @@ namespace MIDDerivationLibrary
             services.AddTransient<ICoupling1Repository, Coupling1Repository>();
             services.AddTransient<ICoupling2Service, Coupling2Service>();
             services.AddTransient<ICoupling2Repository, Coupling2Repository>();
+            services.AddTransient<ISpecialFaultCodesService, SpecialFaultCodesService>();
+            services.AddTransient<ISpecialFaultCodesRepository, SpecialFaultCodesRepository>();
+
             services.AddScoped(typeof(ISQLRepository), typeof(SQLRepository));
 
             //services.Configure<ApiBehaviorOptions>(o =>

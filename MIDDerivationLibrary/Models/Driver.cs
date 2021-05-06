@@ -26,5 +26,7 @@ namespace MIDDerivationLibrary.Models
         public bool? turbineThrustBearingIsBall { get; set; }
         public decimal? rpm { get; set; }
         public List<SpecialFaultCodesInput> specialFaultCodesInput { get; set; }
+        public bool? driverLocationNDE { get; set; }
+        public bool? driverLocationDE { get; set; }
     }
 }

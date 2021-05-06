@@ -78,6 +78,15 @@ namespace MIDDerivationLibrary.Models
         public static string spGetAllSpecialFaultCodesDetails = "spGetAllSpecialFaultCodesDetails";
 
 
+        public static string spAddOrUpdateCSDMdefsDetails = "spAddOrUpdateCSDMdefsDetails";
+
+        public static string spCheckIsCSDMdefsDetailsExist = "spGetCSDMdefsDetails";
+
+        public static string spDeleteCSDMdefsDetailsById = "spDeleteCSDMdefsDetailsById";
+
+        public static string spGetCSDMdefsDetailsById = "spGetCSDMdefsDetailsById";
+
+        public static string spGetAllCSDMdefsDetails = "spGetAllCSDMdefsDetails";
 
         public static string componentType = "componentType";
 
@@ -94,6 +103,8 @@ namespace MIDDerivationLibrary.Models
         public static string specialFaultCodesType = "specialFaultCodesType";
 
         public static string specialCode = "specialCode";
+
+        public static string csdmfile = "csdmfile";
 
         public static string recordSaved = "Record saved successfully";
 
@@ -118,7 +129,6 @@ namespace MIDDerivationLibrary.Models
         public static string drivenTypeRequiredMessage = "DrivenType is required";
 
         public static string c1AndC2CouplingValidationMessage = "Any one coupling speedratio value should be <> 1";
-
 
 
 

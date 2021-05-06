@@ -42,6 +42,7 @@ namespace MIDDerivationLibrary.Models
         public string drivenBy { get; set; }
         public decimal? rpm { get; set; }
         public List<SpecialFaultCodesInput> specialFaultCodesInput { get; set; }
-
+        public bool? drivenLocationNDE { get; set; }
+        public bool? drivenLocationDE { get; set; }
     }
 }

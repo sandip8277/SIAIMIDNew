@@ -12,12 +12,14 @@ using Microsoft.OpenApi.Models;
 using MIDCodeGenerator.Repository;
 using MIDDerivationLibrary.Business;
 using MIDDerivationLibrary.Business.Coupling;
+using MIDDerivationLibrary.Business.CSDMdefs;
 using MIDDerivationLibrary.Business.Driven;
 using MIDDerivationLibrary.Business.Driver;
 using MIDDerivationLibrary.Business.Intermediate;
 using MIDDerivationLibrary.Business.SpecialFaultCodes;
 using MIDDerivationLibrary.Repository;
 using MIDDerivationLibrary.Repository.Coupling;
+using MIDDerivationLibrary.Repository.CSDMdefs;
 using MIDDerivationLibrary.Repository.Driven;
 using MIDDerivationLibrary.Repository.Driver;
 using MIDDerivationLibrary.Repository.Intermediate;
@@ -62,6 +64,9 @@ namespace MIDDerivationLibrary
             services.AddTransient<ICoupling2Repository, Coupling2Repository>();
             services.AddTransient<ISpecialFaultCodesService, SpecialFaultCodesService>();
             services.AddTransient<ISpecialFaultCodesRepository, SpecialFaultCodesRepository>();
+
+            services.AddTransient<ICSDMdefsService, CSDMdefsService>();
+            services.AddTransient<ICSDMdefsRepository, CSDMdefsRepository>();
 
             services.AddScoped(typeof(ISQLRepository), typeof(SQLRepository));
 

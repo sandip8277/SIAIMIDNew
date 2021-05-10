@@ -88,6 +88,19 @@ namespace MIDDerivationLibrary.Models
 
         public static string spGetAllCSDMdefsDetails = "spGetAllCSDMdefsDetails";
 
+
+        public static string spAddOrUpdatePickupCodeDetails = "spAddOrUpdateDrivenDetails";
+
+        public static string spCheckIsPickupCodeDetailsExist = "spGetPickupCodeDetails";
+
+        public static string spDeletePickupCodeDetailsById = "spDeletePickupCodeDetailsById";
+
+        public static string spGetPickupCodeDetailsById = "spGetPickupCodeDetailsById";
+
+        public static string spGetAllPickupCodeDetails = "spGetAllPickupCodeDetails";
+
+
+
         public static string componentType = "componentType";
 
         public static string driverType = "driverType";

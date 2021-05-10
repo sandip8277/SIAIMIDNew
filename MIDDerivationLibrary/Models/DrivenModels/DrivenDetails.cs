@@ -16,7 +16,7 @@ namespace MIDDerivationLibrary.Models.DrivenModels
         public string fan_or_blowerType { get; set; }
         public string purifierDrivenBy { get; set; }
         public string bearingType { get; set; }
-        public string col_cType { get; set; }
+        public string vacuumPumpType { get; set; }
         public bool? rotorOverhung { get; set; }
         public bool? attachedOilPump { get; set; }
         public bool? impellerOnMainShaft { get; set; }

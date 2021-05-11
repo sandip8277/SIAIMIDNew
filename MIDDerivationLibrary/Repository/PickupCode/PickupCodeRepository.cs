@@ -33,39 +33,33 @@ namespace MIDDerivationLibrary.Repository.PickupCode
             return id;
         }
 
-        public List<PickupCodeDetails> GetAllPickupCodeDetails(string componentType = null, string PickupCodeType = null)
+        public List<PickupCodeDetails> GetAllPickupCodeDetails()
         {
             List<PickupCodeDetails> detailsLst = new List<PickupCodeDetails>();
             try
             {
                 string spName = MIDDerivationLibrary.Models.Constants.spGetAllPickupCodeDetails;
-                List<SqlParameter> allParams = new List<SqlParameter>()
-                { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.componentType}", componentType == null ? DBNull.Value : componentType ),
-                  //new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.PickupCodeType}", PickupCodeType == null ? DBNull.Value : PickupCodeType  )
-                };
-
+                List<SqlParameter> allParams = new List<SqlParameter>();
                 DataSet result = sqlRepository.ExecuteQuery(spName, allParams);
                 if (result != null && result.Tables[0].Rows.Count > 0)
                 {
                     detailsLst = result.Tables[0].AsEnumerable().Select(dataRow => new PickupCodeDetails
                     {
-                        //id = dataRow.Field<long>("id"),
-                        //componentType = dataRow.Field<string>("componentType"),
-                        //locations = dataRow.Field<int?>("locations"),
-                        //PickupCodeType = dataRow.Field<string>("PickupCodeType"),
-                        //cylinders = dataRow.Field<int?>("cylinders"),
-                        //motorDrive = dataRow.Field<string>("motorDrive"),
-                        //motorFan = dataRow.Field<bool?>("motorFan"),
-                        //motorBallBearings = dataRow.Field<bool?>("motorBallBearings"),
-                        //drivenBallBearings = dataRow.Field<bool?>("drivenBallBearings"),
-                        //drivenBalanceable = dataRow.Field<bool?>("drivenBalanceable"),
-                        //motorPoles = dataRow.Field<int?>("motorPoles"),
-                        //turbineReductionGear = dataRow.Field<bool?>("turbineReductionGear"),
-                        //turbineRotorSupported = dataRow.Field<bool?>("turbineRotorSupported"),
-                        //turbineBallBearing = dataRow.Field<bool?>("turbineBallBearing"),
-                        //turbineThrustBearing = dataRow.Field<bool?>("turbineThrustBearing"),
-                        //turbineThrustBearingIsBall = dataRow.Field<bool?>("turbineThrustBearingIsBall"),
-                        //componentCode = dataRow.Field<decimal?>("componentCode")
+                        id = dataRow.Field<int>("id"),
+                        driverLocations = dataRow.Field<int>("driverLocations"),
+                        driverLocationNDE = dataRow.Field<bool>("driverLocationNDE"),
+                        driverLocationDE = dataRow.Field<bool>("driverLocationDE"),
+                        intermediateLocations = dataRow.Field<int>("intermediateLocations"),
+                        intermediatepresent = dataRow.Field<bool>("intermediatepresent"),
+                        drivenLocations = dataRow.Field<int>("drivenLocations"),
+                        drivenLocationDE = dataRow.Field<bool>("drivenLocationDE"),
+                        drivenLocationNDE = dataRow.Field<bool>("drivenLocationNDE"),
+                        driverPickupCode = dataRow.Field<string>("driverPickupCode"),
+                        coupling1PickupCode = dataRow.Field<string>("coupling1PickupCode"),
+                        intermediatePickupCode = dataRow.Field<string>("intermediatePickupCode"),
+                        coupling2PickupCode = dataRow.Field<string>("coupling2PickupCode"),
+                        drivenPickupCode = dataRow.Field<string>("drivenPickupCode")
+
                     }).ToList();
                 }
             }
@@ -91,23 +85,21 @@ namespace MIDDerivationLibrary.Repository.PickupCode
                 {
                     details = result.Tables[0].AsEnumerable().Select(dataRow => new PickupCodeDetails
                     {
-                        //id = dataRow.Field<long>("id"),
-                        //componentType = dataRow.Field<string>("componentType"),
-                        //locations = dataRow.Field<int?>("locations"),
-                        //PickupCodeType = dataRow.Field<string>("PickupCodeType"),
-                        //cylinders = dataRow.Field<int?>("cylinders"),
-                        //motorDrive = dataRow.Field<string>("motorDrive"),
-                        //motorFan = dataRow.Field<bool?>("motorFan"),
-                        //motorBallBearings = dataRow.Field<bool?>("motorBallBearings"),
-                        //drivenBallBearings = dataRow.Field<bool?>("drivenBallBearings"),
-                        //drivenBalanceable = dataRow.Field<bool?>("drivenBalanceable"),
-                        //motorPoles = dataRow.Field<int?>("motorPoles"),
-                        //turbineReductionGear = dataRow.Field<bool?>("turbineReductionGear"),
-                        //turbineRotorSupported = dataRow.Field<bool?>("turbineRotorSupported"),
-                        //turbineBallBearing = dataRow.Field<bool?>("turbineBallBearing"),
-                        //turbineThrustBearing = dataRow.Field<bool?>("turbineThrustBearing"),
-                        //turbineThrustBearingIsBall = dataRow.Field<bool?>("turbineThrustBearingIsBall"),
-                        //componentCode = dataRow.Field<decimal?>("componentCode")
+                        id = dataRow.Field<int>("id"),
+                        driverLocations = dataRow.Field<int>("driverLocations"),
+                        driverLocationNDE = dataRow.Field<bool>("driverLocationNDE"),
+                        driverLocationDE = dataRow.Field<bool>("driverLocationDE"),
+                        intermediateLocations = dataRow.Field<int>("intermediateLocations"),
+                        intermediatepresent = dataRow.Field<bool>("intermediatepresent"),
+                        drivenLocations = dataRow.Field<int>("drivenLocations"),
+                        drivenLocationDE = dataRow.Field<bool>("drivenLocationDE"),
+                        drivenLocationNDE = dataRow.Field<bool>("drivenLocationNDE"),
+                        driverPickupCode = dataRow.Field<string>("driverPickupCode"),
+                        coupling1PickupCode = dataRow.Field<string>("coupling1PickupCode"),
+                        intermediatePickupCode = dataRow.Field<string>("intermediatePickupCode"),
+                        coupling2PickupCode = dataRow.Field<string>("coupling2PickupCode"),
+                        drivenPickupCode = dataRow.Field<string>("drivenPickupCode")
+
                     }).FirstOrDefault();
                 }
             }
@@ -150,23 +142,21 @@ namespace MIDDerivationLibrary.Repository.PickupCode
                 {
                     details = result.Tables[0].AsEnumerable().Select(dataRow => new PickupCodeDetails
                     {
-                        //id = dataRow.Field<long>("id"),
-                        //componentType = dataRow.Field<string>("componentType"),
-                        //locations = dataRow.Field<int?>("locations"),
-                        //PickupCodeType = dataRow.Field<string>("PickupCodeType"),
-                        //cylinders = dataRow.Field<int?>("cylinders"),
-                        //motorDrive = dataRow.Field<string>("motorDrive"),
-                        //motorFan = dataRow.Field<bool?>("motorFan"),
-                        //motorBallBearings = dataRow.Field<bool?>("motorBallBearings"),
-                        //drivenBallBearings = dataRow.Field<bool?>("drivenBallBearings"),
-                        //drivenBalanceable = dataRow.Field<bool?>("drivenBalanceable"),
-                        //motorPoles = dataRow.Field<int?>("motorPoles"),
-                        //turbineReductionGear = dataRow.Field<bool?>("turbineReductionGear"),
-                        //turbineRotorSupported = dataRow.Field<bool?>("turbineRotorSupported"),
-                        //turbineBallBearing = dataRow.Field<bool?>("turbineBallBearing"),
-                        //turbineThrustBearing = dataRow.Field<bool?>("turbineThrustBearing"),
-                        //turbineThrustBearingIsBall = dataRow.Field<bool?>("turbineThrustBearingIsBall"),
-                        //componentCode = dataRow.Field<decimal?>("componentCode")
+                        id = dataRow.Field<int>("id"),
+                        driverLocations = dataRow.Field<int>("driverLocations"),
+                        driverLocationNDE = dataRow.Field<bool>("driverLocationNDE"),
+                        driverLocationDE = dataRow.Field<bool>("driverLocationDE"),
+                        intermediateLocations = dataRow.Field<int>("intermediateLocations"),
+                        intermediatepresent = dataRow.Field<bool>("intermediatepresent"),
+                        drivenLocations = dataRow.Field<int>("drivenLocations"),
+                        drivenLocationDE = dataRow.Field<bool>("drivenLocationDE"),
+                        drivenLocationNDE = dataRow.Field<bool>("drivenLocationNDE"),
+                        driverPickupCode = dataRow.Field<string>("driverPickupCode"),
+                        coupling1PickupCode = dataRow.Field<string>("coupling1PickupCode"),
+                        intermediatePickupCode = dataRow.Field<string>("intermediatePickupCode"),
+                        coupling2PickupCode = dataRow.Field<string>("coupling2PickupCode"),
+                        drivenPickupCode = dataRow.Field<string>("drivenPickupCode")
+
                     }).FirstOrDefault();
                 }
             }

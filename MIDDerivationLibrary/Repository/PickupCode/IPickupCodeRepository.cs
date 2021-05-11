@@ -9,7 +9,7 @@ namespace MIDDerivationLibrary.Repository.PickupCode
     public interface IPickupCodeRepository
     {
         long AddOrUpdatePickupCodeDetails(string xml);
-        List<PickupCodeDetails> GetAllPickupCodeDetails(string componentType = null, string PickupCodeType = null);
+        List<PickupCodeDetails> GetAllPickupCodeDetails();
         PickupCodeDetails GetPickupCodeDetailsById(long id);
         long DeletePickupCodeDetailsById(long id);
         PickupCodeDetails GetPickupCodeDetails(string xml);

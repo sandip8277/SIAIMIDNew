@@ -89,7 +89,7 @@ namespace MIDDerivationLibrary.Models
         public static string spGetAllCSDMdefsDetails = "spGetAllCSDMdefsDetails";
 
 
-        public static string spAddOrUpdatePickupCodeDetails = "spAddOrUpdateDrivenDetails";
+        public static string spAddOrUpdatePickupCodeDetails = "spAddOrUpdatePickupCodeDetails";
 
         public static string spCheckIsPickupCodeDetailsExist = "spGetPickupCodeDetails";
 

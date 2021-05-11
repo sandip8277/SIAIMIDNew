@@ -36,7 +36,7 @@ namespace MIDDerivationLibrary.Controllers
                 bool isExist = _service.CheckIsPickupCodeDetailsExist(xmlString);
 
                 if (isExist == true)
-                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
+                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(409, Constants.recordExist));
                 else
                 {
                     id = _service.AddOrUpdatePickupCodeDetails(xElement.ToString());
@@ -85,11 +85,11 @@ namespace MIDDerivationLibrary.Controllers
 
         [HttpGet]
         [Route("GetPickupCodeDetails")]
-        public ActionResult GetPickupCodeDetails(string componentType, string PickupCodeType)
+        public ActionResult GetPickupCodeDetails()
         {
             try
             {
-                List<PickupCodeDetails> detailsList = _service.GetAllPickupCodeDetails(componentType, PickupCodeType);
+                List<PickupCodeDetails> detailsList = _service.GetAllPickupCodeDetails();
                 if (detailsList != null)
                     return Ok(new ApiOkResponse(detailsList));
                 else

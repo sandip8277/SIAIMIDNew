@@ -7,6 +7,19 @@ namespace MIDDerivationLibrary.Models.PickupModels
 {
     public class PickupCodeDetails
     {
-        public long id { get; set; }
+        public int id { get; set; }
+        public int driverLocations { get; set; }
+        public bool driverLocationNDE { get; set; }
+        public bool driverLocationDE { get; set; }
+        public int intermediateLocations { get; set; }
+        public bool intermediatepresent { get; set; }
+        public int drivenLocations { get; set; }
+        public bool drivenLocationDE { get; set; }
+        public bool drivenLocationNDE { get; set; }
+        public string driverPickupCode { get; set; }
+        public string coupling1PickupCode { get; set; }
+        public string intermediatePickupCode { get; set; }
+        public string coupling2PickupCode { get; set; }
+        public string drivenPickupCode { get; set; }
     }
 }

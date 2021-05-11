@@ -18,7 +18,7 @@ namespace MIDDerivationLibrary.Models
         public bool? motorBallBearings { get; set; }
         public bool? drivenBallBearings { get; set; }
         public bool? drivenBalanceable { get; set; }
-        public int? mortorPoles { get; set; }
+        public int? motorPoles { get; set; }
         public bool? turbineReductionGear { get; set; }
         public bool? turbineRotorSupported { get; set; }
         public bool? turbineBallBearing { get; set; }

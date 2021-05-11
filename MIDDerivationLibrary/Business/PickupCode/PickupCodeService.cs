@@ -29,12 +29,12 @@ namespace MIDDerivationLibrary.Business.PickupCode
             return id;
         }
 
-        public List<PickupCodeDetails> GetAllPickupCodeDetails(string componentType, string PickupCodeType)
+        public List<PickupCodeDetails> GetAllPickupCodeDetails()
         {
             List<PickupCodeDetails> detailsList = null;
             try
             {
-                detailsList = _pickupRepository.GetAllPickupCodeDetails(componentType, PickupCodeType);
+                detailsList = _pickupRepository.GetAllPickupCodeDetails();
             }
             catch (Exception ex)
             {

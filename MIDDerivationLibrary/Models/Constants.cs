@@ -127,6 +127,45 @@ namespace MIDDerivationLibrary.Models
 
         public static string recordExist = "Record already exist";
 
+        public static string driverComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
+
+        public static string driverLocationValidationMsg = "locations is a required integer and must be 1 through 10";
+
+        public static string driverLocationNDEValidationMsg = "driverLocationNDE is a required boolean";
+
+        public static string driverLocationDEValidationMsg = "driverLocationDE is a required boolean";
+
+        public static string driverTypeTypeValidationMsg = "driverType is a required string and must be diesel, motor, turbine";
+
+        public static string driversValidationMsg = "drivers one type must be used diesel, motor, turbine";
+
+        public static string driversCylindersValidationMsg = "cylinders is a required integer if driverType is diesel and must be 2, 4, 6, 8, 10, 12, 16, 18, 20";
+
+        public static string driversMotorDriveValidationMsg = "motorDrive is a required string if driverType is motor and must be AC, DC, VFD";
+
+        public static string driverMotorFanRequiredValidationMsg = "motorFan is a required boolean if driverType is motor";
+
+        public static string driverMotorBallBearingsRequiredValidationMsg = "motorBallBearings is a required boolean if driverType is motor";
+
+        public static string driverDrivenBallBearingsRequiredValidationMsg = "drivenBallBearings is a required boolean if driverType is motor";
+
+        public static string driverDrivenBalanceableRequiredValidationMsg = "drivenBallBearings is a required boolean if driverType is motor";
+
+        public static string driverMotorPolesValidationMsg = "motorPoles is a required integer if motorDrive is VFD and must be 2, 4, 6, 8, 10";
+
+        public static string driverTurbineReductionGearRequiredValidationMsg = "turbineReductionGear is a required boolean if driverType is turbine";
+
+        public static string driverTurbineRotorSupportedRequiredValidationMsg = "turbineRotorSupported is a required boolean if driverType is turbine";
+
+        public static string driverTurbineBallBearingRequiredValidationMsg = "turbineBallBearing is a required boolean if driverType is turbine";
+
+        public static string driverTurbineThrustBearingRequiredValidationMsg = "turbineThrustBearing is a required boolean if driverType is turbine";
+
+        public static string driverTurbineThrustBearingIsBallRequiredValidationMsg = "turbineThrustBearingIsBall is a optional boolean if driverType is turbine";
+
+        public static string driverSpecialFaultCodesInputValidationMsg = "specialFaultCodeCount is a required integer if specialFaultCodeType is not null";
+
+
         public static string locationRequiredMessage = "Locations is required";
 
         public static string driverTypeRequiredMessage = "DriverType is required";
@@ -142,11 +181,6 @@ namespace MIDDerivationLibrary.Models
         public static string drivenTypeRequiredMessage = "DrivenType is required";
 
         public static string c1AndC2CouplingValidationMessage = "Any one coupling speedratio value should be <> 1";
-
-
-
-
-
-
+   
     }
 }

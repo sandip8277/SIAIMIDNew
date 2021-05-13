@@ -14,8 +14,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using static MIDDerivationLibrary.Models.DriverEnums;
-
+using static MIDDerivationLibrary.Enums.Coupling1Enums;
+using static MIDDerivationLibrary.Enums.Coupling2Enums;
+using static MIDDerivationLibrary.Enums.DriverEnums;
 
 namespace MIDDerivationLibrary.Controllers
 {
@@ -39,6 +40,7 @@ namespace MIDDerivationLibrary.Controllers
             if (model.machineComponentsForMIDgeneration == null)
                 ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration), "Machine components for MID generation shoulde not be null.");
 
+            //Validations for Driver component
             if (model.machineComponentsForMIDgeneration.driver != null)
             {
                 //componentType
@@ -140,17 +142,56 @@ namespace MIDDerivationLibrary.Controllers
             }
 
             //Validations for coupling1 component
-            if (model.machineComponentsForMIDgeneration.coupling1 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.componentType))
+            if (model.machineComponentsForMIDgeneration.coupling1 != null)
             {
-                if (model.machineComponentsForMIDgeneration.coupling1.couplingPosition == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingPosition), Constants.couplingPositionTypeRequiredMessage);
+                //componentType
+                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.componentType) || !Enum.IsDefined(typeof(Coupling1ComponentType), model.machineComponentsForMIDgeneration.coupling1.componentType.ToLower()))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.componentType), Constants.coupling1ComponentTypeValidationMsg);
 
-                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.couplingType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingType), Constants.couplingTypeRequiredMessage);
+                //couplingPosition
+                if (model.machineComponentsForMIDgeneration.coupling1.couplingPosition == null || !Enum.IsDefined(typeof(Coupling1CouplingPosition), model.machineComponentsForMIDgeneration.coupling1.couplingPosition))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingPosition), Constants.coupling1PositionTypeRequiredMessage);
 
+                //couplingType
+                if (model.machineComponentsForMIDgeneration.coupling1.couplingType == null || !Enum.IsDefined(typeof(Coupling1CouplingType), model.machineComponentsForMIDgeneration.coupling1.couplingType))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.couplingType), Constants.coupling1CouplingTypeRequiredMessage);
+
+                //speedratio
                 if (model.machineComponentsForMIDgeneration.coupling1.speedratio == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.speedratio), Constants.speedRatioRequiredMessage);
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.speedratio), Constants.coupling1SpeedRatioRequiredMessage);
+
             }
+
+            //Validations for coupling2 component
+            if (model.machineComponentsForMIDgeneration.coupling2 != null)
+            {
+                //componentType
+                if ((model.machineComponentsForMIDgeneration.intermediate == null || model.machineComponentsForMIDgeneration.intermediate.componentType == null) && model.machineComponentsForMIDgeneration.coupling2.componentType != null)
+                {
+                    //must be null if intermediate is not present
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.componentType), Constants.coupling2ComponentTypeValidationMsgIfIntermediateNotPresent);
+                }
+                else if ((model.machineComponentsForMIDgeneration.intermediate != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.intermediate.componentType)) && 
+                    (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.componentType) || !Enum.IsDefined(typeof(Coupling2ComponentType), model.machineComponentsForMIDgeneration.coupling2.componentType.ToLower())))
+                {
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.componentType), Constants.coupling2ComponentTypeValidationMsg);
+                }
+
+                //couplingPosition
+                if (model.machineComponentsForMIDgeneration.coupling2.couplingPosition == null || !Enum.IsDefined(typeof(Coupling2CouplingPosition), model.machineComponentsForMIDgeneration.coupling2.couplingPosition))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingPosition), Constants.coupling2PositionTypeRequiredMessage);
+
+                //couplingType
+                if (model.machineComponentsForMIDgeneration.coupling2.couplingType == null || !Enum.IsDefined(typeof(Coupling2CouplingType), model.machineComponentsForMIDgeneration.coupling2.couplingType))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingType), Constants.coupling2CouplingTypeRequiredMessage);
+
+                //speedratio
+                if (model.machineComponentsForMIDgeneration.coupling2.speedratio == null)
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.speedratio), Constants.coupling2SpeedRatioRequiredMessage);
+            }
+
+
+
 
             //Validations for intermediate component
             if (model.machineComponentsForMIDgeneration.intermediate != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.intermediate.componentType))
@@ -159,18 +200,6 @@ namespace MIDDerivationLibrary.Controllers
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.immediateType), Constants.intermediateTypeRequiredMessage);
             }
 
-            //Validations for coupling2 component
-            if (model.machineComponentsForMIDgeneration.coupling2 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.componentType))
-            {
-                if (model.machineComponentsForMIDgeneration.coupling2.couplingPosition == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingPosition), Constants.couplingPositionTypeRequiredMessage);
-
-                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.couplingType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.couplingType), Constants.couplingTypeRequiredMessage);
-
-                if (model.machineComponentsForMIDgeneration.coupling2.speedratio == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.speedratio), Constants.speedRatioRequiredMessage);
-            }
 
             //Validations for driven component
             if (model.machineComponentsForMIDgeneration.driven != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driven.componentType))

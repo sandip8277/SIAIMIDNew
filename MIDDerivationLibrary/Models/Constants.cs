@@ -127,6 +127,9 @@ namespace MIDDerivationLibrary.Models
 
         public static string recordExist = "Record already exist";
 
+
+        //Driver validation message
+
         public static string driverComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
 
         public static string driverLocationValidationMsg = "locations is a required integer and must be 1 through 10";
@@ -166,11 +169,37 @@ namespace MIDDerivationLibrary.Models
         public static string driverSpecialFaultCodesInputValidationMsg = "specialFaultCodeCount is a required integer if specialFaultCodeType is not null";
 
 
+        //Coupling1 validation message
+
+        public static string coupling1ComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
+        
+        public static string coupling1PositionTypeRequiredMessage = "couplingPosition is a required integer and must be 1,2";
+
+        public static string coupling1CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible, fluid";
+
+        public static string coupling1SpeedRatioRequiredMessage = "speedratio is required decimal - default is 1.0000";
+
+        //Coupling2 validation message
+
+        public static string coupling2ComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven; must be null if intermediate is not present";
+
+        public static string coupling2ComponentTypeValidationMsgIfIntermediateNotPresent = "componentType must be null if intermediate is not present";
+
+        public static string coupling2PositionTypeRequiredMessage = "couplingPosition is a required integer and must be 1,2";
+
+        public static string coupling2CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible";
+
+
+
+        public static string coupling2SpeedRatioRequiredMessage = "speedratio is required decimal - default is 1.0000";
+
+
+        public static string couplingPositionTypeRequiredMessage = "CouplingPosition is required";
+
         public static string locationRequiredMessage = "Locations is required";
 
         public static string driverTypeRequiredMessage = "DriverType is required";
 
-        public static string couplingPositionTypeRequiredMessage = "CouplingPosition is required";
 
         public static string couplingTypeRequiredMessage = "CouplingType is required";
 

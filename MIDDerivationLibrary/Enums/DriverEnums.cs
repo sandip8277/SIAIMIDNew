@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MIDDerivationLibrary.Models
+namespace MIDDerivationLibrary.Enums
 {
     public class DriverEnums
     {
@@ -50,7 +50,7 @@ namespace MIDDerivationLibrary.Models
             MotorPoles6 = 6,
             MotorPoles8 = 8,
             MotorPoles10 = 10
-           
+
         }
 
     }

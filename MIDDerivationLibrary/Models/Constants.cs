@@ -189,6 +189,39 @@ namespace MIDDerivationLibrary.Models
 
         public static string coupling2CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible";
 
+        //Intermediate validation message
+        public static string intermediateComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
+
+        public static string intermediateLocationValidationMsg = "locations is a required integer and must be 1 through 10";
+
+        public static string intermediateSpeedratioValidationMsg = "speedratio is required decimal - default is 1.0000";
+
+        public static string intermediateImmediateTypeValidationMsg = "immediateType is a required string and must be gearbox, AOP, AccDrGr";
+
+        public static string intermediateIntermediatesValidationMsg = "intermediates one type must be used gearbox, AOP, AccDrGr";
+
+        public static string intermediateSpeedChangesMaxValidationMsg = "speedChangesMax is a required integer";
+
+
+
+        //public static string intermediateInputBearingValidationMsg = "inputBearing is a required integer";
+
+        //public static string intermediateIntermediateBearing1stValidationMsg = "intermediateBearing1st is an optional string and must be [4, 5], [4], [4, 5, 6, 7], [4, 5, 6, 7, 8], [4, 5, 6, 7, 8, 9]";
+
+        //public static string intermediateIntermediateBearing2ndValidationMsg = "intermediateBearing2nd is an optional string and must be [5], [5, 6, 7, 8, 9]";
+
+        //public static string intermediateOutputBearingValidationMsg = "outputBearing is an optional string and must be [4, 5, 6], [5, 6], [6], [4, 5, 6, 7, 8], [7, 8], [9, 10], [4, 5, 6, 7, 8, 9, 10]";
+
+        public static string intermediateAOPDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
+
+        public static string intermediateAccDrGrDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
+
+
+        //public static string coupling2ComponentTypeValidationMsgIfIntermediateNotPresent = "componentType must be null if intermediate is not present";
+
+        //public static string coupling2PositionTypeRequiredMessage = "couplingPosition is a required integer and must be 1,2";
+
+        //public static string coupling2CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible";
 
 
         public static string coupling2SpeedRatioRequiredMessage = "speedratio is required decimal - default is 1.0000";

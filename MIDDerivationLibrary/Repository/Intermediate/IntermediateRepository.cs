@@ -49,15 +49,15 @@ namespace MIDDerivationLibrary.Repository.Intermediate
                     {
                         id = dataRow.Field<long>("id"),
                         componentType = dataRow.Field<string>("componentType"),
-                        intermediateType = dataRow.Field<string>("immediateType"),
+                        intermediateType = dataRow.Field<string>("intermediateType"),
                         locations = dataRow.Field<int?>("locations"),
                         drivenBy = dataRow.Field<string>("drivenBy"),
-                        speedChangesMax = dataRow.Field<string>("speedChangesMax"),
+                        speedChangesMax = dataRow.Field<int?>("speedChangesMax"),
                         //gearBoxLocations = dataRow.Field<int?>("gearBoxLocations"),
-                        inputBearing = dataRow.Field<int?>("inputBearing"),
-                        intermediateBearing1st = dataRow.Field<string>("intermediateBearing1st"),
-                        intermediateBearing2nd = dataRow.Field<string>("intermediateBearing2nd"),
-                        outputBearing = dataRow.Field<string>("outputBearing"),
+                        //inputBearing = dataRow.Field<int?>("inputBearing"),
+                        //intermediateBearing1st = dataRow.Field<string>("intermediateBearing1st"),
+                        //intermediateBearing2nd = dataRow.Field<string>("intermediateBearing2nd"),
+                        //outputBearing = dataRow.Field<string>("outputBearing"),
                         componentCode = dataRow.Field<decimal?>("componentCode")
 
                     }).ToList();
@@ -87,15 +87,15 @@ namespace MIDDerivationLibrary.Repository.Intermediate
                     {
                         id = dataRow.Field<long>("id"),
                         componentType = dataRow.Field<string>("componentType"),
-                        intermediateType = dataRow.Field<string>("immediateType"),
+                        intermediateType = dataRow.Field<string>("intermediateType"),
                         locations = dataRow.Field<int?>("locations"),
                         drivenBy = dataRow.Field<string>("drivenBy"),
-                        speedChangesMax = dataRow.Field<string>("speedChangesMax"),
+                        speedChangesMax = dataRow.Field<int?>("speedChangesMax"),
                         //gearBoxLocations = dataRow.Field<int?>("gearBoxLocations"),
-                        inputBearing = dataRow.Field<int?>("inputBearing"),
-                        intermediateBearing1st = dataRow.Field<string>("intermediateBearing1st"),
-                        intermediateBearing2nd = dataRow.Field<string>("intermediateBearing2nd"),
-                        outputBearing = dataRow.Field<string>("outputBearing"),
+                        //inputBearing = dataRow.Field<int?>("inputBearing"),
+                        //intermediateBearing1st = dataRow.Field<string>("intermediateBearing1st"),
+                        //intermediateBearing2nd = dataRow.Field<string>("intermediateBearing2nd"),
+                        //outputBearing = dataRow.Field<string>("outputBearing"),
                         componentCode = dataRow.Field<decimal?>("componentCode")
                         
                     }).FirstOrDefault();
@@ -142,15 +142,15 @@ namespace MIDDerivationLibrary.Repository.Intermediate
                     {
                         id = dataRow.Field<long>("id"),
                         componentType = dataRow.Field<string>("componentType"),
-                        intermediateType = dataRow.Field<string>("immediateType"),
+                        intermediateType = dataRow.Field<string>("intermediateType"),
                         locations = dataRow.Field<int?>("locations"),
                         drivenBy = dataRow.Field<string>("drivenBy"),
-                        speedChangesMax = dataRow.Field<string>("speedChangesMax"),
+                        speedChangesMax = dataRow.Field<int?>("speedChangesMax"),
                         //gearBoxLocations = dataRow.Field<int?>("gearBoxLocations"),
-                        inputBearing = dataRow.Field<int?>("inputBearing"),
-                        intermediateBearing1st = dataRow.Field<string>("intermediateBearing1st"),
-                        intermediateBearing2nd = dataRow.Field<string>("intermediateBearing2nd"),
-                        outputBearing = dataRow.Field<string>("outputBearing"),
+                        //inputBearing = dataRow.Field<int?>("inputBearing"),
+                        //intermediateBearing1st = dataRow.Field<string>("intermediateBearing1st"),
+                        //intermediateBearing2nd = dataRow.Field<string>("intermediateBearing2nd"),
+                        //outputBearing = dataRow.Field<string>("outputBearing"),
                         componentCode = dataRow.Field<decimal?>("componentCode")
 
                     }).FirstOrDefault();

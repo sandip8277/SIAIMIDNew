@@ -17,6 +17,7 @@ using System.Xml.Linq;
 using static MIDDerivationLibrary.Enums.Coupling1Enums;
 using static MIDDerivationLibrary.Enums.Coupling2Enums;
 using static MIDDerivationLibrary.Enums.DriverEnums;
+using static MIDDerivationLibrary.Enums.IntermediateEnums;
 
 namespace MIDDerivationLibrary.Controllers
 {
@@ -44,7 +45,7 @@ namespace MIDDerivationLibrary.Controllers
             if (model.machineComponentsForMIDgeneration.driver != null)
             {
                 //componentType
-                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driver.componentType) || !Enum.IsDefined(typeof(DriverComponentType), model.machineComponentsForMIDgeneration.driver.componentType.ToLower()))
+                if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.componentType) || !Enum.IsDefined(typeof(DriverComponentType), model.machineComponentsForMIDgeneration.driver.componentType.ToLower()))
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.componentType), Constants.driverComponentTypeValidationMsg);
 
                 //locations
@@ -60,7 +61,7 @@ namespace MIDDerivationLibrary.Controllers
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.driverLocationDE), Constants.driverLocationDEValidationMsg);
 
                 //driverType
-                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driver.driverType) || !Enum.IsDefined(typeof(DriverType), model.machineComponentsForMIDgeneration.driver.driverType.ToLower()))
+                if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.driverType) || !Enum.IsDefined(typeof(DriverType), model.machineComponentsForMIDgeneration.driver.driverType.ToLower()))
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.driverType), Constants.driverTypeTypeValidationMsg);
 
                 //drivers
@@ -68,14 +69,14 @@ namespace MIDDerivationLibrary.Controllers
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers), Constants.driversValidationMsg);
 
                 //diesel cylinders
-                if (model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "diesel")
+                if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.driverType) && model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "diesel")
                 {
                     if (model.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders == null || !Enum.IsDefined(typeof(DieselCylinders), model.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders))
                         ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders), Constants.driversCylindersValidationMsg);
                 }
 
                 //motor
-                if (model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "motor")
+                if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.driverType) && model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "motor")
                 {
                     //motorDrive
                     if (!Enum.IsDefined(typeof(MotorDrive), model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive))
@@ -98,7 +99,7 @@ namespace MIDDerivationLibrary.Controllers
                         ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBalanceable), Constants.driverDrivenBalanceableRequiredValidationMsg);
 
                     //VFD
-                    if (model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive.ToUpper() == "VFD")
+                    if (model.machineComponentsForMIDgeneration.driver.drivers != null && model.machineComponentsForMIDgeneration.driver.drivers.motor != null && !string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive) && model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive.ToUpper() == "VFD")
                     {
                         if (model.machineComponentsForMIDgeneration.driver.drivers.motor.VFD == null || (model.machineComponentsForMIDgeneration.driver.drivers.motor.VFD.motorPoles == null || !Enum.IsDefined(typeof(MotorPoles), model.machineComponentsForMIDgeneration.driver.drivers.motor.VFD.motorPoles)))
                             ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.VFD.motorPoles), Constants.driverMotorPolesValidationMsg);
@@ -107,7 +108,7 @@ namespace MIDDerivationLibrary.Controllers
                 }
 
                 //Turbin
-                if (model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "turbine")
+                if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.driverType) && model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "turbine")
                 {
                     //turbineReductionGear
                     if (model.machineComponentsForMIDgeneration.driver.drivers.turbine == null || model.machineComponentsForMIDgeneration.driver.drivers.turbine.turbineReductionGear == null)
@@ -145,7 +146,7 @@ namespace MIDDerivationLibrary.Controllers
             if (model.machineComponentsForMIDgeneration.coupling1 != null)
             {
                 //componentType
-                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.componentType) || !Enum.IsDefined(typeof(Coupling1ComponentType), model.machineComponentsForMIDgeneration.coupling1.componentType.ToLower()))
+                if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.coupling1.componentType) || !Enum.IsDefined(typeof(Coupling1ComponentType), model.machineComponentsForMIDgeneration.coupling1.componentType.ToLower()))
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.componentType), Constants.coupling1ComponentTypeValidationMsg);
 
                 //couplingPosition
@@ -171,8 +172,8 @@ namespace MIDDerivationLibrary.Controllers
                     //must be null if intermediate is not present
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.componentType), Constants.coupling2ComponentTypeValidationMsgIfIntermediateNotPresent);
                 }
-                else if ((model.machineComponentsForMIDgeneration.intermediate != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.intermediate.componentType)) && 
-                    (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.componentType) || !Enum.IsDefined(typeof(Coupling2ComponentType), model.machineComponentsForMIDgeneration.coupling2.componentType.ToLower())))
+                else if ((model.machineComponentsForMIDgeneration.intermediate != null && !string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.componentType)) &&
+                    (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.coupling2.componentType) || !Enum.IsDefined(typeof(Coupling2ComponentType), model.machineComponentsForMIDgeneration.coupling2.componentType.ToLower())))
                 {
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling2.componentType), Constants.coupling2ComponentTypeValidationMsg);
                 }
@@ -191,31 +192,54 @@ namespace MIDDerivationLibrary.Controllers
             }
 
 
-
-
-            //Validations for intermediate component
-            if (model.machineComponentsForMIDgeneration.intermediate != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.intermediate.componentType))
+            //Validations for Intermediate component 
+            if (model.machineComponentsForMIDgeneration.intermediate != null)
             {
-                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.intermediate.immediateType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.immediateType), Constants.intermediateTypeRequiredMessage);
-            }
+                //componentType
+                if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.componentType) || !Enum.IsDefined(typeof(IntermediateComponentType), model.machineComponentsForMIDgeneration.intermediate.componentType.ToLower()))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.componentType), Constants.intermediateComponentTypeValidationMsg);
 
+                //locations
+                if (model.machineComponentsForMIDgeneration.intermediate.locations == null || !(model.machineComponentsForMIDgeneration.intermediate.locations >= 1 && model.machineComponentsForMIDgeneration.intermediate.locations <= 10))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.locations), Constants.intermediateLocationValidationMsg);
 
-            //Validations for driven component
-            if (model.machineComponentsForMIDgeneration.driven != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driven.componentType))
-            {
+                //speedratio
+                if (model.machineComponentsForMIDgeneration.intermediate.speedratio == null)
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.speedratio), Constants.intermediateSpeedratioValidationMsg);
 
-                if (string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.driven.drivenType))
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivenType), Constants.drivenTypeRequiredMessage);
+                //intermediateType
+                if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediateType) || !Enum.IsDefined(typeof(IntermediateType), model.machineComponentsForMIDgeneration.intermediate.intermediateType.ToLower()))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediateType), Constants.intermediateImmediateTypeValidationMsg);
 
-                if (model.machineComponentsForMIDgeneration.driven.locations == null)
-                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.locations), Constants.locationRequiredMessage);
+                //intermediates
+                if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || (model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox == null && model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr == null && model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP == null))
+                    ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates), Constants.intermediateIntermediatesValidationMsg);
 
+                //gearbox
+                if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediateType) && model.machineComponentsForMIDgeneration.intermediate.intermediateType.ToLower() == IntermediateType.gearbox.ToString())
+                {
+                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax == 0)
+                        ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax), Constants.intermediateSpeedChangesMaxValidationMsg);
+                }
+
+                //AOP
+                if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediateType) && model.machineComponentsForMIDgeneration.intermediate.intermediateType.ToLower() == IntermediateType.aop.ToString())
+                {
+                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP == null || string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP.drivenBy))
+                        ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AOP) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AOP.drivenBy), Constants.intermediateAOPDrivenByValidationMsg);
+                }
+
+                //AccDrGr
+                if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediateType) && model.machineComponentsForMIDgeneration.intermediate.intermediateType.ToLower() == IntermediateType.accdrgr.ToString())
+                {
+                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr == null || string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr.drivenBy))
+                        ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr.drivenBy), Constants.intermediateAccDrGrDrivenByValidationMsg);
+                }
             }
 
             //Validations for speed ratio of coupling 1 and coupling 2 component
-            if ((model.machineComponentsForMIDgeneration.coupling1 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling1.componentType)) &&
-                (model.machineComponentsForMIDgeneration.coupling2 != null && !string.IsNullOrWhiteSpace(model.machineComponentsForMIDgeneration.coupling2.componentType)))
+            if ((model.machineComponentsForMIDgeneration.coupling1 != null && !string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.coupling1.componentType)) &&
+                (model.machineComponentsForMIDgeneration.coupling2 != null && !string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.coupling2.componentType)))
             {
                 if (model.machineComponentsForMIDgeneration.coupling1.speedratio != null &&
                     model.machineComponentsForMIDgeneration.coupling2.speedratio != null &&
@@ -225,6 +249,7 @@ namespace MIDDerivationLibrary.Controllers
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.coupling1.speedratio), Constants.c1AndC2CouplingValidationMessage);
                 }
             }
+
             if (ModelState.IsValid)
             {
                 try

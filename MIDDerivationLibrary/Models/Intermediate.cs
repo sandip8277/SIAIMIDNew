@@ -8,17 +8,32 @@ namespace MIDDerivationLibrary.Models
     public class Intermediate
     {
         public string componentType { get; set; }
-        public string immediateType { get; set; }
+        public string intermediateType { get; set; }
         public int? locations { get; set; }
         public string drivenBy { get; set; }
-        public int? speedChangesMax { get; set; }
-        //public int? gearBoxLocations { get; set; }
         public int? inputBearing { get; set; }
-        public string intermediateBearing1st { get; set; }
-        public string intermediateBearing2nd { get; set; }
-        public string outputBearing { get; set; }
         public decimal? speedratio { get; set; }
-        //public bool? intermediateLocationNDE { get; set; }
-        //public bool? intermediateLocationDE { get; set; }
+        public Intermediates intermediates { get; set; }
+    }
+    public class Intermediates
+    {
+        public Gearbox gearbox { get; set; }
+        public AOP AOP { get; set; }
+        public AccDrGr AccDrGr { get; set; }
+    }
+
+    public class Gearbox
+    {
+        public int? speedChangesMax { get; set; }
+    }
+
+    public class AOP
+    {
+        public string drivenBy { get; set; }
+    }
+
+    public class AccDrGr
+    {
+        public string drivenBy { get; set; }
     }
 }

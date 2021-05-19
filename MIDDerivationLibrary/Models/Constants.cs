@@ -190,6 +190,7 @@ namespace MIDDerivationLibrary.Models
         public static string coupling2CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible";
 
         //Intermediate validation message
+
         public static string intermediateComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
 
         public static string intermediateLocationValidationMsg = "locations is a required integer and must be 1 through 10";
@@ -201,48 +202,119 @@ namespace MIDDerivationLibrary.Models
         public static string intermediateIntermediatesValidationMsg = "intermediates one type must be used gearbox, AOP, AccDrGr";
 
         public static string intermediateSpeedChangesMaxValidationMsg = "speedChangesMax is a required integer";
-
-
-
-        //public static string intermediateInputBearingValidationMsg = "inputBearing is a required integer";
-
-        //public static string intermediateIntermediateBearing1stValidationMsg = "intermediateBearing1st is an optional string and must be [4, 5], [4], [4, 5, 6, 7], [4, 5, 6, 7, 8], [4, 5, 6, 7, 8, 9]";
-
-        //public static string intermediateIntermediateBearing2ndValidationMsg = "intermediateBearing2nd is an optional string and must be [5], [5, 6, 7, 8, 9]";
-
-        //public static string intermediateOutputBearingValidationMsg = "outputBearing is an optional string and must be [4, 5, 6], [5, 6], [6], [4, 5, 6, 7, 8], [7, 8], [9, 10], [4, 5, 6, 7, 8, 9, 10]";
-
+        
         public static string intermediateAOPDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
 
         public static string intermediateAccDrGrDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
 
 
-        //public static string coupling2ComponentTypeValidationMsgIfIntermediateNotPresent = "componentType must be null if intermediate is not present";
 
-        //public static string coupling2PositionTypeRequiredMessage = "couplingPosition is a required integer and must be 1,2";
+        //Driven validation message
 
-        //public static string coupling2CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible";
+        public static string drivenComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
+
+        public static string drivenLocationValidationMsg = "locations is a required integer and must be 1 through 10";
+
+        public static string drivenLocationNDEValidationMsg = "drivenLocationNDE is a required boolean";
+
+        public static string drivenLocationDEValidationMsg = "drivenLocationDE is a required boolean";
+
+
+
+        public static string drivenTypeValidationMsg = "drivenType is a required string and must be pump, compressor, fan_or_blower, purifier_centrifuge, decanter, generator, vacuumpump, spindle_or_shaft_or_bearing";
+
+        public static string drivensValidationMsg = "drivens one type must be used pump, compressor, fan_or_blower, purifier_centrifuge, decanter, generator, vacuumpump, spindle_or_shaft_or_bearing";
+
+        public static string drivensPumpTypeValidationMsg = "pumpType is a required string and must be centrifugal, propeller, rotarythread, gear, screw, slidingvane, axialrecip, radialrecip";
+
+        public static string drivensRotorOverhungValidationMsg = "rotorOverhung is a required boolean if drivenType is pump and pumpType is centrifugal";
+
+        public static string drivensCentrifugalPumpHasBallBearingsValidationMsg = "centrifugalPumpHasBallBearings is a required boolean if drivenType is pump and pumpType is centrifugal";
+
+        public static string drivensThrustBearingValidationMsg = "thrustBearing is a required string if drivenType is pump and pumpType is centrifugal and must be journal, ball, no, yes";
+
+        public static string drivensPropellerpumpHasBallBearingsValidationMsg = "propellerpumpHasBallBearings is a required boolean if drivenType is pump and pumpType is propeller";
+
+        public static string drivensRotaryThreadPumpHasBallBearingsValidationMsg = "rotaryThreadPumpHasBallBearings is a required boolean if drivenType is pump and pumpType is rotarythread";
+
+        public static string drivensGearPumpHasBallBearingsValidationMsg = "gearPumpHasBallBearings is a required boolean if drivenType is pump and pumpType is gear";
+
+        public static string drivensScrewPumpHasBallBearingsValidationMsg = "screwPumpHasBallBearings is a required boolean if drivenType is pump and pumpType is screw";
+
+        public static string drivenSpumpRotarySlidingVaneRotorOverhungValidationMsg = "rotorOverhung is a required boolean if drivenType is pump and pumpType is slidingvane";
+
+        public static string drivenSlidingVanePumpHasBallBearingsValidationMsg = "slidingVanePumpHasBallBearings is a required boolean if drivenType is pump and pumpType is slidingvane";
+
+        public static string drivenAttachedOilPumpValidationMsg = "attachedOilPump is an optional boolean if drivenType is pump and pumpType is axialrecip";
+
+        public static string drivenAxialRecipPumpHasBallBearingsValidationMsg = "axialRecipPumpHasBallBearings is an optional boolean if drivenType is pump and pumpType is axialrecip";
+
+        public static string drivenThrustBearingValidationMsg = "thrustBearing is an optional string journal,ball if drivenType is pump and pumpType is axialrecip";
+
+
+        public static string drivensCompressorTypeValidationMsg = "pumpType is a required string and must be centrifugal, reciprocating, screw, screwtwin";
+
+        public static string drivensImpellerOnMainShaftValidationMsg = "impellerOnMainShaft is an required boolean if drivenType is compressor and compressorType is centrifugal";
+
+        public static string drivensCompressorCentrifugalCompressorHasBallBearings = "centrifugalCompressorHasBallBearings is an required boolean if drivenType is compressor and compressorType is centrifugal";
+
+        public static string drivensCompressorThrustBearingValidationMsg = "thrustBearing is an optional string if drivenType is compressor and compressorType is centrifugal";
+        
+        public static string drivensCrankHasIntermediateBearingValidationMsg = "crankHasIntermediateBearing is an optional boolean if drivenType is compressor and compressorType is reciprocating";
+
+        public static string drivensReciprocatingCompressorHasBallBearingsValidationMsg = "reciprocatingCompressorHasBallBearings is an required boolean if drivenType is compressor and compressorType is reciprocating";
+
+        public static string drivensScrewCompressorHasBallBearingsValidationMsg = "screwCompressorHasBallBearings is an required boolean if drivenType is compressor and compressorType is screw";
+
+        public static string drivensScrewTwinCompressorHasBallBearingsOnHPSideValidationMsg = "screwTwinCompressorHasBallBearingsOnHPSide is an required boolean if drivenType is compressor and compressorType is screwtwin";
+
+        public static string drivensFan_or_blowerTypeValidationMsg = "fan_or_blowerType is a required string if drivenType is fan_or_blower and must be lobed, overhungrotor, supportedrotor";
+
+        public static string drivensLobedFanOrBlowerHasBallBearingsValidationMsg = "lobedFanOrBlowerHasBallBearings is an required boolean if drivenType is fan_or_blower and fan_or_blowerType is lobed";
+
+        public static string drivensFanStagesValidationMsg = "fanStages is an required boolean";
+
+        public static string drivensOverhungRotorFanOrBlowerHasBearingsValidationMsg = "overhungRotorFanOrBlowerHasBearings is an required boolean if drivenType is fan_or_blower and fan_or_blowerType is overhungrotor";
+
+        public static string drivenSupportedRotorFanOrBlowerHasBearingsValidationMsg = "supportedRotorFanOrBlowerHasBearings is an optional boolean if drivenType is fan_or_blower and fan_or_blowerType is supportedrotor";
+
+        public static string drivenPurifierDrivenByValidationMsg = "purifierDrivenBy is a required string  if drivenType is purifier_centrifuge and must be gearedwithclutch,beltdrive";
+
+        public static string drivenspindleShaftBearingValidationMsg = "spindleShaftBearing is required if drivenType is spindle_or_shaft_or_bearing and must by spindle, shaft";
+
+        public static string drivenSpecialFaultCodesInputValidationMsg = "specialFaultCodeCount is a required integer if specialFaultCodeType is not null";
+
+        public static string drivensSpecialFaultCodeTypeValidationMsg = "specialFaultCodeType is a required string and must be vanes, driven_threads, idler_threads, teeth, pistons, input_lobes, idler_lobes, stage1_fan_blades, stage2_fan_blades, fan_blades";
+
+        public static string drivensBearingTypeValidationMsg = "bearingType is a required string if drivenType is generator and must be NDE_Journal, NDE_Ball, ballbearingsbothends, journalbearingsbothends, beltdrive";
+
+        public static string drivensExciterValidationMsg = "exciter is an required boolean";
+
+        public static string drivensExciterOverhungOrSupportedValidationMsg = "exciterOverhungOrSupported is an optional string if drivenType is generator";
+
+        public static string drivensDrivenByValidationMsg = "drivenBy is an required string if drivenType is generator and must be NOTdieselengine, dieselengine";
+
+        public static string drivensVacuumPumptypeValidationMsg = "vacuumpumptype is a required string if drivenType is vacuumpump and must be centrifugal, axialrecip, radialrecip, reciprocating, lobed";
+
+        public static string drivensBearingsTypeValidationMsg = "bearingsType is an required string if drivenType is vacuumpump and vacuumpumptype is centrifugal and must be journal, ballbearings,journalbearingsonmain,ballbearingsonmain";
+
+        public static string drivensVaccumPumpThrustBearingValidationMsg = "thrustBearing is an optional string journal, ball, no, yes, journalthrust, ballthrustbearing";
+
+        public static string drivensBearingsTypeThrustBearingValidationMsg = "bearingsType is an optional string  if drivenType is vacuumpump and vacuumpumptype is axialrecip and must be ballbearings, journal";
+
+        public static string drivensVacuumPumpAxialRecipThrustBearingValidationMsg = "thrustBearing is an optional string  if drivenType is vacuumpump and vacuumpumptype is axialrecip and must be journalthrust, ballthrustbearingplate";
+
+        public static string drivensVacuumpumpLobedBearingsTypeValidationMsg = "bearingsType is a required string if drivenType is vacuumpump and vacuumpumptype is lobed and must be ballbearings, journal,journalandballbearings";
+
+        public static string drivensVacuumpumpReciprocatingValidationMsg = "bearingsType is a required string if drivenType is vacuumpump and vacuumpumptype is reciprocating and must be crankshaftjournalbearingsatendonly, allballbearings";
+
+        public static string drivensSpecialFaultCodeCountValidationMsg = "specialFaultCodeCount should be between 1 and 99";
+
 
 
         public static string coupling2SpeedRatioRequiredMessage = "speedratio is required decimal - default is 1.0000";
-
-
-        public static string couplingPositionTypeRequiredMessage = "CouplingPosition is required";
-
-        public static string locationRequiredMessage = "Locations is required";
-
-        public static string driverTypeRequiredMessage = "DriverType is required";
-
-
-        public static string couplingTypeRequiredMessage = "CouplingType is required";
-
-        public static string speedRatioRequiredMessage = "Speed ratio is required";
-
-        public static string intermediateTypeRequiredMessage = "IntermediateType is required";
-
-        public static string drivenTypeRequiredMessage = "DrivenType is required";
-
+        
         public static string c1AndC2CouplingValidationMessage = "Any one coupling speedratio value should be <> 1";
-   
+
     }
 }

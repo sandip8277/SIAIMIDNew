@@ -12,7 +12,7 @@ namespace MIDDerivationLibrary.Enums
             driver = 1,
             coupling = 2,
             intermediate = 3,
-            driven = 3
+            driven = 4
         }
 
         public enum DriverType

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MIDCodeGenerator.Helper;
 using MIDDerivationLibrary.Business;
 using MIDDerivationLibrary.Business.Intermediate;
+using MIDDerivationLibrary.Helper;
 using MIDDerivationLibrary.Models;
 using MIDDerivationLibrary.Models.APIResponse;
 using MIDDerivationLibrary.Models.IntermediateModels;
@@ -28,32 +30,40 @@ namespace MIDDerivationLibrary.Controllers
 
         [HttpPost]
         [Route("AddIntermediateDetails")]
-        public ActionResult AddIntermediateDetails([FromBody]IntermediateDetails model)
+        public ActionResult AddIntermediateDetails([FromBody] IntermediateDetails model)
         {
             long id = 0;
-            try
+            ModelStateDictionary ModelState = new ModelStateDictionary();
+            IntermediateValidationHelper.ValidateIntermediateInput(ref ModelState, ref model);
+
+            if (ModelState.IsValid)
             {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-
-                bool isExist = _service.CheckIsIntermediateDetailsExist(xmlString);
-
-                if (isExist == true)
-                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
-                else
+                try
                 {
-                    id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
-                    if (id > 0)
-                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    string xmlString = XmlHelper.ConvertObjectToXML(model);
+                    XElement xElement = XElement.Parse(xmlString);
+
+                    bool isExist = _service.CheckIsIntermediateDetailsExist(xmlString);
+
+                    if (isExist == true)
+                        return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                     else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    {
+                        id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
+                        if (id > 0)
+                            return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
                 }
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return Ok(new ApiOkResponse(id));
+            else
+                return BadRequest(new ApiBadRequestResponse(ModelState));
         }
 
 
@@ -62,29 +72,41 @@ namespace MIDDerivationLibrary.Controllers
         public ActionResult UpdateIntermediateDetails(IntermediateDetails model)
         {
             long id = 0;
-            try
+            ModelStateDictionary ModelState = new ModelStateDictionary();
+            IntermediateValidationHelper.ValidateIntermediateInput(ref ModelState, ref model);
+
+            //id
+            if (model.id == 0)
+                ModelState.AddModelError(nameof(IntermediateDetails.id), Constants.idValidationMessage);
+
+            if (ModelState.IsValid)
             {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-
-                bool isExist = _service.CheckIsIntermediateDetailsExist(xmlString);
-
-                if (isExist == true)
-                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
-                else
+                try
                 {
-                    id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
-                    if (id > 0)
-                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    string xmlString = XmlHelper.ConvertObjectToXML(model);
+                    XElement xElement = XElement.Parse(xmlString);
+
+                    bool isExist = _service.CheckIsIntermediateDetailsExist(xmlString);
+
+                    if (isExist == true)
+                        return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                     else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    {
+                        id = _service.AddOrUpdateIntermediateDetails(xElement.ToString());
+                        if (id > 0)
+                            return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
                 }
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return Ok(new ApiOkResponse(id));
+            else
+                return BadRequest(new ApiBadRequestResponse(ModelState));
         }
 
         [HttpGet]

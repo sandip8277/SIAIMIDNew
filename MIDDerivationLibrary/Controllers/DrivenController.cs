@@ -88,11 +88,11 @@ namespace MIDDerivationLibrary.Controllers
 
         [HttpGet]
         [Route("GetDrivenDetails")]
-        public ActionResult GetDrivenDetails(string componentType, string driverType)
+        public ActionResult GetDrivenDetails(string componentType, string drivenType)
         {
             try
             {
-                List<DrivenDetails> detailsList = _service.GetAllDrivenDetails(componentType, driverType);
+                List<DrivenDetails> detailsList = _service.GetAllDrivenDetails(componentType, drivenType);
                 if (detailsList != null)
                     return Ok(new ApiOkResponse(detailsList));
                 else

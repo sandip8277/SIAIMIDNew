@@ -177,9 +177,16 @@ namespace MIDDerivationLibrary.Models
 
         public static string coupling1CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible, fluid";
 
+        public static string coupling1LocationValidationMessage = "locations is an optional integer and must be 1 through 10";
+
         public static string coupling1SpeedRatioRequiredMessage = "speedratio is required decimal - default is 1.0000";
 
+        public static string componentCodeRequiredMessage = "component code is required";
+
+        public static string idValidationMessage = "id should be greater than 0";
+
         //Coupling2 validation message
+        public static string coupling2ComponentTypeRequiredMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
 
         public static string coupling2ComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven; must be null if intermediate is not present";
 
@@ -189,6 +196,8 @@ namespace MIDDerivationLibrary.Models
 
         public static string coupling2CouplingTypeRequiredMessage = "couplingType is a required string and must be none_rigid, beltdrive, chaindrive, magnetic, flexible";
 
+        public static string coupling2LocationValidationMessage = "locations is an optional integer and must be 1 through 10";
+
         //Intermediate validation message
 
         public static string intermediateComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
@@ -197,16 +206,17 @@ namespace MIDDerivationLibrary.Models
 
         public static string intermediateSpeedratioValidationMsg = "speedratio is required decimal - default is 1.0000";
 
-        public static string intermediateImmediateTypeValidationMsg = "immediateType is a required string and must be gearbox, AOP, AccDrGr";
+        public static string intermediateImmediateTypeValidationMsg = "intermediateType is a required string and must be gearbox, AOP, AccDrGr";
 
         public static string intermediateIntermediatesValidationMsg = "intermediates one type must be used gearbox, AOP, AccDrGr";
 
-        public static string intermediateSpeedChangesMaxValidationMsg = "speedChangesMax is a required integer";
+        public static string intermediateSpeedChangesMaxValidationMsg = "speedChangesMax is a required integer and must be 1 through 3";
         
         public static string intermediateAOPDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
 
         public static string intermediateAccDrGrDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
 
+        public static string intermediateDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
 
 
         //Driven validation message

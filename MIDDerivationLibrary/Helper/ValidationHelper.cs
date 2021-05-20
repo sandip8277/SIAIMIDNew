@@ -1,71 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Configuration;
-using MIDCodeGenerator.Helper;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MIDCodeGenerator.Models;
-using MIDDerivationLibrary.Business;
-using MIDDerivationLibrary.Helper;
 using MIDDerivationLibrary.Models;
-using MIDDerivationLibrary.Models.APIResponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using static MIDDerivationLibrary.Enums.Coupling1Enums;
 using static MIDDerivationLibrary.Enums.Coupling2Enums;
 using static MIDDerivationLibrary.Enums.DrivenEnums;
 using static MIDDerivationLibrary.Enums.DriverEnums;
 using static MIDDerivationLibrary.Enums.IntermediateEnums;
 
-namespace MIDDerivationLibrary.Controllers
+namespace MIDDerivationLibrary.Helper
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MIDCodesGeneratorController : ControllerBase
+    public static class ValidationHelper
     {
-        private readonly IMIDCodeGeneratorService _service;
-        public MIDCodesGeneratorController(IMIDCodeGeneratorService service)
-        {
-            this._service = service;
-        }
-
-
-        [HttpPost]
-        //[Authorize]
-        [Route("GenerateCodes")]
-        public ActionResult<MIDCodeDetails> GenerateCodes([FromBody] MIDCodeCreatorRequest model)
-        {
-            ModelStateDictionary ModelState = new ModelStateDictionary();
-            ValidationHelper.ValidateInput(ref ModelState, ref model);
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    string xmlString = XmlHelper.ConvertObjectToXML(model);
-                    XElement xElement = XElement.Parse(xmlString);
-                    MIDCodeDetails details = _service.GenerareMIDCodes(xElement.ToString());
-                    if (details != null)
-                        return Ok(new ApiOkResponse(details));
-                    else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-                }
-                catch (Exception ex)
-                {
-                    ex.ToString();
-                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-                }
-
-            }
-            else
-                return BadRequest(new ApiBadRequestResponse(ModelState));
-        }
-
-        static void demo(ref ModelStateDictionary ModelState, ref MIDCodeCreatorRequest model)
+        public static void ValidateInput(ref ModelStateDictionary ModelState, ref MIDCodeCreatorRequest model)
         {
             #region validate input model
             if (model.machineComponentsForMIDgeneration == null)
@@ -259,7 +209,7 @@ namespace MIDDerivationLibrary.Controllers
                 //gearbox
                 if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediateType) && model.machineComponentsForMIDgeneration.intermediate.intermediateType.ToLower() == IntermediateType.gearbox.ToString())
                 {
-                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax == 0)
+                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax == null || !(model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax >= 1 && model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax <= 3))
                         ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox.speedChangesMax), Constants.intermediateSpeedChangesMaxValidationMsg);
 
                     model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP = null;
@@ -269,7 +219,7 @@ namespace MIDDerivationLibrary.Controllers
                 //AOP
                 if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediateType) && model.machineComponentsForMIDgeneration.intermediate.intermediateType.ToLower() == IntermediateType.aop.ToString())
                 {
-                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP == null || string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP.drivenBy))
+                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP == null || string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP.drivenBy) || !Enum.IsDefined(typeof(IntermediateAOPDrivenBy), model.machineComponentsForMIDgeneration.intermediate.intermediates.AOP.drivenBy.ToLower()))
                         ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AOP) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AOP.drivenBy), Constants.intermediateAOPDrivenByValidationMsg);
 
                     model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox = null;
@@ -279,7 +229,7 @@ namespace MIDDerivationLibrary.Controllers
                 //AccDrGr
                 if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediateType) && model.machineComponentsForMIDgeneration.intermediate.intermediateType.ToLower() == IntermediateType.accdrgr.ToString())
                 {
-                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr == null || string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr.drivenBy))
+                    if (model.machineComponentsForMIDgeneration.intermediate.intermediates == null || model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr == null || string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr.drivenBy) || !Enum.IsDefined(typeof(IntermediateAccDrGrDrivenBy), model.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr.drivenBy.ToLower()))
                         ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.intermediates.AccDrGr.drivenBy), Constants.intermediateAccDrGrDrivenByValidationMsg);
 
                     model.machineComponentsForMIDgeneration.intermediate.intermediates.gearbox = null;

@@ -50,5 +50,11 @@ namespace MIDDerivationLibrary.Enums
             outputshaft = 3
         }
 
+        public enum IntermediateDrivenBy
+        {
+            inputshaft = 1,
+            intermediateshaft = 2,
+            outputshaft = 3
+        }
     }
 }

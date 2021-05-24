@@ -10,8 +10,8 @@ namespace MIDDerivationLibrary.Models
         public string componentType { get; set; }
         public string intermediateType { get; set; }
         public int? locations { get; set; }
-        public string drivenBy { get; set; }
-        public int? inputBearing { get; set; }
+        //public string drivenBy { get; set; }
+        //public int? inputBearing { get; set; }
         public decimal? speedratio { get; set; }
         public Intermediates intermediates { get; set; }
     }

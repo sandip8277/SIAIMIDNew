@@ -49,32 +49,55 @@ namespace MIDDerivationLibrary.Models
         public bool? rotorOverhung { get; set; }
         public bool? centrifugalPumpHasBallBearings { get; set; }
         public string thrustBearing { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+        //public ExtraFaultDataForPump extraFaultData { get; set; }
     }
 
     public class PumpPropeller
     {
         public bool? propellerpumpHasBallBearings { get; set; }
+       // public ExtraFaultDataForPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 
     public class PumpRotaryThread
     {
         public bool? rotaryThreadPumpHasBallBearings { get; set; }
+       // public ExtraFaultDataForPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 
     public class PumpGear
     {
         public bool? gearPumpHasBallBearings { get; set; }
+        //public ExtraFaultDataForPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 
     public class PumpRotaryScrew
     {
         public bool? screwPumpHasBallBearings { get; set; }
+        //public ExtraFaultDataForPump extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 
     public class PumpRotarySlidingVane
     {
         public bool? rotorOverhung { get; set; }
         public bool? slidingVanePumpHasBallBearings { get; set; }
+        //public ExtraFaultDataForPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 
     public class PumpRotaryAxialRecip
@@ -82,10 +105,19 @@ namespace MIDDerivationLibrary.Models
         public bool? attachedOilPump { get; set; }
         public bool? axialRecipPumpHasBallBearings { get; set; }
         public string thrustBearing { get; set; }
+        //public ExtraFaultDataForPump extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 
     public class PumpRotaryRadialRecip
     {
+       // public ExtraFaultDataForPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class Compressor
     {
@@ -104,11 +136,21 @@ namespace MIDDerivationLibrary.Models
         public bool? impellerOnMainShaft { get; set; }
         public bool? centrifugalCompressorHasBallBearings { get; set; }
         public string thrustBearing { get; set; }
+       // public ExtraFaultDataForCompressor extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class CompressorReciporcating
     {
         public bool? crankHasIntermediateBearing { get; set; }
         public bool? reciprocatingCompressorHasBallBearings { get; set; }
+
+        //public ExtraFaultDataForCompressor extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
     }
     public class FanOrBlower
     {
@@ -125,26 +167,47 @@ namespace MIDDerivationLibrary.Models
     public class FanOrBlowerLobed
     {
         public bool? lobedFanOrBlowerHasBallBearings { get; set; }
+        //public ExtraFaultDataForFan_or_blower extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class FanOrBlowerOverhungRotor
     {
         public bool? fanStages { get; set; }
         public bool? overhungRotorFanOrBlowerHasBearings { get; set; }
+        //public ExtraFaultDataForFan_or_blower extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 
     public class FanOrBlowerSupportedRotor
     {
         public bool? fanStages { get; set; }
         public bool? supportedRotorFanOrBlowerHasBearings { get; set; }
+        //public ExtraFaultDataForFan_or_blower extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class CompressorScrew
     {
         public bool? screwCompressorHasBallBearings { get; set; }
+        //public ExtraFaultDataForCompressor extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
     }
 
     public class CompressorScrewTwin
     {
         public bool? screwTwinCompressorHasBallBearingsOnHPSide { get; set; }
+        //public ExtraFaultDataForCompressor extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
     }
     public class PurifierCentrifuge
     {
@@ -159,6 +222,11 @@ namespace MIDDerivationLibrary.Models
         public bool? exciter { get; set; }
         public string exciterOverhungOrSupported { get; set; }
         public string drivenBy { get; set; }
+        //public ExtraFaultDataForGenerator extraFaultData { get; set; }
+
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class Vacuumpump
     {
@@ -180,19 +248,35 @@ namespace MIDDerivationLibrary.Models
         public bool? impellerOnMainShaft { get; set; }
         public string bearingsType { get; set; }
         public string thrustBearing { get; set; }
+       // public ExtraFaultDataForVacuumPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class VacuumpumpAxialRecip
     {
         public bool? attachedOilPump { get; set; }
         public string bearingsType { get; set; }
         public string thrustBearing { get; set; }
+        //public ExtraFaultDataForVacuumPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class VacuumpumpRadialRecip
     {
+        //public ExtraFaultDataForVacuumPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class VacuumpumpReciprocating
     {
         public string bearingsType { get; set; }
+        //public ExtraFaultDataForVacuumPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
     public class SpindleOrShaftOrBearing
     {
@@ -201,5 +285,9 @@ namespace MIDDerivationLibrary.Models
     public class VacuumpumpLobed
     {
         public string bearingsType { get; set; }
+        //public ExtraFaultDataForVacuumPump extraFaultData { get; set; }
+        public ExtraFaultData extraFaultData { get; set; }
+
+
     }
 }

@@ -174,14 +174,14 @@ namespace MIDDerivationLibrary.Controllers
                     }
                 }
                 //specialFaultCodesInput
-                if (model.machineComponentsForMIDgeneration.driver.specialFaultCodesInput != null)
-                {
-                    foreach (var code in model.machineComponentsForMIDgeneration.driver.specialFaultCodesInput)
-                    {
-                        if (code.specialFaultCodeType != null && code.specialFaultCodeCount == null)
-                            ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(model.machineComponentsForMIDgeneration.driver.specialFaultCodesInput) + "." + nameof(code.specialFaultCodeCount), Constants.driverSpecialFaultCodesInputValidationMsg);
-                    }
-                }
+                //if (model.machineComponentsForMIDgeneration.driver.specialFaultCodesInput != null)
+                //{
+                //    foreach (var code in model.machineComponentsForMIDgeneration.driver.specialFaultCodesInput)
+                //    {
+                //        if (code.specialFaultCodeType != null && code.specialFaultCodeCount == null)
+                //            ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(model.machineComponentsForMIDgeneration.driver.specialFaultCodesInput) + "." + nameof(code.specialFaultCodeCount), Constants.driverSpecialFaultCodesInputValidationMsg);
+                //    }
+                //}
             }
 
             //Validations for coupling1 component

@@ -116,7 +116,7 @@ namespace MIDDerivationLibrary.Helper
                             ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.turbine.turbineThrustBearing), Constants.driverTurbineThrustBearingRequiredValidationMsg);
 
                         //turbineThrustBearingIsBall
-                        if (model.machineComponentsForMIDgeneration.driver.drivers.turbine == null || model.machineComponentsForMIDgeneration.driver.drivers.turbine.turbineThrustBearingIsBall == null)
+                        if (model.machineComponentsForMIDgeneration.driver.drivers.turbine == null)
                             ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.turbine.turbineThrustBearingIsBall), Constants.driverTurbineThrustBearingIsBallRequiredValidationMsg);
 
                         model.machineComponentsForMIDgeneration.driver.drivers.diesel = null;
@@ -266,7 +266,8 @@ namespace MIDDerivationLibrary.Helper
                     && model.machineComponentsForMIDgeneration.driven.drivens.purifier_centrifuge == null
                     && model.machineComponentsForMIDgeneration.driven.drivens.decanter == null
                     && model.machineComponentsForMIDgeneration.driven.drivens.generator == null
-                    && model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump == null))
+                    && model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump == null
+                    && model.machineComponentsForMIDgeneration.driven.drivens.spindle_or_shaft_or_bearing == null))
                     ModelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivens), Constants.drivensValidationMsg);
 
                 //pump

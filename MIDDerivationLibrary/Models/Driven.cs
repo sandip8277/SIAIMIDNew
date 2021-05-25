@@ -25,7 +25,7 @@ namespace MIDDerivationLibrary.Models
         public Vacuumpump vacuumpump { get; set; }
         public SpindleOrShaftOrBearing spindle_or_shaft_or_bearing { get; set; }
         public int? rpm { get; set; }
-        public List<SpecialFaultCodesInput> specialFaultCodesInput { get; set; }
+        //public List<SpecialFaultCodesInput> specialFaultCodesInput { get; set; }
     }
     public class Pump
     {

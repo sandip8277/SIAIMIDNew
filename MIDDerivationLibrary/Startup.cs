@@ -16,6 +16,7 @@ using MIDDerivationLibrary.Business.CSDMdefs;
 using MIDDerivationLibrary.Business.Driven;
 using MIDDerivationLibrary.Business.Driver;
 using MIDDerivationLibrary.Business.Intermediate;
+using MIDDerivationLibrary.Business.MIDCodeDeconstruction;
 using MIDDerivationLibrary.Business.PickupCode;
 using MIDDerivationLibrary.Business.SpecialFaultCodes;
 using MIDDerivationLibrary.Repository;
@@ -24,6 +25,7 @@ using MIDDerivationLibrary.Repository.CSDMdefs;
 using MIDDerivationLibrary.Repository.Driven;
 using MIDDerivationLibrary.Repository.Driver;
 using MIDDerivationLibrary.Repository.Intermediate;
+using MIDDerivationLibrary.Repository.MIDCodeDeconstruction;
 using MIDDerivationLibrary.Repository.PickupCode;
 using MIDDerivationLibrary.Repository.SpecialFaultCodes;
 using System;
@@ -70,7 +72,8 @@ namespace MIDDerivationLibrary
             services.AddTransient<ICSDMdefsRepository, CSDMdefsRepository>();
             services.AddTransient<IPickupCodeService, PickupCodeService>();
             services.AddTransient<IPickupCodeRepository, PickupCodeRepository>();
-
+            services.AddTransient<IMIDCodeDeconstructionService, MIDCodeDeconstructionService>();
+            services.AddTransient<IMIDCodeDeconstructionRepository, MIDCodeDeconstructionRepository>();
             services.AddSingleton(typeof(ISQLRepository), typeof(SQLRepository));
 
             //services.Configure<ApiBehaviorOptions>(o =>

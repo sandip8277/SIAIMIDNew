@@ -9,6 +9,8 @@ namespace MIDDerivationLibrary.Models
     {
         public static string xmlInput = "xmlInput";
 
+        public static string spMIDCodeDeconstruction = "spMIDCodeDeconstruction";
+
         public static string spGenerareMIDCodesSPName = "spGenerateMIDDerivation";
 
         public static string spAddOrUpdateDriverDetails = "spAddOrUpdateDriverDetails";

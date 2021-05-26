@@ -9,6 +9,18 @@ namespace MIDDerivationLibrary.Models
     {
         public string ComponentCode { get; set; }
         public string PickupCode { get; set; }
-        //public string FaultCode { get; set; }
+        public decimal? SpeedRatio { get; set; }
+    }
+
+    public class DriverCodes
+    {
+        public string ComponentCode { get; set; }
+        public string PickupCode { get; set; }
+    }
+
+    public class DrivenCodes
+    {
+        public string ComponentCode { get; set; }
+        public string PickupCode { get; set; }
     }
 }

@@ -43,19 +43,19 @@ namespace MIDCodeGenerator.Repository
                     var FaultCodeData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "FaultCodeMatrix").FirstOrDefault();
 
                     if (DriverData != null)
-                        details.Driver = new Codes() { ComponentCode = DriverData[1].ToString(), PickupCode = DriverData[2].ToString()};
+                        details.Driver = new DriverCodes() { ComponentCode = DriverData[1].ToString(), PickupCode = DriverData[2].ToString()};
 
                     if (Coupling1Data != null)
-                        details.Coupling1 = new Codes() { ComponentCode = Coupling1Data[1].ToString(), PickupCode = Coupling1Data[2].ToString()};
+                        details.Coupling1 = new Codes() { ComponentCode = Coupling1Data[1].ToString(), PickupCode = Coupling1Data[2].ToString(), SpeedRatio = Convert.ToDecimal(Coupling1Data[4]) };
 
                     if (Coupling2Data != null)
-                        details.Coupling2 = new Codes() { ComponentCode = Coupling2Data[1].ToString(), PickupCode = Coupling2Data[2].ToString()};
+                        details.Coupling2 = new Codes() { ComponentCode = Coupling2Data[1].ToString(), PickupCode = Coupling2Data[2].ToString(), SpeedRatio = Convert.ToDecimal(Coupling2Data[4]) };
 
                     if (IntermediateData != null)
-                        details.Intermediate = new Codes() { ComponentCode = IntermediateData[1].ToString(), PickupCode = IntermediateData[2].ToString()};
+                        details.Intermediate = new Codes() { ComponentCode = IntermediateData[1].ToString(), PickupCode = IntermediateData[2].ToString(), SpeedRatio = Convert.ToDecimal(IntermediateData[4]) };
 
                     if (DrivenData != null)
-                        details.Driven = new Codes() { ComponentCode = DrivenData[1].ToString(), PickupCode = DrivenData[2].ToString()};
+                        details.Driven = new DrivenCodes() { ComponentCode = DrivenData[1].ToString(), PickupCode = DrivenData[2].ToString()};
 
                     if (FaultCodeData != null)
                     {

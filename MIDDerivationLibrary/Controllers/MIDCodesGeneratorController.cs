@@ -44,8 +44,8 @@ namespace MIDDerivationLibrary.Controllers
         [Route("GenerateCodes")]
         public ActionResult<MIDCodeDetails> GenerateCodes([FromBody] MIDCodeCreatorRequest model)
         {
-            ModelStateDictionary ModelState = new ModelStateDictionary();
-            ValidationHelper.ValidateInput(ref ModelState, ref model);
+            ModelStateDictionary modelState = new ModelStateDictionary();
+            ValidationHelper.ValidateInput(ref modelState, ref model);
             if (ModelState.IsValid)
             {
                 try

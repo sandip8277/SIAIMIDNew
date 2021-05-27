@@ -50,7 +50,8 @@ namespace MIDDerivationLibrary.Repository.SpecialFaultCodes
                     {
                         id = dataRow.Field<long>("id"),
                         specialfaultcodetype = dataRow.Field<string>("specialfaultcodetype"),
-                        specialcode = dataRow.Field<string>("specialcode")
+                        specialcode = dataRow.Field<string>("specialcode"),
+                        specialmultiple = dataRow.Field<int?>("specialmultiple")
                     }).ToList();
                 }
             }
@@ -78,7 +79,8 @@ namespace MIDDerivationLibrary.Repository.SpecialFaultCodes
                     {
                         id = dataRow.Field<long>("id"),
                         specialfaultcodetype = dataRow.Field<string>("specialfaultcodetype"),
-                        specialcode = dataRow.Field<string>("specialcode")
+                        specialcode = dataRow.Field<string>("specialcode"),
+                        specialmultiple = dataRow.Field<int?>("specialmultiple")
                     }).FirstOrDefault();
                 }
             }
@@ -123,7 +125,8 @@ namespace MIDDerivationLibrary.Repository.SpecialFaultCodes
                     {
                         id = dataRow.Field<long>("id"),
                         specialfaultcodetype = dataRow.Field<string>("specialfaultcodetype"),
-                        specialcode = dataRow.Field<string>("specialcode")
+                        specialcode = dataRow.Field<string>("specialcode"),
+                        specialmultiple = dataRow.Field<int?>("specialmultiple")
                     }).FirstOrDefault();
                 }
             }

@@ -10,9 +10,9 @@ namespace MIDDerivationLibrary.Business.Coupling
     public class Coupling1Service : ICoupling1Service
     {
         private readonly ICoupling1Repository _coupling1Repository;
-        public Coupling1Service(ICoupling1Repository Coupling1Repository)
+        public Coupling1Service(ICoupling1Repository coupling1Repository)
         {
-            this._coupling1Repository = Coupling1Repository;
+            this._coupling1Repository = coupling1Repository;
         }
         public long AddOrUpdateCoupling1Details(string xmlContent)
         {
@@ -29,12 +29,12 @@ namespace MIDDerivationLibrary.Business.Coupling
             return id;
         }
 
-        public List<Coupling1Details> GetAllCoupling1Details(string componentType, string Coupling1Type)
+        public List<Coupling1Details> GetAllCoupling1Details(string componentType, string coupling1Type)
         {
             List<Coupling1Details> detailsList = null;
             try
             {
-                detailsList = _coupling1Repository.GetAllCoupling1Details(componentType, Coupling1Type);
+                detailsList = _coupling1Repository.GetAllCoupling1Details(componentType, coupling1Type);
             }
             catch (Exception ex)
             {

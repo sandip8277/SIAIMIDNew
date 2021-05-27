@@ -9,7 +9,7 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
     public interface ICSDMdefsService
     {
         long AddOrUpdateCSDMdefsDetails(string xmlContent);
-        List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmfile);
+        List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmFile);
         CSDMdefsDetails GetCSDMdefsDetailsById(long id);
         bool CheckIsCSDMdefsDetailsExist(long id);
         bool CheckIsCSDMdefsDetailsExist(string xmlContent);

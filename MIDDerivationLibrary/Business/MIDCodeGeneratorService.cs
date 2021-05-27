@@ -10,10 +10,10 @@ namespace MIDDerivationLibrary.Business
 {
     public class MIDCodeGeneratorService : IMIDCodeGeneratorService
     {
-        private readonly IMIDCodeGeneratorRepository _MIDCodeGeneratorRepository;
-        public MIDCodeGeneratorService(IMIDCodeGeneratorRepository MIDCodeGeneratorRepository)
+        private readonly IMIDCodeGeneratorRepository _midCodeGeneratorRepository;
+        public MIDCodeGeneratorService(IMIDCodeGeneratorRepository midCodeGeneratorRepository)
         {
-            this._MIDCodeGeneratorRepository = MIDCodeGeneratorRepository;
+            this._midCodeGeneratorRepository = midCodeGeneratorRepository;
         }
 
         public MIDCodeDetails GenerareMIDCodes(string xmlContent)
@@ -21,7 +21,7 @@ namespace MIDDerivationLibrary.Business
             MIDCodeDetails codeDetails = null;
             try
             {
-                 codeDetails = _MIDCodeGeneratorRepository.GenerareMIDCodes(xmlContent);
+                 codeDetails = _midCodeGeneratorRepository.GenerareMIDCodes(xmlContent);
             }
             catch (Exception ex)
             {

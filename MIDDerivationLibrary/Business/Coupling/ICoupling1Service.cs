@@ -9,7 +9,7 @@ namespace MIDDerivationLibrary.Business.Coupling
     public interface ICoupling1Service
     {
         long AddOrUpdateCoupling1Details(string xmlContent);
-        List<Coupling1Details> GetAllCoupling1Details(string componentType, string Coupling1Type);
+        List<Coupling1Details> GetAllCoupling1Details(string componentType, string coupling1Type);
         Coupling1Details GetCoupling1DetailsById(long id);
         long DeleteCoupling1DetailsById(long id);
         bool CheckIsCoupling1DetailsExist(long id);

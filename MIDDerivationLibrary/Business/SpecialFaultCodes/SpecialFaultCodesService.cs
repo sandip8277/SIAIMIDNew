@@ -29,12 +29,12 @@ namespace MIDDerivationLibrary.Business.SpecialFaultCodes
             return id;
         }
 
-        public List<SpecialFaultCodesDetails> GetAllSpecialFaultCodesDetails(string specialFaultCodesType, string specialcode)
+        public List<SpecialFaultCodesDetails> GetAllSpecialFaultCodesDetails(string specialFaultCodesType, string specialCode)
         {
             List<SpecialFaultCodesDetails> detailsList = null;
             try
             {
-                detailsList = _SpecialFaultCodesRepository.GetAllSpecialFaultCodesDetails(specialcode, specialFaultCodesType);
+                detailsList = _SpecialFaultCodesRepository.GetAllSpecialFaultCodesDetails(specialCode, specialFaultCodesType);
             }
             catch (Exception ex)
             {

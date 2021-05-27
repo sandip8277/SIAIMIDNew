@@ -9,7 +9,7 @@ namespace MIDDerivationLibrary.Business.SpecialFaultCodes
     public interface ISpecialFaultCodesService
     {
         long AddOrUpdateSpecialFaultCodesDetails(string xmlContent);
-        List<SpecialFaultCodesDetails> GetAllSpecialFaultCodesDetails(string specialFaultCodesType, string specialcode);
+        List<SpecialFaultCodesDetails> GetAllSpecialFaultCodesDetails(string specialFaultCodesType, string specialCode);
         SpecialFaultCodesDetails GetSpecialFaultCodesDetailsById(long id);
         long DeleteSpecialFaultCodesDetailsById(long id);
         bool CheckIsSpecialFaultCodesDetailsExist(long id);

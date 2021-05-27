@@ -9,17 +9,17 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
 {
     public class CSDMdefsService : ICSDMdefsService
     {
-        private readonly ICSDMdefsRepository _CSDMdefsRepository;
-        public CSDMdefsService(ICSDMdefsRepository CSDMdefsRepository)
+        private readonly ICSDMdefsRepository _csdMdefsRepository;
+        public CSDMdefsService(ICSDMdefsRepository csdMdefsRepository)
         {
-            this._CSDMdefsRepository = CSDMdefsRepository;
+            this._csdMdefsRepository = csdMdefsRepository;
         }
         public long AddOrUpdateCSDMdefsDetails(string xmlContent)
         {
             long id = 0;
             try
             {
-                id = _CSDMdefsRepository.AddOrUpdateCSDMdefsDetails(xmlContent);
+                id = _csdMdefsRepository.AddOrUpdateCSDMdefsDetails(xmlContent);
             }
             catch (Exception ex)
             {
@@ -29,12 +29,12 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
             return id;
         }
 
-        public List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmfile)
+        public List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmFile)
         {
             List<CSDMdefsDetails> detailsList = null;
             try
             {
-                detailsList = _CSDMdefsRepository.GetAllCSDMdefsDetails(csdmfile);
+                detailsList = _csdMdefsRepository.GetAllCSDMdefsDetails(csdmFile);
             }
             catch (Exception ex)
             {
@@ -49,7 +49,7 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
             CSDMdefsDetails details = null;
             try
             {
-                details = _CSDMdefsRepository.GetCSDMdefsDetailsById(id);
+                details = _csdMdefsRepository.GetCSDMdefsDetailsById(id);
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
             long Id = 0;
             try
             {
-                Id = _CSDMdefsRepository.DeleteCSDMdefsDetailsById(id);
+                Id = _csdMdefsRepository.DeleteCSDMdefsDetailsById(id);
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
             CSDMdefsDetails details = null;
             try
             {
-                details = _CSDMdefsRepository.GetCSDMdefsDetailsById(id);
+                details = _csdMdefsRepository.GetCSDMdefsDetailsById(id);
                 if (details != null && details.id == 0)
                     flag = false;
             }
@@ -97,7 +97,7 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
             CSDMdefsDetails details = null;
             try
             {
-                details = _CSDMdefsRepository.GetCSDMdefsDetails(xmlContent);
+                details = _csdMdefsRepository.GetCSDMdefsDetails(xmlContent);
                 if (details != null && details.id > 0)
                     flag = true;
             }

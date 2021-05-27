@@ -9,7 +9,7 @@ namespace MIDDerivationLibrary.Models.SpecialFaultCodeModels
     {
         public long id { get; set; }
         public string specialfaultcodetype { get; set; }
-        //public int? specialmultiple { get; set; }
+        public int? specialmultiple { get; set; }
         public string specialcode { get; set; }
     }
 }

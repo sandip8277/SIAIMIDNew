@@ -8,10 +8,10 @@ namespace MIDDerivationLibrary.Business.MIDCodeDeconstruction
 {
     public class MIDCodeDeconstructionService : IMIDCodeDeconstructionService
     {
-        private readonly IMIDCodeDeconstructionRepository _MIDCodeDeconstructionRepository;
-        public MIDCodeDeconstructionService(IMIDCodeDeconstructionRepository MIDCodeDeconstructionRepository)
+        private readonly IMIDCodeDeconstructionRepository _midCodeDeconstructionRepository;
+        public MIDCodeDeconstructionService(IMIDCodeDeconstructionRepository midCodeDeconstructionRepository)
         {
-            this._MIDCodeDeconstructionRepository = MIDCodeDeconstructionRepository;
+            this._midCodeDeconstructionRepository = midCodeDeconstructionRepository;
         }
 
         public Models.MachineComponentsForMIDgeneration MIDCodeDeconstruction(string xmlContent)
@@ -19,7 +19,7 @@ namespace MIDDerivationLibrary.Business.MIDCodeDeconstruction
             Models.MachineComponentsForMIDgeneration codeDetails = null;
             try
             {
-                codeDetails = _MIDCodeDeconstructionRepository.MIDCodeDeconstruction(xmlContent);
+                codeDetails = _midCodeDeconstructionRepository.MIDCodeDeconstruction(xmlContent);
             }
             catch (Exception ex)
             {

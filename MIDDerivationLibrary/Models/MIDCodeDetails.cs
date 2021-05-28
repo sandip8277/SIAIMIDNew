@@ -8,11 +8,11 @@ namespace MIDCodeGenerator.Models
 {
     public class MIDCodeDetails
     {
-        public DriverCodes Driver { get; set; }
-        public Codes Coupling1 { get; set; }
-        public Codes Intermediate { get; set; }
-        public Codes Coupling2 { get; set; }
-        public DrivenCodes Driven { get; set; }
-        public FaultCodeMatrix FaultCodeMatrix { get; set; }
+        public DriverCodes driver { get; set; }
+        public Codes coupling1 { get; set; }
+        public Codes intermediate { get; set; }
+        public Codes coupling2 { get; set; }
+        public DrivenCodes driven { get; set; }
+        public FaultCodeMatrix faultCodeMatrix { get; set; }
     }
 }

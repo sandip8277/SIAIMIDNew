@@ -8,7 +8,7 @@ namespace MIDDerivationLibrary.Models
 {
     public class Coupling1
     {
-        public long id { get; set; }
+        //public long id { get; set; }
         public string componentType { get; set; }
         public int? couplingPosition { get; set; }
         public string couplingType { get; set; }

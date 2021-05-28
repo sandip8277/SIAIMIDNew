@@ -328,5 +328,9 @@ namespace MIDDerivationLibrary.Models
         
         public static string c1AndC2CouplingValidationMessage = "Any one coupling speedratio value should be <> 1";
 
+        public static string dieselDriverType = "diesel";
+
+        public static string motorDriverType = "motor";
+
     }
 }

@@ -36,7 +36,7 @@ namespace MIDDerivationLibrary.Repository.Driven
 
         public List<DrivenDetails> GetAllDrivenDetails(string componentType = null, string drivenType = null)
         {
-            List<DrivenDetails> detailsLst = new List<DrivenDetails>();
+            List<DrivenDetails> detailsList = new List<DrivenDetails>();
             try
             {
                 string spName = MIDDerivationLibrary.Models.Constants.spGetAllDrivenDetails;
@@ -47,7 +47,7 @@ namespace MIDDerivationLibrary.Repository.Driven
                 DataSet result = sqlRepository.ExecuteQuery(spName, allParams);
                 if (result != null && result.Tables[0].Rows.Count > 0)
                 {
-                    detailsLst = result.Tables[0].AsEnumerable().Select(dataRow => new DrivenDetails
+                    detailsList = result.Tables[0].AsEnumerable().Select(dataRow => new DrivenDetails
                     {
                         id = dataRow.Field<long>("id"),
                         componentType = dataRow.Field<string>("componentType"),
@@ -92,7 +92,7 @@ namespace MIDDerivationLibrary.Repository.Driven
                 ex.ToString();
                 return null;
             }
-            return detailsLst;
+            return detailsList;
         }
 
         public DrivenDetails GetDrivenDetailsById(long id)

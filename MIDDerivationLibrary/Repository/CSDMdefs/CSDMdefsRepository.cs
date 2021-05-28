@@ -33,14 +33,14 @@ namespace MIDDerivationLibrary.Repository.CSDMdefs
             return id;
         }
 
-        public List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmfile = null)
+        public List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmFile = null)
         {
             List<CSDMdefsDetails> detailsLst = new List<CSDMdefsDetails>();
             try
             {
                 string spName = MIDDerivationLibrary.Models.Constants.spGetAllCSDMdefsDetails;
                 List<SqlParameter> allParams = new List<SqlParameter>()
-                { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.csdmfile}", csdmfile == null ? DBNull.Value : csdmfile )};
+                { new SqlParameter($"@{MIDDerivationLibrary.Models.Constants.csdmfile}", csdmFile == null ? DBNull.Value : csdmFile )};
 
                 DataSet result = sqlRepository.ExecuteQuery(spName, allParams);
                 if (result != null && result.Tables[0].Rows.Count > 0)

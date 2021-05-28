@@ -34,35 +34,35 @@ namespace MIDCodeGenerator.Repository
 
                 if (result != null && result.Tables[0].Rows.Count > 0)
                 {
-                    var DriverData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Driver").FirstOrDefault();
-                    var Coupling1Data = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Coupling1").FirstOrDefault();
-                    var Coupling2Data = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Coupling2").FirstOrDefault();
-                    var IntermediateData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Intermediate").FirstOrDefault();
-                    var DrivenData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Driven").FirstOrDefault();
+                    var driverData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Driver").FirstOrDefault();
+                    var coupling1Data = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Coupling1").FirstOrDefault();
+                    var coupling2Data = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Coupling2").FirstOrDefault();
+                    var intermediateData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Intermediate").FirstOrDefault();
+                    var drivenData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Driven").FirstOrDefault();
 
-                    var FaultCodeData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "FaultCodeMatrix").FirstOrDefault();
+                    var faultCodeData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "FaultCodeMatrix").FirstOrDefault();
 
-                    if (DriverData != null)
-                        details.Driver = new DriverCodes() { ComponentCode = DriverData[1].ToString(), PickupCode = DriverData[2].ToString()};
+                    if (driverData != null)
+                        details.driver = new DriverCodes() { ComponentCode = driverData[1].ToString(), PickupCode = driverData[2].ToString()};
 
-                    if (Coupling1Data != null)
-                        details.Coupling1 = new Codes() { ComponentCode = Coupling1Data[1].ToString(), PickupCode = Coupling1Data[2].ToString(), SpeedRatio = Convert.ToDecimal(Coupling1Data[4]) };
+                    if (coupling1Data != null)
+                        details.coupling1 = new Codes() { ComponentCode = coupling1Data[1].ToString(), PickupCode = coupling1Data[2].ToString(), SpeedRatio = Convert.ToDecimal(coupling1Data[4]) };
 
-                    if (Coupling2Data != null)
-                        details.Coupling2 = new Codes() { ComponentCode = Coupling2Data[1].ToString(), PickupCode = Coupling2Data[2].ToString(), SpeedRatio = Convert.ToDecimal(Coupling2Data[4]) };
+                    if (coupling2Data != null)
+                        details.coupling2 = new Codes() { ComponentCode = coupling2Data[1].ToString(), PickupCode = coupling2Data[2].ToString(), SpeedRatio = Convert.ToDecimal(coupling2Data[4]) };
 
-                    if (IntermediateData != null)
-                        details.Intermediate = new Codes() { ComponentCode = IntermediateData[1].ToString(), PickupCode = IntermediateData[2].ToString(), SpeedRatio = Convert.ToDecimal(IntermediateData[4]) };
+                    if (intermediateData != null)
+                        details.intermediate = new Codes() { ComponentCode = intermediateData[1].ToString(), PickupCode = intermediateData[2].ToString(), SpeedRatio = Convert.ToDecimal(intermediateData[4]) };
 
-                    if (DrivenData != null)
-                        details.Driven = new DrivenCodes() { ComponentCode = DrivenData[1].ToString(), PickupCode = DrivenData[2].ToString()};
+                    if (drivenData != null)
+                        details.driven = new DrivenCodes() { ComponentCode = drivenData[1].ToString(), PickupCode = drivenData[2].ToString()};
 
-                    if (FaultCodeData != null)
+                    if (faultCodeData != null)
                     {
-                        var FaultCodeMatrixJsonString = FaultCodeData[3].ToString();
-                        if (!string.IsNullOrEmpty(FaultCodeMatrixJsonString))
+                        var faultCodeMatrixJsonString = faultCodeData[3].ToString();
+                        if (!string.IsNullOrEmpty(faultCodeMatrixJsonString))
                         {
-                            details.FaultCodeMatrix = JsonConvert.DeserializeObject<FaultCodeMatrix>(FaultCodeMatrixJsonString);
+                            details.faultCodeMatrix = JsonConvert.DeserializeObject<FaultCodeMatrix>(faultCodeMatrixJsonString);
                         }
                     }
 

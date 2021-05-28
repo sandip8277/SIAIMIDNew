@@ -36,8 +36,7 @@ namespace MIDDerivationLibrary.Models
         public bool? motorBallBearings { get; set; }
         public bool? drivenBallBearings { get; set; }
         public bool? drivenBalanceable { get; set; }
-        public VFD VFD { get; set; }
-        //public ExtraFaultDataForMotor extraFaultData { get; set; }
+        public VFD vfd { get; set; }
         public ExtraFaultData extraFaultData { get; set; }
 
 

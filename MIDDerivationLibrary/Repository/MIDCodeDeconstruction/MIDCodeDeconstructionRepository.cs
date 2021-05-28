@@ -1,4 +1,5 @@
 ﻿using MIDDerivationLibrary.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -35,6 +36,7 @@ namespace MIDDerivationLibrary.Repository.MIDCodeDeconstruction
                     var drivenData = result.Tables[0].AsEnumerable().ToList().Where(x => x.Field<string>("Component") == "Driven").FirstOrDefault();
 
                     if (driverData != null)
+                    { 
                         details.driver = new Models.Driver()
                         {
                             componentType =  driverData[0].ToString(),
@@ -44,8 +46,12 @@ namespace MIDDerivationLibrary.Repository.MIDCodeDeconstruction
                             driverLocationNDE = driverData[5] is DBNull ? null : Convert.ToBoolean(driverData[5]),
                             driverType = driverData[6].ToString()
                         };
-
+                        
+                        if (!string.IsNullOrEmpty(driverData[12].ToString()))
+                            details.driver.drivers = JsonConvert.DeserializeObject<Drivers>(driverData[12].ToString());
+                    }
                     if (coupling1Data != null)
+                    { 
                         details.coupling1 = new Models.Coupling1()
                         {
                             componentType = coupling1Data[0].ToString(),
@@ -54,8 +60,9 @@ namespace MIDDerivationLibrary.Repository.MIDCodeDeconstruction
                             locations = coupling1Data[2] is DBNull ? null :  Convert.ToInt32(coupling1Data[2]),
                             speedratio = coupling1Data[7] is DBNull ? null :  Convert.ToDecimal(coupling1Data[7])
                         };
-
+                    }
                     if (coupling2Data != null)
+                    { 
                         details.coupling2 = new Models.Coupling2()
                         {
                             componentType = coupling2Data[0].ToString(),
@@ -64,9 +71,10 @@ namespace MIDDerivationLibrary.Repository.MIDCodeDeconstruction
                             locations = coupling2Data[2] is DBNull ? null :  Convert.ToInt32(coupling2Data[2]),
                             speedratio = coupling2Data[7] is DBNull ? null :  Convert.ToDecimal(coupling2Data[7])
                         };
-
+                    }
 
                     if (intermediateData != null)
+                    { 
                         details.intermediate = new Models.Intermediate()
                         {
                             componentType = intermediateData[0].ToString(),
@@ -74,8 +82,10 @@ namespace MIDDerivationLibrary.Repository.MIDCodeDeconstruction
                             locations = intermediateData[2] is DBNull ? null : Convert.ToInt32(intermediateData[2]),
                             speedratio = intermediateData[7] is DBNull ? null :  Convert.ToDecimal(intermediateData[7])
                         };
+                    }
 
                     if (drivenData != null)
+                    { 
                         details.driven = new Models.Driven()
                         {
                             componentType = drivenData[0].ToString(),
@@ -84,16 +94,7 @@ namespace MIDDerivationLibrary.Repository.MIDCodeDeconstruction
                             locations = drivenData[2] is DBNull ? null :  Convert.ToInt32(drivenData[2]),
                             drivenType = drivenData[6].ToString()
                         };
-
-                    //if (FaultCodeData != null)
-                    //{
-                    //    var FaultCodeMatrixJsonString = FaultCodeData[3].ToString();
-                    //    if (!string.IsNullOrEmpty(FaultCodeMatrixJsonString))
-                    //    {
-                    //        details.FaultCodeMatrix = JsonConvert.DeserializeObject<FaultCodeMatrix>(FaultCodeMatrixJsonString);
-                    //    }
-                    //}
-
+                    }
                 }
             }
             catch (Exception ex)

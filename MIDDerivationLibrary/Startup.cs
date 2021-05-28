@@ -75,13 +75,7 @@ namespace MIDDerivationLibrary
             services.AddTransient<IMIDCodeDeconstructionService, MIDCodeDeconstructionService>();
             services.AddTransient<IMIDCodeDeconstructionRepository, MIDCodeDeconstructionRepository>();
             services.AddSingleton(typeof(ISQLRepository), typeof(SQLRepository));
-
-            //services.Configure<ApiBehaviorOptions>(o =>
-            //{
-            //    o.InvalidModelStateResponseFactory = actionContext =>
-            //        new BadRequestObjectResult(actionContext.ModelState);
-            //});
-
+           
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {

@@ -9,7 +9,7 @@ namespace MIDDerivationLibrary.Repository.CSDMdefs
     public interface ICSDMdefsRepository
     {
         long AddOrUpdateCSDMdefsDetails(string xml);
-        List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmfile = null);
+        List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmFile = null);
         CSDMdefsDetails GetCSDMdefsDetailsById(long id);
         long DeleteCSDMdefsDetailsById(long id);
         CSDMdefsDetails GetCSDMdefsDetails(string xml);

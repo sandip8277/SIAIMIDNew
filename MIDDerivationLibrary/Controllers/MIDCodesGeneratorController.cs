@@ -72,7 +72,7 @@ namespace MIDDerivationLibrary.Controllers
         [HttpPost]
         //[Authorize]
         [Route("MIDCodeDeconstruction")]
-        public ActionResult<Models.MachineComponentsForMIDgeneration> MIDCodeDeconstruction([FromBody] MIDCodeDeconstructionRequest model)
+        public ActionResult<MIDdeconstrutionResponse> MIDCodeDeconstruction([FromBody] MIDCodeDeconstructionRequest model)
         {
             ModelStateDictionary ModelState = new ModelStateDictionary();
             if (ModelState.IsValid)
@@ -81,7 +81,7 @@ namespace MIDDerivationLibrary.Controllers
                 {
                     string xmlString = XmlHelper.ConvertObjectToXML(model);
                     XElement xElement = XElement.Parse(xmlString);
-                    Models.MachineComponentsForMIDgeneration details = _deconstructionService.MIDCodeDeconstruction(xElement.ToString());
+                    MIDdeconstrutionResponse details = _deconstructionService.MIDCodeDeconstruction(xElement.ToString());
                     if (details != null)
                         return Ok(new ApiOkResponse(details));
                     else

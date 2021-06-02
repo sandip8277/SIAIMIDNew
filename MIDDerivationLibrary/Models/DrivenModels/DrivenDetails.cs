@@ -17,6 +17,7 @@ namespace MIDDerivationLibrary.Models.DrivenModels
         public string purifierDrivenBy { get; set; }
         public string bearingType { get; set; }
         public string vacuumPumpType { get; set; }
+        public string spindleShaftBearing { get; set; }
         public bool? rotorOverhung { get; set; }
         public bool? attachedOilPump { get; set; }
         public bool? impellerOnMainShaft { get; set; }

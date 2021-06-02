@@ -1,4 +1,5 @@
-﻿using MIDDerivationLibrary.Repository.MIDCodeDeconstruction;
+﻿using MIDDerivationLibrary.Models.CodeDeconstructionModels;
+using MIDDerivationLibrary.Repository.MIDCodeDeconstruction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace MIDDerivationLibrary.Business.MIDCodeDeconstruction
             this._midCodeDeconstructionRepository = midCodeDeconstructionRepository;
         }
 
-        public Models.MachineComponentsForMIDgeneration MIDCodeDeconstruction(string xmlContent)
+        public MIDdeconstrutionResponse MIDCodeDeconstruction(string xmlContent)
         {
-            Models.MachineComponentsForMIDgeneration codeDetails = null;
+            MIDdeconstrutionResponse codeDetails = null;
             try
             {
                 codeDetails = _midCodeDeconstructionRepository.MIDCodeDeconstruction(xmlContent);

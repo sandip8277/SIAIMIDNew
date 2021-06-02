@@ -15,7 +15,6 @@ namespace MIDDerivationLibrary.Models
         public bool? driverLocationDE { get; set; }
         public string driverType { get; set; }
         public Drivers drivers { get; set; }
-        //public List<SpecialFaultCodesInput> specialFaultCodesInput { get; set; }
     }
 
     public class Drivers
@@ -52,8 +51,6 @@ namespace MIDDerivationLibrary.Models
         public bool? turbineBallBearing { get; set; }
         public bool? turbineThrustBearing { get; set; }
         public bool? turbineThrustBearingIsBall { get; set; }
-       // public ExtraFaultDataForMotor extraFaultData { get; set; }
         public ExtraFaultData extraFaultData { get; set; }
-
     }
 }

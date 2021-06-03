@@ -54,6 +54,8 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
         public string drivenBy { get; set; }
         public ExtraFaultDataForGenerator extraFaultData { get; set; }
     }
+
+
     public class ExtraFaultDataForGenerator
     {
         public int? generatorbars { get; set; }
@@ -80,17 +82,31 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
     {
         public FanOrBlowerLobedForDeconstruction fan_or_blowerLobed { get; set; }
         public FanOrBlowerOverhungRotorForDeconstruction fan_or_blowerOverhungRotor { get; set; }
-        public FanOrBlowerSupportedRotor fan_or_blowerSupportedRotor { get; set; }
+        public FanOrBlowerSupportedRotorForDeconstruction fan_or_blowerSupportedRotor { get; set; }
     }
 
+    public class FanOrBlowerSupportedRotorForDeconstruction
+    {
+        public bool? supportedRotorFanOrBlowerHasBearings { get; set; }
+        public FanOrBlowerSupportedRotorExtraFaultData extraFaultData { get; set; }
+    }
+
+    public class FanOrBlowerSupportedRotorExtraFaultData
+    {
+        public int? fanblades { get; set; }
+    }
     public class FanOrBlowerOverhungRotorForDeconstruction
     {
         public bool? fanStages { get; set; }
         public bool? overhungRotorFanOrBlowerHasBearings { get; set; }
-        public ExtraFaultData extraFaultData { get; set; }
-
-
+        public FanOrBlowerOverhungRotorExtraFaultData extraFaultData { get; set; }
     }
+
+    public class FanOrBlowerOverhungRotorExtraFaultData
+    {
+        public int? fanblades { get; set; }
+    }
+
 
     public class CompressorForDeconstruction
     {
@@ -107,28 +123,56 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
     public class CompressorScrewForDeconstruction
     {
         public bool? screwCompressorHasBallBearings { get; set; }
-        public ExtraFaultData extraFaultData { get; set; }
+        public CompressorScrewExtraFaultData extraFaultData { get; set; }
 
+    }
+
+    public class CompressorScrewExtraFaultData
+    {
+        public int? compressorthreads { get; set; }
+        public int? idlerthreads { get; set; }
     }
 
     public class CompressorScrewTwinForDeconstruction
     {
         public bool? screwTwinCompressorHasBallBearingsOnHPSide { get; set; }
-        public ExtraFaultData extraFaultData { get; set; }
+        public CompressorScrewTwinExtraFaultData extraFaultData { get; set; }
     }
+
+    public class CompressorScrewTwinExtraFaultData
+    {
+        public int? compressorthreads1 { get; set; }
+        public int? idlerthreads1 { get; set; }
+        public int? compressorthreads2 { get; set; }
+        public int? idlerthreads2 { get; set; }
+     
+    }
+
     public class CompressorCentrifugalForDeconstruction
     {
         public bool? impellerOnMainShaft { get; set; }
         public bool? centrifugalCompressorHasBallBearings { get; set; }
         public string thrustBearing { get; set; }
-        public ExtraFaultData extraFaultData { get; set; }
+        public CompressorCentrifugalExtraFaultData extraFaultData { get; set; }
     }
+
+    public class CompressorCentrifugalExtraFaultData
+    {
+        public int? compressorvanes { get; set; }
+    }
+
     public class CompressorReciporcatingForDeconstruction
     {
         public bool? crankHasIntermediateBearing { get; set; }
         public bool? reciprocatingCompressorHasBallBearings { get; set; }
-        public ExtraFaultData extraFaultData { get; set; }
+        public CompressorReciporcatingExtraFaultData extraFaultData { get; set; }
     }
+
+    public class CompressorReciporcatingExtraFaultData
+    {
+        public int? compressorpistons { get; set; }
+    }
+
     public class PumpForDeconstruction
     {
         public string pumpType { get; set; }
@@ -353,35 +397,52 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
         public bool? impellerOnMainShaft { get; set; }
         public string bearingsType { get; set; }
         public string thrustBearing { get; set; }
-        
-        public ExtraFaultData extraFaultData { get; set; }
-
-
+        public VacuumpumpCentrifugalExtraFaultData extraFaultData { get; set; }
     }
+
+    public class VacuumpumpCentrifugalExtraFaultData
+    {
+        public int? pumpvanes { get; set; }
+    }
+
     public class VacuumpumpAxialRecipForDeconstruction
     {
         public bool? attachedOilPump { get; set; }
         public string bearingsType { get; set; }
         public string thrustBearing { get; set; }
-        
-        public ExtraFaultData extraFaultData { get; set; }
+        public VacuumpumpAxialRecipExtraFaultData extraFaultData { get; set; }
+    }
 
+    public class VacuumpumpAxialRecipExtraFaultData
+    {
+        public int? pumppistons { get; set; }
+       
+    }
+
+    public class VacuumpumpRadialRecipExtraFaultData
+    {
+        public int? pumppistons { get; set; }
 
     }
+
     public class VacuumpumpRadialRecipForDeconstruction
     {
         
-        public ExtraFaultData extraFaultData { get; set; }
+        public VacuumpumpRadialRecipExtraFaultData extraFaultData { get; set; }
 
 
     }
+
+    public class VacuumpumpReciprocatingExtraFaultData
+    {
+        public int? pumppistons { get; set; }
+    }
+
     public class VacuumpumpReciprocatingForDeconstruction
     {
         public string bearingsType { get; set; }
         
-        public ExtraFaultData extraFaultData { get; set; }
-
-
+        public VacuumpumpReciprocatingExtraFaultData extraFaultData { get; set; }
     }
     public class SpindleOrShaftOrBearingForDeconstruction
     {
@@ -391,8 +452,14 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
     {
         public string bearingsType { get; set; }
         
-        public ExtraFaultData extraFaultData { get; set; }
+        public VacuumpumpLobedExtraFaultData extraFaultData { get; set; }
+    }
 
+    public class VacuumpumpLobedExtraFaultData
+    {
+        public int? pumplobes { get; set; }
+
+        public int? idlerlobes { get; set; }
 
     }
 }

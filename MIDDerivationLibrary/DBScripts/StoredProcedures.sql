@@ -658,36 +658,45 @@ AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [dbo].[spAddOrUpdateSpecialFaultCodesDetails]
 Go
 -- =============================================
--- Author:      <Vishal Dhure>
+-- Author:      <Vishal Dhure>  Updated By: <Sandip Patil>
 -- Create Date: <05/05/2021>
 -- Description: <SP used for save Special Fault Codes Detail>
 -- =============================================
-Create PROCEDURE [dbo].[spAddOrUpdateSpecialFaultCodesDetails]
+CREATE PROCEDURE [dbo].[spAddOrUpdateSpecialFaultCodesDetails]
 (
    @xmlInput xml = ''
 )
 AS
 BEGIN
 
+--	Declare  @xmlInput xml = ''
+
+--	set @xmlInput = '<SpecialFaultCodesDetails xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+--  <id>0</id>
+--  <specialfaultcodetype>Test1</specialfaultcodetype>
+--  <specialmultiple>10</specialmultiple>
+--  <specialcode>EP1</specialcode>
+--</SpecialFaultCodesDetails>'
+	
 	Declare @Id bigint
 	BEGIN TRY  
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
 
-		Declare @DetailsTable table (id bigint,specialfaultcodetype varchar(50),specialmultiple int,specialcode varchar(50))
+		Declare @DetailsTable table (id bigint,specialfaultcodetype varchar(50),specialcode varchar(50),specialmultiple int,componentType varchar(50),componentTypeSub1 varchar(50),componentTypeSub2 varchar(50) )
 				
 		insert into @DetailsTable
-		select id,specialfaultcodetype,specialmultiple,specialcode
+		select id,specialfaultcodetype,specialcode,specialmultiple,componentType,componentTypeSub1,componentTypeSub2
 		FROM OPENXML (@xmlDocumentHandle, 'SpecialFaultCodesDetails',2)
-		WITH (id bigint,specialfaultcodetype varchar(50),specialmultiple int,specialcode varchar(50))
+		WITH (id bigint,specialfaultcodetype varchar(50),specialcode varchar(50),specialmultiple int,componentType varchar(50),componentTypeSub1 varchar(50),componentTypeSub2 varchar(50))
 
 		select @Id = id from @DetailsTable
 
 		if(@Id = 0)
 			Begin
-				insert into master.tblSpecialFaultCodesDetails (specialfaultcodetype,specialmultiple,specialcode)
-				select specialfaultcodetype,specialmultiple,specialcode FROM @DetailsTable
+				insert into master.tblSpecialFaultCodesDetails (specialfaultcodetype,specialcode,specialmultiple,componentType,componentTypeSub1,componentTypeSub2)
+				select specialfaultcodetype,specialcode,specialmultiple,componentType,componentTypeSub1,componentTypeSub2 FROM @DetailsTable
 				set @Id = SCOPE_IDENTITY()
 			End
 		Else
@@ -695,8 +704,11 @@ BEGIN
 				
 				Update master.tblSpecialFaultCodesDetails set 
 				specialfaultcodetype = d.specialfaultcodetype,
+				specialcode = d.specialcode,
 				specialmultiple = d.specialmultiple,
-				specialcode = d.specialcode
+				componentType = d.componentType,
+				componentTypeSub1 = d.componentTypeSub1,
+				componentTypeSub2 = d.componentTypeSub2
 				from master.tblSpecialFaultCodesDetails a
 				inner join @DetailsTable d on a.id = d.id
 				where a.id = @Id
@@ -716,6 +728,7 @@ BEGIN
 
 	select @Id
 END
+
 
 --------------------------------------------------------------------------------------------- 8
 

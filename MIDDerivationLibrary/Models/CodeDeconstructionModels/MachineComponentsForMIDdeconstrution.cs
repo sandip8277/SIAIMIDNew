@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
 {
-    public class MachineComponentsForMIDdeconstrution
+    public class MachineComponentsForMIDdeconstruction
     {
         public Codes Driver { get; set; }
         public Codes Coupling1 { get; set; }

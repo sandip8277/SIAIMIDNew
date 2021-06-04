@@ -11,5 +11,8 @@ namespace MIDDerivationLibrary.Models.SpecialFaultCodeModels
         public string specialfaultcodetype { get; set; }
         public int? specialmultiple { get; set; }
         public string specialcode { get; set; }
+        public string componentType { get; set; }
+        public string componentTypeSub1 { get; set; }
+        public string componentTypeSub2 { get; set; }
     }
 }

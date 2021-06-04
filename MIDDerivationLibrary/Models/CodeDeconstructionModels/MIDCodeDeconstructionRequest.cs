@@ -8,7 +8,7 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
 {
     public class MIDCodeDeconstructionRequest
     {
-       public MachineComponentsForMIDdeconstrution machineComponentsForMIDdeconstrution { get; set; }
+       public MachineComponentsForMIDdeconstruction machineComponentsForMIDdeconstruction { get; set; }
     }
     
 }

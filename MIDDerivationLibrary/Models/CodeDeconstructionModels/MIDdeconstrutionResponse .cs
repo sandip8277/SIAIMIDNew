@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
 
 namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
 {
+   
     public class MIDdeconstrutionResponse
     {
         public DriverForDeconstruction driver { get; set; }
@@ -27,7 +31,6 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
     
     public class DrivensForDeconstruction
     {
-
         public PumpForDeconstruction pump { get; set; }
         public CompressorForDeconstruction compressor { get; set; }
         public FanOrBlowerForDeconstruction fan_or_blower { get; set; }
@@ -335,8 +338,11 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
     }
     public class DriversForDeconstruction
     {
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public DieselForDeconstruction diesel { get; set; }
         public MotorForDeconstruction motor { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public TurbineForDeconstruction turbine { get; set; }
     }
 

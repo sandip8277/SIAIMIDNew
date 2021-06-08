@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -30,8 +31,10 @@ using MIDDerivationLibrary.Repository.PickupCode;
 using MIDDerivationLibrary.Repository.SpecialFaultCodes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MIDDerivationLibrary
@@ -88,6 +91,12 @@ namespace MIDDerivationLibrary
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                 });
+    
+
+            //services.AddMvc()
+            // .AddJsonOptions(options => {
+            //     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

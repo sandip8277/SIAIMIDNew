@@ -98,20 +98,11 @@ namespace MIDDerivationLibrary.Controllers
                 return BadRequest(new ApiBadRequestResponse(ModelState));
         }
 
-        //[HttpPost]
-        //[Route("MIDCodeDeconstruction")]
-        //public ActionResult GetSpecialFaultCodesDetails([FromBody] MIDCodeDeconstructionRequest model)
-        //{
-        //    try
-        //    {
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ex.ToString();
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-        //    }
-        //}
-
     }
 }
+//return Ok(new ApiOkResponse(JsonConvert.DeserializeObject<MIDdeconstrutionResponse>(JsonConvert.SerializeObject(details,
+//                      Newtonsoft.Json.Formatting.None,
+//                      new JsonSerializerSettings
+//                      {
+//                          NullValueHandling = NullValueHandling.Ignore
+//                      }))));

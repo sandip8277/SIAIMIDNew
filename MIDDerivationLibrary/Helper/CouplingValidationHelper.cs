@@ -44,7 +44,6 @@ namespace MIDDerivationLibrary.Helper
             //Validations for Coupling2 component
             if (model != null)
             {
-
                 //componentType
                 if (string.IsNullOrEmpty(model.componentType) || !Enum.IsDefined(typeof(Coupling2ComponentType), model.componentType.ToLower()))
                     modelState.AddModelError(nameof(Coupling2Details.componentType), Constants.coupling2ComponentTypeRequiredMsg);

@@ -13,12 +13,10 @@ namespace MIDDerivationLibrary.Repository
     {
         private IConfiguration Configuration;
 
-        public  SQLRepository(IConfiguration _configuration)
+        public SQLRepository(IConfiguration _configuration)
         {
             Configuration = _configuration;
         }
-       
-
 
         /// <summary>
         /// Get sql connection
@@ -41,31 +39,22 @@ namespace MIDDerivationLibrary.Repository
         public DataSet ExecuteQuery(string storedProcName, List<SqlParameter> parameters)
         {
             DataSet dataSet = new DataSet();
-
-            try
+            using (SqlConnection connection = GetConnection())
             {
-                using (SqlConnection connection = GetConnection())
+                using (SqlCommand command = connection.CreateCommand())
                 {
-                    using (SqlCommand command = connection.CreateCommand())
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = storedProcName;
+                    //assign parameters passed in to the command
+                    foreach (object parameter in parameters)
                     {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = storedProcName;
-                        //assign parameters passed in to the command
-                        foreach (object parameter in parameters)
-                        {
-                            command.Parameters.Add(parameter);
-                        }
-                        using (SqlDataAdapter da = new SqlDataAdapter(command))
-                        {
-                            da.Fill(dataSet);
-                        }
+                        command.Parameters.Add(parameter);
+                    }
+                    using (SqlDataAdapter da = new SqlDataAdapter(command))
+                    {
+                        da.Fill(dataSet);
                     }
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
             }
             return dataSet;
         }
@@ -91,12 +80,10 @@ namespace MIDDerivationLibrary.Repository
                     {
                         command.Parameters.Add(parameter);
                     }
-                   // rowCount = command.ExecuteNonQuery();
                     rowCount = Convert.ToInt64(command.ExecuteScalar());
                 }
             }
             return rowCount;
         }
-
     }
 }

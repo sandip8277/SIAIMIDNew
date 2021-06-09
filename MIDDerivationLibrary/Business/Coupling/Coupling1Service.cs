@@ -17,94 +17,45 @@ namespace MIDDerivationLibrary.Business.Coupling
         public long AddOrUpdateCoupling1Details(string xmlContent)
         {
             long id = 0;
-            try
-            {
-                id = _coupling1Repository.AddOrUpdateCoupling1Details(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _coupling1Repository.AddOrUpdateCoupling1Details(xmlContent);
             return id;
         }
-
         public List<Coupling1Details> GetAllCoupling1Details(string componentType, string coupling1Type)
         {
             List<Coupling1Details> detailsList = null;
-            try
-            {
-                detailsList = _coupling1Repository.GetAllCoupling1Details(componentType, coupling1Type);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            detailsList = _coupling1Repository.GetAllCoupling1Details(componentType, coupling1Type);
             return detailsList;
         }
-
         public Coupling1Details GetCoupling1DetailsById(long id)
         {
             Coupling1Details details = null;
-            try
-            {
-                details = _coupling1Repository.GetCoupling1DetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            details = _coupling1Repository.GetCoupling1DetailsById(id);
             return details;
         }
-
         public long DeleteCoupling1DetailsById(long id)
         {
-            long Id = 0;
-            try
-            {
-                Id = _coupling1Repository.DeleteCoupling1DetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _coupling1Repository.DeleteCoupling1DetailsById(id);
             return id;
         }
-
         public bool CheckIsCoupling1DetailsExist(long id)
         {
             bool flag = true;
             Coupling1Details details = null;
-            try
-            {
-                details = _coupling1Repository.GetCoupling1DetailsById(id);
-                if (details != null && details.id == 0)
-                    flag = false;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _coupling1Repository.GetCoupling1DetailsById(id);
+            if (details != null && details.id == 0)
+                flag = false;
+
             return flag;
         }
-
         public bool CheckIsCoupling1DetailsExist(string xmlContent)
         {
             bool flag = false;
             Coupling1Details details = null;
-            try
-            {
-                details = _coupling1Repository.GetCoupling1Details(xmlContent);
-                if (details != null && details.id > 0)
-                    flag = true;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _coupling1Repository.GetCoupling1Details(xmlContent);
+
+            if (details != null && details.id > 0)
+                flag = true;
+
             return flag;
         }
     }

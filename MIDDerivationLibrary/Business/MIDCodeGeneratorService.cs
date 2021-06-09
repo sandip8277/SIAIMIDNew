@@ -15,19 +15,10 @@ namespace MIDDerivationLibrary.Business
         {
             this._midCodeGeneratorRepository = midCodeGeneratorRepository;
         }
-
         public MIDCodeDetails GenerareMIDCodes(string xmlContent)
         {
             MIDCodeDetails codeDetails = null;
-            try
-            {
-                 codeDetails = _midCodeGeneratorRepository.GenerareMIDCodes(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            codeDetails = _midCodeGeneratorRepository.GenerareMIDCodes(xmlContent);
             return codeDetails;
         }
     }

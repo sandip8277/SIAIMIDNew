@@ -69,7 +69,7 @@ namespace MIDDerivationLibrary.Enums
             yes = 2
         }
 
-        public enum Drivenfan_or_blowerType
+        public enum DrivenFan_or_BlowerType
         {
             lobed = 1,
             overhungrotor = 2,

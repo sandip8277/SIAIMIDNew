@@ -100,9 +100,3 @@ namespace MIDDerivationLibrary.Controllers
 
     }
 }
-//return Ok(new ApiOkResponse(JsonConvert.DeserializeObject<MIDdeconstrutionResponse>(JsonConvert.SerializeObject(details,
-//                      Newtonsoft.Json.Formatting.None,
-//                      new JsonSerializerSettings
-//                      {
-//                          NullValueHandling = NullValueHandling.Ignore
-//                      }))));

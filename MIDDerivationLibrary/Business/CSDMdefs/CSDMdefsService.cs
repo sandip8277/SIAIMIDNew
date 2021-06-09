@@ -17,96 +17,45 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
         public long AddOrUpdateCSDMdefsDetails(string xmlContent)
         {
             long id = 0;
-            try
-            {
-                id = _csdMdefsRepository.AddOrUpdateCSDMdefsDetails(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _csdMdefsRepository.AddOrUpdateCSDMdefsDetails(xmlContent);
             return id;
         }
-
         public List<CSDMdefsDetails> GetAllCSDMdefsDetails(string csdmFile)
         {
             List<CSDMdefsDetails> detailsList = null;
-            try
-            {
-                detailsList = _csdMdefsRepository.GetAllCSDMdefsDetails(csdmFile);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            detailsList = _csdMdefsRepository.GetAllCSDMdefsDetails(csdmFile);
             return detailsList;
         }
-
         public CSDMdefsDetails GetCSDMdefsDetailsById(long id)
         {
             CSDMdefsDetails details = null;
-            try
-            {
-                details = _csdMdefsRepository.GetCSDMdefsDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            details = _csdMdefsRepository.GetCSDMdefsDetailsById(id);
             return details;
         }
-
         public long DeleteCSDMdefsDetailsById(long id)
         {
-            long Id = 0;
-            try
-            {
-                Id = _csdMdefsRepository.DeleteCSDMdefsDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _csdMdefsRepository.DeleteCSDMdefsDetailsById(id);
             return id;
         }
-
         public bool CheckIsCSDMdefsDetailsExist(long id)
         {
             bool flag = true;
             CSDMdefsDetails details = null;
-            try
-            {
-                details = _csdMdefsRepository.GetCSDMdefsDetailsById(id);
-                if (details != null && details.id == 0)
-                    flag = false;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _csdMdefsRepository.GetCSDMdefsDetailsById(id);
+            if (details != null && details.id == 0)
+                flag = false;
+
             return flag;
         }
-
         public bool CheckIsCSDMdefsDetailsExist(string xmlContent)
         {
             bool flag = false;
             CSDMdefsDetails details = null;
-            try
-            {
-                details = _csdMdefsRepository.GetCSDMdefsDetails(xmlContent);
-                if (details != null && details.id > 0)
-                    flag = true;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _csdMdefsRepository.GetCSDMdefsDetails(xmlContent);
+            if (details != null && details.id > 0)
+                flag = true;
+
             return flag;
         }
-
     }
 }

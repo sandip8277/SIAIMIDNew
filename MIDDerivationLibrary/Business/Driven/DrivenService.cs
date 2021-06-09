@@ -17,97 +17,45 @@ namespace MIDDerivationLibrary.Business.Driven
         public long AddOrUpdateDrivenDetails(string xmlContent)
         {
             long id = 0;
-            try
-            {
-                id = _drivenRepository.AddOrUpdateDrivenDetails(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _drivenRepository.AddOrUpdateDrivenDetails(xmlContent);
             return id;
         }
-
         public List<DrivenDetails> GetAllDrivenDetails(string componentType, string drivenType)
         {
             List<DrivenDetails> detailsList = null;
-            try
-            {
-                detailsList = _drivenRepository.GetAllDrivenDetails(componentType, drivenType);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            detailsList = _drivenRepository.GetAllDrivenDetails(componentType, drivenType);
             return detailsList;
         }
-
         public DrivenDetails GetDrivenDetailsById(long id)
         {
             DrivenDetails details = null;
-            try
-            {
-                details = _drivenRepository.GetDrivenDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            details = _drivenRepository.GetDrivenDetailsById(id);
             return details;
         }
-
         public long DeleteDrivenDetailsById(long id)
         {
-            long Id = 0;
-            try
-            {
-                Id = _drivenRepository.DeleteDrivenDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _drivenRepository.DeleteDrivenDetailsById(id);
             return id;
         }
-
         public bool CheckIsDrivenDetailsExist(long id)
         {
             bool flag = true;
             DrivenDetails details = null;
-            try
-            {
-                details = _drivenRepository.GetDrivenDetailsById(id);
-                if (details != null && details.id == 0)
-                    flag = false;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _drivenRepository.GetDrivenDetailsById(id);
+            if (details != null && details.id == 0)
+                flag = false;
+
             return flag;
         }
-
         public bool CheckIsDrivenDetailsExist(string xmlContent)
         {
             bool flag = false;
             DrivenDetails details = null;
-            try
-            {
-                details = _drivenRepository.GetDrivenDetails(xmlContent);
-                if (details != null && details.id > 0)
-                    flag = true;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _drivenRepository.GetDrivenDetails(xmlContent);
+            if (details != null && details.id > 0)
+                flag = true;
+
             return flag;
         }
-
-
     }
 }

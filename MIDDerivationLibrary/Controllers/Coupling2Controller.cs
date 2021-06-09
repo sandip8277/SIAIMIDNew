@@ -71,7 +71,6 @@ namespace MIDDerivationLibrary.Controllers
             ModelStateDictionary ModelState = new ModelStateDictionary();
             CouplingValidationHelper.ValidateCoupling2Input(ref ModelState, ref model);
 
-            //id
             if (model.id == 0)
                 ModelState.AddModelError(nameof(Coupling2Details.id), Constants.idValidationMessage);
 

@@ -17,94 +17,45 @@ namespace MIDDerivationLibrary.Business.Intermediate
         public long AddOrUpdateIntermediateDetails(string xmlContent)
         {
             long id = 0;
-            try
-            {
-                id = _intermediateRepository.AddOrUpdateIntermediateDetails(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            id = _intermediateRepository.AddOrUpdateIntermediateDetails(xmlContent);
 
             return id;
         }
-
         public List<IntermediateDetails> GetAllIntermediateDetails(string componentType, string intermediateType)
         {
             List<IntermediateDetails> detailsList = null;
-            try
-            {
-                detailsList = _intermediateRepository.GetAllIntermediateDetails(componentType, intermediateType);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            detailsList = _intermediateRepository.GetAllIntermediateDetails(componentType, intermediateType);
             return detailsList;
         }
-
         public IntermediateDetails GetIntermediateDetailsById(long id)
         {
             IntermediateDetails details = null;
-            try
-            {
-                details = _intermediateRepository.GetIntermediateDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            details = _intermediateRepository.GetIntermediateDetailsById(id);
             return details;
         }
-
         public long DeleteIntermediateDetailsById(long id)
         {
-            long Id = 0;
-            try
-            {
-                Id = _intermediateRepository.DeleteIntermediateDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _intermediateRepository.DeleteIntermediateDetailsById(id);
             return id;
         }
-
         public bool CheckIsIntermediateDetailsExist(long id)
         {
             bool flag = true;
             IntermediateDetails details = null;
-            try
-            {
-                details = _intermediateRepository.GetIntermediateDetailsById(id);
-                if (details != null && details.id == 0)
-                    flag = false;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _intermediateRepository.GetIntermediateDetailsById(id);
+            if (details != null && details.id == 0)
+                flag = false;
+
             return flag;
         }
-
         public bool CheckIsIntermediateDetailsExist(string xmlContent)
         {
             bool flag = false;
             IntermediateDetails details = null;
-            try
-            {
-                details = _intermediateRepository.GetIntermediateDetails(xmlContent);
-                if (details != null && details.id > 0)
-                    flag = true;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _intermediateRepository.GetIntermediateDetails(xmlContent);
+            if (details != null && details.id > 0)
+                flag = true;
+
             return flag;
         }
     }

@@ -72,7 +72,6 @@ namespace MIDDerivationLibrary.Controllers
             ModelStateDictionary ModelState = new ModelStateDictionary();
             CouplingValidationHelper.ValidateCoupling1Input(ref ModelState, ref model);
 
-            //id
             if (model.id == 0)
                 ModelState.AddModelError(nameof(Coupling2Details.id), Constants.idValidationMessage);
 
@@ -145,7 +144,6 @@ namespace MIDDerivationLibrary.Controllers
                         return Ok(new ApiOkResponse(details));
                     else
                         return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
-
                 }
             }
             catch (Exception ex)
@@ -159,7 +157,6 @@ namespace MIDDerivationLibrary.Controllers
         [Route("DeleteCoupling1DetailsById")]
         public ActionResult DeleteCoupling1DetailsById(long id)
         {
-            long Id = 0;
             try
             {
                 if (id <= 0)
@@ -170,8 +167,8 @@ namespace MIDDerivationLibrary.Controllers
                     if (isExist == false)
                         return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
 
-                    Id = _service.DeleteCoupling1DetailsById(id);
-                    if (Id > 0)
+                    id = _service.DeleteCoupling1DetailsById(id);
+                    if (id > 0)
                         return Ok(new ApiOkResponse(null, Constants.recordDeleted));
                     else
                         return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));

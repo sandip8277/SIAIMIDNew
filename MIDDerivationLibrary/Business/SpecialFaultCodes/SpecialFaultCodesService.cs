@@ -17,77 +17,34 @@ namespace MIDDerivationLibrary.Business.SpecialFaultCodes
         public long AddOrUpdateSpecialFaultCodesDetails(string xmlContent)
         {
             long id = 0;
-            try
-            {
-                id = _SpecialFaultCodesRepository.AddOrUpdateSpecialFaultCodesDetails(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _SpecialFaultCodesRepository.AddOrUpdateSpecialFaultCodesDetails(xmlContent);
             return id;
         }
-
         public List<SpecialFaultCodesDetails> GetAllSpecialFaultCodesDetails(string specialFaultCodesType, string specialCode)
         {
             List<SpecialFaultCodesDetails> detailsList = null;
-            try
-            {
-                detailsList = _SpecialFaultCodesRepository.GetAllSpecialFaultCodesDetails(specialCode, specialFaultCodesType);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            detailsList = _SpecialFaultCodesRepository.GetAllSpecialFaultCodesDetails(specialCode, specialFaultCodesType);
             return detailsList;
         }
-
         public SpecialFaultCodesDetails GetSpecialFaultCodesDetailsById(long id)
         {
             SpecialFaultCodesDetails details = null;
-            try
-            {
-                details = _SpecialFaultCodesRepository.GetSpecialFaultCodesDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            details = _SpecialFaultCodesRepository.GetSpecialFaultCodesDetailsById(id);
             return details;
         }
-
         public long DeleteSpecialFaultCodesDetailsById(long id)
         {
-            long Id = 0;
-            try
-            {
-                Id = _SpecialFaultCodesRepository.DeleteSpecialFaultCodesDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _SpecialFaultCodesRepository.DeleteSpecialFaultCodesDetailsById(id);
             return id;
         }
-
         public bool CheckIsSpecialFaultCodesDetailsExist(long id)
         {
             bool flag = true;
             SpecialFaultCodesDetails details = null;
-            try
-            {
-                details = _SpecialFaultCodesRepository.GetSpecialFaultCodesDetailsById(id);
-                if (details != null && details.id == 0)
-                    flag = false;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _SpecialFaultCodesRepository.GetSpecialFaultCodesDetailsById(id);
+            if (details != null && details.id == 0)
+                flag = false;
+
             return flag;
         }
 
@@ -95,16 +52,10 @@ namespace MIDDerivationLibrary.Business.SpecialFaultCodes
         {
             bool flag = false;
             SpecialFaultCodesDetails details = null;
-            try
-            {
-                details = _SpecialFaultCodesRepository.GetSpecialFaultCodesDetails(xmlContent);
-                if (details != null && details.id > 0)
-                    flag = true;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _SpecialFaultCodesRepository.GetSpecialFaultCodesDetails(xmlContent);
+            if (details != null && details.id > 0)
+                flag = true;
+
             return flag;
         }
     }

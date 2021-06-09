@@ -18,14 +18,7 @@ namespace MIDDerivationLibrary.Business.MIDCodeDeconstruction
         public MIDdeconstrutionResponse MIDCodeDeconstruction(string xmlContent)
         {
             MIDdeconstrutionResponse codeDetails = null;
-            try
-            {
-                codeDetails = _midCodeDeconstructionRepository.MIDCodeDeconstruction(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            codeDetails = _midCodeDeconstructionRepository.MIDCodeDeconstruction(xmlContent);
             return codeDetails;
         }
     }

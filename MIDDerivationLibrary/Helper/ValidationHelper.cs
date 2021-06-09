@@ -58,7 +58,6 @@ namespace MIDDerivationLibrary.Helper
 
                         model.machineComponentsForMIDgeneration.driver.drivers.motor = null;
                         model.machineComponentsForMIDgeneration.driver.drivers.turbine = null;
-
                     }
 
                     //motor
@@ -306,7 +305,6 @@ namespace MIDDerivationLibrary.Helper
                                     model.machineComponentsForMIDgeneration.driven.drivens.pump.pumpTypes.pumpRotarySlidingVane = null;
                                     model.machineComponentsForMIDgeneration.driven.drivens.pump.pumpTypes.pumpRotaryAxialRecip = null;
                                     model.machineComponentsForMIDgeneration.driven.drivens.pump.pumpTypes.pumpRotaryRadialRecip = null;
-
                                 }
                             }
 
@@ -327,7 +325,6 @@ namespace MIDDerivationLibrary.Helper
                                     model.machineComponentsForMIDgeneration.driven.drivens.pump.pumpTypes.pumpRotarySlidingVane = null;
                                     model.machineComponentsForMIDgeneration.driven.drivens.pump.pumpTypes.pumpRotaryAxialRecip = null;
                                     model.machineComponentsForMIDgeneration.driven.drivens.pump.pumpTypes.pumpRotaryRadialRecip = null;
-
                                 }
                             }
 
@@ -444,7 +441,6 @@ namespace MIDDerivationLibrary.Helper
                         model.machineComponentsForMIDgeneration.driven.drivens.generator = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.spindle_or_shaft_or_bearing = null;
-
                     }
                 }
 
@@ -543,7 +539,6 @@ namespace MIDDerivationLibrary.Helper
                         model.machineComponentsForMIDgeneration.driven.drivens.generator = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.spindle_or_shaft_or_bearing = null;
-
                     }
 
                 }
@@ -557,7 +552,7 @@ namespace MIDDerivationLibrary.Helper
                         //&& model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType == Drivenfan_or_blowerType.lobed.ToString()
                         {
                             //fan_or_blowerType
-                            if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType) || !Enum.IsDefined(typeof(Drivenfan_or_blowerType), model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType.ToLower()))
+                            if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType) || !Enum.IsDefined(typeof(DrivenFan_or_BlowerType), model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType.ToLower()))
                                 modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType), Constants.drivensFan_or_blowerTypeValidationMsg);
                         }
 
@@ -567,7 +562,7 @@ namespace MIDDerivationLibrary.Helper
                             if (model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerLobed != null)
                             {
                                 if (model.machineComponentsForMIDgeneration.driven.drivenType == DrivenType.fan_or_blower.ToString()
-                                    && model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType == Drivenfan_or_blowerType.lobed.ToString())
+                                    && model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType == DrivenFan_or_BlowerType.lobed.ToString())
                                 {
                                     //lobedFanOrBlowerHasBallBearings
                                     if (model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerLobed.lobedFanOrBlowerHasBallBearings == null)
@@ -575,7 +570,6 @@ namespace MIDDerivationLibrary.Helper
 
                                     model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerOverhungRotor = null;
                                     model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerSupportedRotor = null;
-
                                 }
                             }
 
@@ -583,7 +577,7 @@ namespace MIDDerivationLibrary.Helper
                             if (model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerOverhungRotor != null)
                             {
                                 if (model.machineComponentsForMIDgeneration.driven.drivenType == DrivenType.fan_or_blower.ToString()
-                                   && model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType == Drivenfan_or_blowerType.overhungrotor.ToString())
+                                   && model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType == DrivenFan_or_BlowerType.overhungrotor.ToString())
                                 {
                                     //fanStages
                                     if (model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerOverhungRotor.fanStages == null)
@@ -602,12 +596,8 @@ namespace MIDDerivationLibrary.Helper
                             if (model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerSupportedRotor != null)
                             {
                                 if (model.machineComponentsForMIDgeneration.driven.drivenType == DrivenType.fan_or_blower.ToString()
-                                    && model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType == Drivenfan_or_blowerType.supportedrotor.ToString())
+                                    && model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerType == DrivenFan_or_BlowerType.supportedrotor.ToString())
                                 {
-                                    //fanStages
-                                    // if (model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerSupportedRotor.fanStages == null)
-                                    //     modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerSupportedRotor.fanStages), Constants.drivensFanStagesValidationMsg);
-
                                     model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerLobed = null;
                                     model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower.fan_or_blowerTypes.fan_or_blowerOverhungRotor = null;
                                 }
@@ -621,7 +611,6 @@ namespace MIDDerivationLibrary.Helper
                         model.machineComponentsForMIDgeneration.driven.drivens.generator = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.spindle_or_shaft_or_bearing = null;
-
                     }
                 }
 
@@ -644,7 +633,6 @@ namespace MIDDerivationLibrary.Helper
                         model.machineComponentsForMIDgeneration.driven.drivens.generator = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.spindle_or_shaft_or_bearing = null;
-
                     }
                 }
 
@@ -670,7 +658,6 @@ namespace MIDDerivationLibrary.Helper
                             //drivenBy
                             if (string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driven.drivens.generator.drivenBy) || !Enum.IsDefined(typeof(DrivenGeneratorDrivenBy), model.machineComponentsForMIDgeneration.driven.drivens.generator.drivenBy.ToLower()))
                                 modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivens.generator.drivenBy), Constants.drivensDrivenByValidationMsg);
-
                         }
 
                         model.machineComponentsForMIDgeneration.driven.drivens.pump = null;
@@ -680,7 +667,6 @@ namespace MIDDerivationLibrary.Helper
                         model.machineComponentsForMIDgeneration.driven.drivens.purifier_centrifuge = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump = null;
                         model.machineComponentsForMIDgeneration.driven.drivens.spindle_or_shaft_or_bearing = null;
-
                     }
                 }
 
@@ -719,7 +705,6 @@ namespace MIDDerivationLibrary.Helper
                                     if (model.machineComponentsForMIDgeneration.driven.drivenType == DrivenType.vacuumpump.ToString()
                                         && model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumptype == DrivenVacuumPumpType.centrifugal.ToString())
                                     {
-
                                         //bearingsType
                                         if (model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpCentrifugal.bearingsType == null || !Enum.IsDefined(typeof(DrivenBearingsType), model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpCentrifugal.bearingsType.ToLower()))
                                             modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpCentrifugal.bearingsType), Constants.drivensBearingsTypeValidationMsg);
@@ -732,7 +717,6 @@ namespace MIDDerivationLibrary.Helper
                                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpRadialRecip = null;
                                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpReciprocating = null;
                                         model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpLobed = null;
-
                                     }
                                 }
 
@@ -757,9 +741,6 @@ namespace MIDDerivationLibrary.Helper
                                     }
                                 }
 
-                                //vacuumpumpRadialRecip  
-                                //if (model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpRadialRecip != null)
-                                // {
                                 if (model.machineComponentsForMIDgeneration.driven.drivenType == DrivenType.vacuumpump.ToString()
                                     && model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumptype == DrivenVacuumPumpType.radialrecip.ToString())
                                 {
@@ -769,7 +750,6 @@ namespace MIDDerivationLibrary.Helper
                                     model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpReciprocating = null;
                                     model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpLobed = null;
                                 }
-                                //}
 
                                 //vacuumpumpReciprocating
                                 if (model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpReciprocating != null)
@@ -777,7 +757,6 @@ namespace MIDDerivationLibrary.Helper
                                     if (model.machineComponentsForMIDgeneration.driven.drivenType == DrivenType.vacuumpump.ToString()
                                         && model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumptype == DrivenVacuumPumpType.reciprocating.ToString())
                                     {
-
                                         //bearingsType
                                         if (model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpReciprocating.bearingsType == null || !Enum.IsDefined(typeof(DrivenVacuumPumpReciprocating), model.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpReciprocating.bearingsType.ToLower()))
                                             modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivens.vacuumpump.vacuumpumpTypes.vacuumpumpReciprocating.bearingsType), Constants.drivensVacuumpumpReciprocatingValidationMsg);
@@ -806,7 +785,6 @@ namespace MIDDerivationLibrary.Helper
                                     }
                                 }
                             }
-
                             model.machineComponentsForMIDgeneration.driven.drivens.pump = null;
                             model.machineComponentsForMIDgeneration.driven.drivens.compressor = null;
                             model.machineComponentsForMIDgeneration.driven.drivens.fan_or_blower = null;

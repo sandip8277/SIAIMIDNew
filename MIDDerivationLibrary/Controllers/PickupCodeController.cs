@@ -136,7 +136,6 @@ namespace MIDDerivationLibrary.Controllers
         [Route("DeletePickupCodeDetailsById")]
         public ActionResult DeletePickupCodeDetailsById(long id)
         {
-            long Id = 0;
             try
             {
                 if (id <= 0)
@@ -147,8 +146,8 @@ namespace MIDDerivationLibrary.Controllers
                     if (isExist == false)
                         return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
 
-                    Id = _service.DeletePickupCodeDetailsById(id);
-                    if (Id > 0)
+                    id = _service.DeletePickupCodeDetailsById(id);
+                    if (id > 0)
                         return Ok(new ApiOkResponse(null, Constants.recordDeleted));
                     else
                         return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));

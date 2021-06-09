@@ -17,96 +17,45 @@ namespace MIDDerivationLibrary.Business.PickupCode
         public long AddOrUpdatePickupCodeDetails(string xmlContent)
         {
             long id = 0;
-            try
-            {
-                id = _pickupRepository.AddOrUpdatePickupCodeDetails(xmlContent);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _pickupRepository.AddOrUpdatePickupCodeDetails(xmlContent);
             return id;
         }
-
         public List<PickupCodeDetails> GetAllPickupCodeDetails()
         {
             List<PickupCodeDetails> detailsList = null;
-            try
-            {
-                detailsList = _pickupRepository.GetAllPickupCodeDetails();
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            detailsList = _pickupRepository.GetAllPickupCodeDetails();
             return detailsList;
         }
-
         public PickupCodeDetails GetPickupCodeDetailsById(long id)
         {
             PickupCodeDetails details = null;
-            try
-            {
-                details = _pickupRepository.GetPickupCodeDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            details = _pickupRepository.GetPickupCodeDetailsById(id);
             return details;
         }
-
         public long DeletePickupCodeDetailsById(long id)
         {
-            long Id = 0;
-            try
-            {
-                Id = _pickupRepository.DeletePickupCodeDetailsById(id);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-
+            id = _pickupRepository.DeletePickupCodeDetailsById(id);
             return id;
         }
-
         public bool CheckIsPickupCodeDetailsExist(long id)
         {
             bool flag = true;
             PickupCodeDetails details = null;
-            try
-            {
-                details = _pickupRepository.GetPickupCodeDetailsById(id);
-                if (details != null && details.id == 0)
-                    flag = false;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _pickupRepository.GetPickupCodeDetailsById(id);
+            if (details != null && details.id == 0)
+                flag = false;
+
             return flag;
         }
-
         public bool CheckIsPickupCodeDetailsExist(string xmlContent)
         {
             bool flag = false;
             PickupCodeDetails details = null;
-            try
-            {
-                details = _pickupRepository.GetPickupCodeDetails(xmlContent);
-                if (details != null && details.id > 0)
-                    flag = true;
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
+            details = _pickupRepository.GetPickupCodeDetails(xmlContent);
+            if (details != null && details.id > 0)
+                flag = true;
+            
             return flag;
         }
-
     }
 }

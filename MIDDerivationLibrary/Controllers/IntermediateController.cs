@@ -75,7 +75,6 @@ namespace MIDDerivationLibrary.Controllers
             ModelStateDictionary ModelState = new ModelStateDictionary();
             IntermediateValidationHelper.ValidateIntermediateInput(ref ModelState, ref model);
 
-            //id
             if (model.id == 0)
                 ModelState.AddModelError(nameof(IntermediateDetails.id), Constants.idValidationMessage);
 
@@ -162,7 +161,6 @@ namespace MIDDerivationLibrary.Controllers
         [Route("DeleteIntermediateDetailsById")]
         public ActionResult DeleteIntermediateDetailsById(long id)
         {
-            long Id = 0;
             try
             {
                 if (id <= 0)
@@ -173,8 +171,8 @@ namespace MIDDerivationLibrary.Controllers
                     if (isExist == false)
                         return StatusCode(StatusCodes.Status404NotFound, new ApiResponse(404, Constants.recordNotFound));
 
-                    Id = _service.DeleteIntermediateDetailsById(id);
-                    if (Id > 0)
+                    id = _service.DeleteIntermediateDetailsById(id);
+                    if (id > 0)
                         return Ok(new ApiOkResponse(null, Constants.recordDeleted));
                     else
                         return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));

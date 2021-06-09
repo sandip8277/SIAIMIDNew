@@ -13,7 +13,6 @@ namespace MIDDerivationLibrary.Business.CSDMdefs
         CSDMdefsDetails GetCSDMdefsDetailsById(long id);
         bool CheckIsCSDMdefsDetailsExist(long id);
         bool CheckIsCSDMdefsDetailsExist(string xmlContent);
-
         long DeleteCSDMdefsDetailsById(long id);
     }
 }

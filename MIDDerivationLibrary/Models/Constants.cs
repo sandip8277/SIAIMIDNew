@@ -134,7 +134,7 @@ namespace MIDDerivationLibrary.Models
 
         public static string driverComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
 
-        public static string driverLocationValidationMsg = "locations is a required integer and must be 1 through 10";
+        public static string driverLocationValidationMsg = "locations is a required integer and must be 0, 1, 2, 3; only a diesel driver can have 3";
 
         public static string driverLocationNDEValidationMsg = "driverLocationNDE is a required boolean";
 
@@ -204,7 +204,7 @@ namespace MIDDerivationLibrary.Models
 
         public static string intermediateComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
 
-        public static string intermediateLocationValidationMsg = "locations is a required integer and must be 1 through 10";
+        public static string intermediateLocationValidationMsg = "locations is a required integer and must be 0, 1, 2, 3, 4";
 
         public static string intermediateSpeedratioValidationMsg = "speedratio is required decimal - default is 1.0000";
 
@@ -220,12 +220,14 @@ namespace MIDDerivationLibrary.Models
 
         public static string intermediateDrivenByValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
 
+        public static string intermediateDrivenByRequiredValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
+
 
         //Driven validation message
 
         public static string drivenComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
 
-        public static string drivenLocationValidationMsg = "locations is a required integer and must be 1 through 10";
+        public static string drivenLocationValidationMsg = "locations is a required integer and must be 0, 1, 2";
 
         public static string drivenLocationNDEValidationMsg = "drivenLocationNDE is a required boolean";
 

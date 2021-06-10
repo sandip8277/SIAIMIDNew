@@ -8,6 +8,6 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
     public class PumpRotaryScrewForDeconstruction
     {
         public bool? screwPumpHasBallBearings { get; set; }
-        public pumpRotaryScrewExtraFaultData extraFaultData { get; set; }
+        public PumpRotaryScrewExtraFaultData extraFaultData { get; set; }
     }
 }

@@ -31,6 +31,5 @@ namespace MIDDerivationLibrary.Models.CodeDeconstructionModels
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public SpindleOrShaftOrBearingForDeconstruction spindle_or_shaft_or_bearing { get; set; }
-        public int? rpm { get; set; }
     }
 }

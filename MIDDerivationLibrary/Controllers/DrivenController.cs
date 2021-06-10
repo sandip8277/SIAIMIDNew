@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MIDCodeGenerator.Helper;
 using MIDDerivationLibrary.Business;
 using MIDDerivationLibrary.Business.Driven;
+using MIDDerivationLibrary.Helper;
 using MIDDerivationLibrary.Models;
 using MIDDerivationLibrary.Models.APIResponse;
 using MIDDerivationLibrary.Models.DrivenModels;
@@ -31,29 +33,36 @@ namespace MIDDerivationLibrary.Controllers
         public ActionResult AddDrivenDetails(DrivenDetails model)
         {
             long id = 0;
-            try
+            ModelStateDictionary ModelState = new ModelStateDictionary();
+            DrivenValidationHelper.ValidateDrivenInput(ref ModelState, ref model);
+            if (ModelState.IsValid)
             {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-
-                bool isExist = _service.CheckIsDrivenDetailsExist(xmlString);
-
-                if (isExist == true)
-                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
-                else
+                try
                 {
-                    id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
-                    if (id > 0)
-                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    string xmlString = XmlHelper.ConvertObjectToXML(model);
+                    XElement xElement = XElement.Parse(xmlString);
+
+                    bool isExist = _service.CheckIsDrivenDetailsExist(xmlString);
+
+                    if (isExist == true)
+                        return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                     else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    {
+                        id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
+                        if (id > 0)
+                            return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
                 }
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return Ok(new ApiOkResponse(id));
+            else
+                return BadRequest(new ApiBadRequestResponse(ModelState));
         }
 
         [HttpPut]
@@ -61,29 +70,40 @@ namespace MIDDerivationLibrary.Controllers
         public ActionResult UpdateDrivenDetails(DrivenDetails model)
         {
             long id = 0;
-            try
+            ModelStateDictionary ModelState = new ModelStateDictionary();
+            DrivenValidationHelper.ValidateDrivenInput(ref ModelState, ref model);
+
+            if (model.id == 0)
+                ModelState.AddModelError(nameof(DrivenDetails.id), Constants.idValidationMessage);
+            if (ModelState.IsValid)
             {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-
-                bool isExist = _service.CheckIsDrivenDetailsExist(xmlString);
-
-                if (isExist == true)
-                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
-                else
+                try
                 {
-                    id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
-                    if (id > 0)
-                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    string xmlString = XmlHelper.ConvertObjectToXML(model);
+                    XElement xElement = XElement.Parse(xmlString);
+
+                    bool isExist = _service.CheckIsDrivenDetailsExist(xmlString);
+
+                    if (isExist == true)
+                        return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                     else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    {
+                        id = _service.AddOrUpdateDrivenDetails(xElement.ToString());
+                        if (id > 0)
+                            return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+
                 }
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return Ok(new ApiOkResponse(id));
+            else
+                return BadRequest(new ApiBadRequestResponse(ModelState));
         }
 
         [HttpGet]

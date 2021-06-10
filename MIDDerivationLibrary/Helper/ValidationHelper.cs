@@ -29,8 +29,17 @@ namespace MIDDerivationLibrary.Helper
                     modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.componentType), Constants.driverComponentTypeValidationMsg);
 
                 //locations
-                if (model.machineComponentsForMIDgeneration.driver.locations == null || !(model.machineComponentsForMIDgeneration.driver.locations >= 1 && model.machineComponentsForMIDgeneration.driver.locations <= 10))
-                    modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.locations), Constants.driverLocationValidationMsg);
+                if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.driverType) && model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == DriverType.diesel.ToString())
+                {
+                    //locations - only a diesel driver can have 3
+                    if (model.machineComponentsForMIDgeneration.driver.locations == null || !(model.machineComponentsForMIDgeneration.driver.locations >= 0 && model.machineComponentsForMIDgeneration.driver.locations <= 3))
+                        modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.locations), Constants.driverLocationValidationMsg);
+                }
+                else
+                {
+                    if (model.machineComponentsForMIDgeneration.driver.locations == null || !(model.machineComponentsForMIDgeneration.driver.locations >= 0 && model.machineComponentsForMIDgeneration.driver.locations <= 2))
+                        modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.locations), Constants.driverLocationValidationMsg);
+                }
 
                 //driverLocationNDE
                 if (model.machineComponentsForMIDgeneration.driver.driverLocationNDE == null)
@@ -53,9 +62,11 @@ namespace MIDDerivationLibrary.Helper
                     //diesel cylinders
                     if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.driverType) && model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "diesel")
                     {
-                        if (model.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders == null || !Enum.IsDefined(typeof(DieselCylinders), model.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders))
-                            modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders), Constants.driversCylindersValidationMsg);
-
+                        if (model.machineComponentsForMIDgeneration.driver.drivers.diesel != null)
+                        {
+                            if (model.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders == null || !Enum.IsDefined(typeof(DieselCylinders), model.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders))
+                                modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.diesel.cylinders), Constants.driversCylindersValidationMsg);
+                        }
                         model.machineComponentsForMIDgeneration.driver.drivers.motor = null;
                         model.machineComponentsForMIDgeneration.driver.drivers.turbine = null;
                     }
@@ -63,36 +74,37 @@ namespace MIDDerivationLibrary.Helper
                     //motor
                     if (!string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.driverType) && model.machineComponentsForMIDgeneration.driver.driverType.ToLower() == "motor")
                     {
-                        //motorDrive
-                        if (!Enum.IsDefined(typeof(MotorDrive), model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive))
-                            modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive), Constants.driversMotorDriveValidationMsg);
-
-                        //motorFan
-                        if (model.machineComponentsForMIDgeneration.driver.drivers.motor.motorFan == null)
-                            modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.motorFan), Constants.driverMotorFanRequiredValidationMsg);
-
-                        //motorBallBearings
-                        if (model.machineComponentsForMIDgeneration.driver.drivers.motor.motorBallBearings == null)
-                            modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.motorBallBearings), Constants.driverMotorBallBearingsRequiredValidationMsg);
-
-                        //drivenBallBearings
-                        if (model.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBallBearings == null)
-                            modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBallBearings), Constants.driverDrivenBallBearingsRequiredValidationMsg);
-
-                        //drivenBalanceable
-                        if (model.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBalanceable == null)
-                            modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBalanceable), Constants.driverDrivenBalanceableRequiredValidationMsg);
-
-                        //VFD
-                        if (model.machineComponentsForMIDgeneration.driver.drivers != null && model.machineComponentsForMIDgeneration.driver.drivers.motor != null && !string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive) && model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive.ToUpper() == "VFD")
+                        if (model.machineComponentsForMIDgeneration.driver.drivers.motor != null)
                         {
-                            if (model.machineComponentsForMIDgeneration.driver.drivers.motor.vfd == null || (model.machineComponentsForMIDgeneration.driver.drivers.motor.vfd.motorPoles == null || !Enum.IsDefined(typeof(MotorPoles), model.machineComponentsForMIDgeneration.driver.drivers.motor.vfd.motorPoles)))
-                                modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.vfd.motorPoles), Constants.driverMotorPolesValidationMsg);
-                        }
+                            //motorDrive
+                            if (!Enum.IsDefined(typeof(MotorDrive), model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive))
+                                modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive), Constants.driversMotorDriveValidationMsg);
 
+                            //motorFan
+                            if (model.machineComponentsForMIDgeneration.driver.drivers.motor.motorFan == null)
+                                modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.motorFan), Constants.driverMotorFanRequiredValidationMsg);
+
+                            //motorBallBearings
+                            if (model.machineComponentsForMIDgeneration.driver.drivers.motor.motorBallBearings == null)
+                                modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.motorBallBearings), Constants.driverMotorBallBearingsRequiredValidationMsg);
+
+                            //drivenBallBearings
+                            if (model.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBallBearings == null)
+                                modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBallBearings), Constants.driverDrivenBallBearingsRequiredValidationMsg);
+
+                            //drivenBalanceable
+                            if (model.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBalanceable == null)
+                                modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.drivenBalanceable), Constants.driverDrivenBalanceableRequiredValidationMsg);
+
+                            //VFD
+                            if (model.machineComponentsForMIDgeneration.driver.drivers != null && model.machineComponentsForMIDgeneration.driver.drivers.motor != null && !string.IsNullOrEmpty(model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive) && model.machineComponentsForMIDgeneration.driver.drivers.motor.motorDrive.ToUpper() == "VFD")
+                            {
+                                if (model.machineComponentsForMIDgeneration.driver.drivers.motor.vfd == null || (model.machineComponentsForMIDgeneration.driver.drivers.motor.vfd.motorPoles == null || !Enum.IsDefined(typeof(MotorPoles), model.machineComponentsForMIDgeneration.driver.drivers.motor.vfd.motorPoles)))
+                                    modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.motor.vfd.motorPoles), Constants.driverMotorPolesValidationMsg);
+                            }
+                        }
                         model.machineComponentsForMIDgeneration.driver.drivers.diesel = null;
                         model.machineComponentsForMIDgeneration.driver.drivers.turbine = null;
-
                     }
 
                     //Turbin
@@ -113,10 +125,6 @@ namespace MIDDerivationLibrary.Helper
                         //turbineThrustBearing
                         if (model.machineComponentsForMIDgeneration.driver.drivers.turbine == null || model.machineComponentsForMIDgeneration.driver.drivers.turbine.turbineThrustBearing == null)
                             modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.turbine.turbineThrustBearing), Constants.driverTurbineThrustBearingRequiredValidationMsg);
-
-                        //turbineThrustBearingIsBall
-                        if (model.machineComponentsForMIDgeneration.driver.drivers.turbine == null)
-                            modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driver.drivers.turbine.turbineThrustBearingIsBall), Constants.driverTurbineThrustBearingIsBallRequiredValidationMsg);
 
                         model.machineComponentsForMIDgeneration.driver.drivers.diesel = null;
                         model.machineComponentsForMIDgeneration.driver.drivers.motor = null;
@@ -187,7 +195,7 @@ namespace MIDDerivationLibrary.Helper
                     modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.componentType), Constants.intermediateComponentTypeValidationMsg);
 
                 //locations
-                if (model.machineComponentsForMIDgeneration.intermediate.locations == null || !(model.machineComponentsForMIDgeneration.intermediate.locations >= 1 && model.machineComponentsForMIDgeneration.intermediate.locations <= 10))
+                if (model.machineComponentsForMIDgeneration.intermediate.locations == null || !(model.machineComponentsForMIDgeneration.intermediate.locations >= 0 && model.machineComponentsForMIDgeneration.intermediate.locations <= 4))
                     modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.intermediate.locations), Constants.intermediateLocationValidationMsg);
 
                 //speedratio
@@ -243,7 +251,7 @@ namespace MIDDerivationLibrary.Helper
                     modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.componentType), Constants.drivenComponentTypeValidationMsg);
 
                 //locations
-                if (model.machineComponentsForMIDgeneration.driven.locations == null || !(model.machineComponentsForMIDgeneration.driven.locations >= 1 && model.machineComponentsForMIDgeneration.driven.locations <= 10))
+                if (model.machineComponentsForMIDgeneration.driven.locations == null || !(model.machineComponentsForMIDgeneration.driven.locations >= 0 && model.machineComponentsForMIDgeneration.driven.locations <= 2))
                     modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.locations), Constants.drivenLocationValidationMsg);
 
                 //drivenLocationNDE
@@ -485,9 +493,6 @@ namespace MIDDerivationLibrary.Helper
                                 if (model.machineComponentsForMIDgeneration.driven.drivenType == DrivenType.compressor.ToString()
                                     && model.machineComponentsForMIDgeneration.driven.drivens.compressor.compressorType == DrivenCompressorType.reciprocating.ToString())
                                 {
-                                    //crankHasIntermediateBearing
-                                    if (model.machineComponentsForMIDgeneration.driven.drivens.compressor.compressorTypes.compressorReciporcating.crankHasIntermediateBearing == null)
-                                        modelState.AddModelError(nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven) + "." + nameof(MIDCodeCreatorRequest.machineComponentsForMIDgeneration.driven.drivens.compressor.compressorTypes.compressorReciporcating.crankHasIntermediateBearing), Constants.drivensCrankHasIntermediateBearingValidationMsg);
 
                                     //reciprocatingCompressorHasBallBearings
                                     if (model.machineComponentsForMIDgeneration.driven.drivens.compressor.compressorTypes.compressorReciporcating.reciprocatingCompressorHasBallBearings == null)

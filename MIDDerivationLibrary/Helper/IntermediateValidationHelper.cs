@@ -16,24 +16,37 @@ namespace MIDDerivationLibrary.Helper
             if (model != null)
             {
                 //componentType
-                if (string.IsNullOrEmpty(model.componentType) || !Enum.IsDefined(typeof(IntermediateComponentType), model.componentType.ToLower()))
-                    modelState.AddModelError(nameof(IntermediateDetails.componentType),Constants.intermediateComponentTypeValidationMsg);
+                if (!Enum.IsDefined(typeof(IntermediateComponentType), model.componentType.ToLower()))
+                    modelState.AddModelError(nameof(model.componentType), Constants.intermediateComponentTypeValidationMsg);
+
+                //locations
+                if (model.locations == null || !(model.locations >= 0 && model.locations <= 4))
+                    modelState.AddModelError(nameof(model.locations), Constants.intermediateLocationValidationMsg);
 
                 //intermediateType
                 if (string.IsNullOrEmpty(model.intermediateType) || !Enum.IsDefined(typeof(IntermediateType), model.intermediateType.ToLower()))
-                    modelState.AddModelError(nameof(IntermediateDetails.intermediateType), Constants.intermediateImmediateTypeValidationMsg);
+                    modelState.AddModelError(nameof(model.intermediateType), Constants.intermediateImmediateTypeValidationMsg);
 
-                //locations
-                if (model.locations == null || !(model.locations >= 1 && model.locations <= 10))
-                    modelState.AddModelError(nameof(IntermediateDetails.locations),Constants.intermediateLocationValidationMsg);
+                //gearbox
+                if (!string.IsNullOrEmpty(model.intermediateType) && model.intermediateType.ToLower() == IntermediateType.gearbox.ToString())
+                {
+                    if (model.speedChangesMax == null || !(model.speedChangesMax >= 1 && model.speedChangesMax <= 3))
+                        modelState.AddModelError(nameof(model.speedChangesMax), Constants.intermediateSpeedChangesMaxValidationMsg);
+                }
 
-                //drivenBy
-                if (model.drivenBy == null || !Enum.IsDefined(typeof(IntermediateDrivenBy), model.drivenBy.ToLower()))
-                    modelState.AddModelError(nameof(IntermediateDetails.drivenBy), Constants.intermediateDrivenByValidationMsg);
+                //AOP
+                if (!string.IsNullOrEmpty(model.intermediateType) && model.intermediateType.ToLower() == IntermediateType.aop.ToString())
+                {
+                    if (string.IsNullOrEmpty(model.drivenBy) || !Enum.IsDefined(typeof(IntermediateAOPDrivenBy), model.drivenBy.ToLower()))
+                        modelState.AddModelError(nameof(model.drivenBy), Constants.intermediateDrivenByRequiredValidationMsg);
+                }
 
-                //speedChangesMax
-                if (model.speedChangesMax == null || !(model.speedChangesMax >= 1 && model.speedChangesMax <= 3))
-                    modelState.AddModelError(nameof(IntermediateDetails.speedChangesMax),Constants.intermediateSpeedChangesMaxValidationMsg);
+                //AccDrGr
+                if (!string.IsNullOrEmpty(model.intermediateType) && model.intermediateType.ToLower() == IntermediateType.accdrgr.ToString())
+                {
+                    if (string.IsNullOrEmpty(model.drivenBy) || !Enum.IsDefined(typeof(IntermediateAccDrGrDrivenBy), model.drivenBy.ToLower()))
+                        modelState.AddModelError(nameof(model.drivenBy), Constants.intermediateDrivenByRequiredValidationMsg);
+                }
 
                 //componentCode
                 if (model.componentCode == null)

@@ -82,7 +82,6 @@ CREATE TABLE [master].[tblCoupling2Details](
 	[coupledComponentType2] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-GO
 
 ALTER TABLE [master].[tblCoupling2Details] ADD  CONSTRAINT [DF_tblCoupling2Details_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
 GO
@@ -160,6 +159,7 @@ CREATE TABLE [master].[tblDrivenDetails](
 	[purifierDrivenBy] [varchar](50) NULL,
 	[bearingType] [varchar](50) NULL,
 	[vacuumPumpType] [varchar](50) NULL,
+	[spindleShaftBearing] [varchar](50) NULL,
 	[rotorOverhung] [bit] NULL,
 	[attachedOilPump] [bit] NULL,
 	[impellerOnMainShaft] [bit] NULL,
@@ -186,9 +186,12 @@ CREATE TABLE [master].[tblDrivenDetails](
 	[drivenBy] [varchar](50) NULL,
 	[componentCode] [decimal](18, 2) NULL,
 	[isDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_tblDrivenDetails] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
  CONSTRAINT [Driven_Detail] UNIQUE NONCLUSTERED 
 (
-	[drivenType] ASC,
 	[locations] ASC,
 	[pumpType] ASC,
 	[compressorType] ASC,
@@ -196,6 +199,7 @@ CREATE TABLE [master].[tblDrivenDetails](
 	[purifierDrivenBy] ASC,
 	[bearingType] ASC,
 	[vacuumPumpType] ASC,
+	[spindleShaftBearing] ASC,
 	[rotorOverhung] ASC,
 	[attachedOilPump] ASC,
 	[impellerOnMainShaft] ASC,
@@ -405,19 +409,23 @@ GO
 
 CREATE TABLE [master].[tblSpecialFaultCodesDetails](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
-	[specialfaultcodetype] [varchar](50) NULL,
-	[specialmultiple] [int] NULL,
-	[specialcode] [varchar](50) NULL,
+	[specialfaultcodetype] [varchar](50) NOT NULL,
+	[specialmultiple] [int] NOT NULL,
+	[specialcode] [varchar](50) NOT NULL,
+	[componentType] [varchar](50) NULL,
+	[componentTypeSub1] [varchar](50) NULL,
+	[componentTypeSub2] [varchar](50) NULL,
 	[isDeleted] [bit] NOT NULL,
- CONSTRAINT [PK__tblSpeci__3213E83F3C85724C] PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
- CONSTRAINT [specialFaultCodesDetails] UNIQUE NONCLUSTERED 
+ CONSTRAINT [tblSpecial_FaultCodes_Details] UNIQUE NONCLUSTERED 
 (
 	[specialfaultcodetype] ASC,
-	[specialmultiple] ASC,
-	[specialcode] ASC
+	[componentType] ASC,
+	[componentTypeSub1] ASC,
+	[componentTypeSub2] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO

@@ -82,7 +82,7 @@ BEGIN
 
 	select @Id
 END
-
+GO
 
 ---------------------------------------------------------------------------------------- 2
 
@@ -90,7 +90,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAdd
 AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [dbo].[spAddOrUpdateCoupling2Details]
 GO
-
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <04/05/2021>
@@ -102,7 +101,6 @@ CREATE PROCEDURE [dbo].[spAddOrUpdateCoupling2Details]
 )
 AS
 BEGIN
-
 	Declare @Id bigint
 	BEGIN TRY  
 		SET NOCOUNT ON
@@ -178,6 +176,12 @@ AND type IN (N'P', N'PC'))
 	DROP PROCEDURE [dbo].[spAddOrUpdateCSDMdefsDetails]
 GO
 
+---------------------------------------------------------------------------------------- 3
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAddOrUpdateCSDMdefsDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spAddOrUpdateCSDMdefsDetails]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <06/05/2021>
@@ -189,7 +193,6 @@ CREATE PROCEDURE [dbo].[spAddOrUpdateCSDMdefsDetails]
 )
 AS
 BEGIN
-
 	Declare @Id bigint
 	BEGIN TRY  
 		SET NOCOUNT ON
@@ -251,13 +254,7 @@ BEGIN
 
 	select @Id
 END
-
----------------------------------------------------------------------------------------------
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAddOrUpdateCSDMdefsDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spAddOrUpdateCSDMdefsDetails]
-Go
+GO
 
 ------------------------------------------------------------------------------------------- 4
 
@@ -293,7 +290,8 @@ BEGIN
 		fan_or_blowerType varchar(50),
 		purifierDrivenBy varchar(50),
 		bearingType varchar(50),
-		col_cType varchar(50),
+		vacuumPumpType varchar(50),
+		spindleShaftBearing varchar(50),
 		rotorOverhung bit,
 		attachedOilPump bit,
 		impellerOnMainShaft bit,
@@ -330,7 +328,8 @@ BEGIN
 		Case when fan_or_blowerType = ''  then null else fan_or_blowerType end as fan_or_blowerType,
 		Case when purifierDrivenBy = ''  then null else purifierDrivenBy end as purifierDrivenBy,
 		Case when bearingType = ''  then null else bearingType end as bearingType,
-		Case when col_cType = ''  then null else col_cType end as col_cType,
+		Case when vacuumpumptype = ''  then null else vacuumpumptype end as vacuumpumptype,
+		Case when spindleShaftBearing = ''  then null else spindleShaftBearing end as spindleShaftBearing,
 		Case when rotorOverhung = '' then null else rotorOverhung end ,
 		Case when attachedOilPump = '' then null else attachedOilPump end ,
 		Case when impellerOnMainShaft = '' then null else impellerOnMainShaft end  ,
@@ -358,7 +357,7 @@ BEGIN
 		Case when componentCode = '' then null else componentCode end as componentCode
 		FROM OPENXML (@xmlDocumentHandle, 'DrivenDetails',2)
 		WITH (id bigint,componentType varchar(100),drivenType varchar(100),pumpType varchar(100),compressorType varchar(1000),
-		fan_or_blowerType varchar(1000),purifierDrivenBy varchar(100),bearingType varchar(100),col_cType varchar(100),
+		fan_or_blowerType varchar(1000),purifierDrivenBy varchar(100),bearingType varchar(100),vacuumpumptype varchar(100),
 		exciterOverhungOrSupported varchar(100),bearingsType varchar(100),thrustBearing varchar(100),drivenBy varchar(100),
 		locations int,rotorOverhung  varchar(10),attachedOilPump  varchar(10),impellerOnMainShaft  varchar(10),crankHasIntermediateBearing  varchar(10),
 		fanStages  varchar(10),exciter  varchar(10),centrifugalPumpHasBallBearings  varchar(10),propellerpumpHasBallBearings  varchar(10),
@@ -366,14 +365,14 @@ BEGIN
 		slidingVanePumpHasBallBearings  varchar(10), axialRecipPumpHasBallBearings  varchar(10),centrifugalCompressorHasBallBearings  varchar(10),
 		reciprocatingCompressorHasBallBearings  varchar(10),screwCompressorHasBallBearings  varchar(10),screwTwinCompressorHasBallBearingsOnHPSide  varchar(10),
 		lobedFanOrBlowerHasBallBearings  varchar(10),overhungRotorFanOrBlowerHasBearings  varchar(10), supportedRotorFanOrBlowerHasBearings  varchar(10),
-		componentCode varchar(10))
+		componentCode varchar(10), spindleShaftBearing varchar(100))
 
 		select @Id = id from @DetailsTable
 		if(@Id = 0)
 			Begin
 				insert into master.tblDrivenDetails (componentType,drivenType,
 				locations,pumpType,compressorType,fan_or_blowerType,
-				purifierDrivenBy,bearingType,col_cType,
+				purifierDrivenBy,bearingType,vacuumPumpType,spindleShaftBearing,
 				rotorOverhung,attachedOilPump,
 				impellerOnMainShaft,crankHasIntermediateBearing,fanStages,exciter,
 				centrifugalPumpHasBallBearings,propellerpumpHasBallBearings,
@@ -386,7 +385,7 @@ BEGIN
 				bearingsType,thrustBearing,drivenBy,componentCode)
 				select componentType,drivenType,
 				locations,pumpType,compressorType,fan_or_blowerType,
-				purifierDrivenBy,bearingType,col_cType,
+				purifierDrivenBy,bearingType,vacuumPumpType,spindleShaftBearing,
 				rotorOverhung,attachedOilPump,
 				impellerOnMainShaft,crankHasIntermediateBearing,fanStages,exciter,
 				centrifugalPumpHasBallBearings,propellerpumpHasBallBearings,
@@ -403,8 +402,6 @@ BEGIN
 			End
 		Else
 			Begin
-			--select @Id
-			--select * from @DetailsTable
 				Update master.tblDrivenDetails set 
 				componentType = d.componentType,
 				drivenType = d.drivenType,
@@ -414,7 +411,8 @@ BEGIN
 				fan_or_blowerType = d.fan_or_blowerType,
 				purifierDrivenBy = d.purifierDrivenBy,
 				bearingType = d.bearingType,
-				col_cType = d.col_cType,
+				vacuumPumpType = d.vacuumPumpType,
+				spindleShaftBearing = d.spindleShaftBearing,
 				rotorOverhung = d.rotorOverhung,
 				attachedOilPump = d.attachedOilPump,
 				impellerOnMainShaft = d.impellerOnMainShaft,
@@ -448,17 +446,18 @@ BEGIN
 	END TRY  
 	BEGIN CATCH  
 			set @Id = 0
-			SELECT
-    ERROR_NUMBER() AS ErrorNumber,
-    ERROR_STATE() AS ErrorState,
-    ERROR_SEVERITY() AS ErrorSeverity,
-    ERROR_PROCEDURE() AS ErrorProcedure,
-    ERROR_LINE() AS ErrorLine,
-    ERROR_MESSAGE() AS ErrorMessage;
+			--SELECT
+   -- ERROR_NUMBER() AS ErrorNumber,
+   -- ERROR_STATE() AS ErrorState,
+   -- ERROR_SEVERITY() AS ErrorSeverity,
+   -- ERROR_PROCEDURE() AS ErrorProcedure,
+   -- ERROR_LINE() AS ErrorLine,
+   -- ERROR_MESSAGE() AS ErrorMessage;
 	END CATCH
 
 	select @Id
 END
+GO
 
 --------------------------------------------------------------------------------------------- 5
 
@@ -478,7 +477,7 @@ CREATE PROCEDURE [dbo].[spAddOrUpdateDriverDetails]
 )
 AS
 BEGIN
-
+	
 	Declare @Id bigint
 	BEGIN TRY  
 		SET NOCOUNT ON
@@ -487,14 +486,14 @@ BEGIN
 		
 
 		Declare @DetailsTable table (id bigint,componentType varchar(50),driverType varchar(50),motorDrive varchar(50),locations int,		
-		cylinders int,mortorPoles int,motorFan bit, motorBallBearings bit,drivenBallBearings bit,drivenBalanceable bit,
+		cylinders int,motorPoles int,motorFan bit, motorBallBearings bit,drivenBallBearings bit,drivenBalanceable bit,
 		turbineReductionGear bit,turbineRotorSupported bit,turbineBallBearing bit,turbineThrustBearing bit,
 		turbineThrustBearingIsBall bit, componentCode decimal(18,2))
 				
 				insert into @DetailsTable
 				select id as RecordId,componentType,driverType,motorDrive,locations,
 				Case when cylinders = '' then null else cylinders end  as cylinders,
-				Case when mortorPoles = '' then null else mortorPoles end  as mortorPoles,
+				Case when motorPoles = '' then null else motorPoles end  as motorPoles,
 				Case when motorFan = '' then null else motorFan end  as motorFan,
 				Case when motorBallBearings = '' then null else motorBallBearings end  as motorBallBearings,
 				Case when drivenBallBearings = '' then null else drivenBallBearings end as drivenBallBearings,
@@ -508,7 +507,7 @@ BEGIN
 				--into #DetailsTable 
 				FROM OPENXML (@xmlDocumentHandle, 'DriverDetails',2)
 				WITH (id bigint,componentType varchar(100),locations int,driverType varchar(100),cylinders varchar(10),motorDrive varchar(100),motorFan varchar(10),
-				motorBallBearings  varchar(10),drivenBallBearings  varchar(10),drivenBalanceable  varchar(10),mortorPoles varchar(10),turbineReductionGear  varchar(10),
+				motorBallBearings  varchar(10),drivenBallBearings  varchar(10),drivenBalanceable  varchar(10),motorPoles varchar(10),turbineReductionGear  varchar(10),
 				turbineRotorSupported  varchar(10),turbineBallBearing  varchar(10),turbineThrustBearing  varchar(10),turbineThrustBearingIsBall  varchar(10),
 				componentCode varchar(10))
 
@@ -516,10 +515,10 @@ BEGIN
 
 		if(@Id = 0)
 			Begin
-				insert into master.tblDriverDetails (componentType,driverType,motorDrive,locations,cylinders,mortorPoles,
+				insert into master.tblDriverDetails (componentType,driverType,motorDrive,locations,cylinders,motorPoles,
 				motorFan,motorBallBearings,drivenBallBearings,drivenBalanceable,turbineReductionGear,turbineRotorSupported,
 				turbineBallBearing,turbineThrustBearing,turbineThrustBearingIsBall,componentCode)
-				select componentType,driverType,motorDrive,locations,cylinders,mortorPoles,
+				select componentType,driverType,motorDrive,locations,cylinders,motorPoles,
 				motorFan,motorBallBearings,drivenBallBearings,drivenBalanceable,turbineReductionGear,turbineRotorSupported,
 				turbineBallBearing,turbineThrustBearing,turbineThrustBearingIsBall,componentCode FROM @DetailsTable
 				
@@ -535,7 +534,7 @@ BEGIN
 				motorDrive = d.motorDrive,
 				locations = d.locations,
 				cylinders = d.cylinders,
-				mortorPoles = d.mortorPoles,
+				motorPoles = d.motorPoles,
 				motorFan = d.motorFan,
 				motorBallBearings = d.motorBallBearings,
 				drivenBallBearings = d.drivenBallBearings,
@@ -565,6 +564,7 @@ BEGIN
 
 	select @Id
 END
+GO
 
 -------------------------------------------------------------------------------------------- 6
 
@@ -585,7 +585,7 @@ CREATE PROCEDURE [dbo].[spAddOrUpdateIntermediateDetails]
 )
 AS
 BEGIN
-
+	
 	Declare @Id bigint
 	BEGIN TRY  
 		SET NOCOUNT ON
@@ -593,26 +593,28 @@ BEGIN
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
 		
 		Declare @DetailsTable table (id bigint,componentType varchar(100),intermediateType varchar(100),
-		locations int,drivenBy varchar(100),speedChangesMax int,gearBoxLocations int,
+		locations int,drivenBy varchar(100),speedChangesMax int,
+		--gearBoxLocations int,
 		inputBearing int ,intermediateBearing1st varchar(1000),intermediateBearing2nd varchar(1000),
 		outputBearing varchar(1000),componentCode decimal(18,2))
 				
 		insert into @DetailsTable
-		select id,componentType,intermediateType, locations,drivenBy,speedChangesMax,gearBoxLocations,
-		inputBearing,intermediateBearing1st,intermediateBearing2nd,outputBearing,componentCode
+		select id,componentType,intermediateType, 
+		Case when locations = '' then null else locations end,drivenBy,speedChangesMax,
+		Case when inputBearing = '' then null else inputBearing end,
+		intermediateBearing1st,intermediateBearing2nd,outputBearing,componentCode
 		FROM OPENXML (@xmlDocumentHandle, 'IntermediateDetails',2)
 		WITH (id bigint,componentType varchar(100),intermediateType varchar(100), 
-		drivenBy varchar(100),inputBearing int ,intermediateBearing1st varchar(1000),
+		drivenBy varchar(100),inputBearing varchar(10) ,intermediateBearing1st varchar(1000),
 		intermediateBearing2nd varchar(1000),outputBearing varchar(1000),speedChangesMax int,
-		locations int, gearBoxLocations int,componentCode decimal(18,2))
+		locations varchar(10), --gearBoxLocations int,
+		componentCode decimal(18,2))
 
 		select @Id = id from @DetailsTable
 		if(@Id = 0)
 			Begin
-				insert into master.tblIntermediateDetails (componentType,immediateType, locations,drivenBy,speedChangesMax,gearBoxLocations,
-				inputBearing,intermediateBearing1st,intermediateBearing2nd,outputBearing,componentCode)
-				select componentType,intermediateType, locations,drivenBy,speedChangesMax,gearBoxLocations,
-				inputBearing,intermediateBearing1st,intermediateBearing2nd,outputBearing,componentCode from @DetailsTable
+				insert into master.tblIntermediateDetails (componentType,intermediateType, locations,drivenBy,speedChangesMax,componentCode)
+				select componentType,intermediateType, locations,drivenBy,speedChangesMax,componentCode from @DetailsTable
 				
 				set @Id = SCOPE_IDENTITY()
 
@@ -621,15 +623,10 @@ BEGIN
 			Begin
 				Update master.tblIntermediateDetails set 
 				componentType = d.componentType,
-				immediateType = d.intermediateType,
+				intermediateType = d.intermediateType,
 				locations = d.locations,
 				drivenBy = d.drivenBy,
 				speedChangesMax = d.speedChangesMax,
-				gearBoxLocations = d.gearBoxLocations,
-				inputBearing = d.inputBearing,
-				intermediateBearing1st = d.intermediateBearing1st,
-				intermediateBearing2nd = d.intermediateBearing2nd,
-				outputBearing = d.outputBearing,
 				componentCode = d.componentCode
 				from master.tblIntermediateDetails a
 				inner join @DetailsTable d on a.id = d.id
@@ -651,32 +648,121 @@ BEGIN
 	select @Id
 END
 
+--select * from master.tblIntermediateDetails
+GO
 --------------------------------------------------------------------------------------------- 7
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAddOrUpdateSpecialFaultCodesDetails]') 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAddOrUpdatePickupCodeDetails]') 
 AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spAddOrUpdateSpecialFaultCodesDetails]
-Go
+	DROP PROCEDURE [dbo].[spAddOrUpdatePickupCodeDetails]
+GO
+
+CREATE PROCEDURE [dbo].[spAddOrUpdatePickupCodeDetails]
+(
+   @xmlInput xml = ''
+)
+AS
+BEGIN
+	
+	Declare @Id bigint
+	BEGIN TRY  
+		SET NOCOUNT ON
+		Declare @xmlDocumentHandle int
+		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
+		
+		Declare @DetailsTable table (id int,driverLocations int,driverLocationNDE bit,driverLocationDE bit,
+	    intermediateLocations int,intermediatepresent bit,drivenLocations int,drivenLocationDE bit,
+		drivenLocationNDE bit,driverPickupCode varchar(50),coupling1PickupCode varchar(50),intermediatePickupCode varchar(50),
+	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50))
+		
+		insert into @DetailsTable
+		select id,
+		driverLocations,
+		driverLocationNDE,
+		driverLocationDE,
+		intermediateLocations,
+		intermediatepresent,
+		drivenLocations,
+		drivenLocationDE,
+		drivenLocationNDE,
+		Case when driverPickupCode = '' then null else driverPickupCode end as driverPickupCode,
+		Case when coupling1PickupCode = '' then null else coupling1PickupCode end as coupling1PickupCode,
+		Case when intermediatePickupCode = '' then null else intermediatePickupCode end as intermediatePickupCode,
+		Case when coupling2PickupCode = '' then null else coupling2PickupCode end as coupling2PickupCode,
+		Case when drivenPickupCode = '' then null else drivenPickupCode end as drivenPickupCode
+		FROM OPENXML (@xmlDocumentHandle, 'PickupCodeDetails',2)
+		WITH (id int,driverLocations int,driverLocationNDE bit,driverLocationDE bit,
+	    intermediateLocations int,intermediatepresent bit,drivenLocations int,drivenLocationDE bit,
+		drivenLocationNDE bit,driverPickupCode varchar(50),coupling1PickupCode varchar(50),intermediatePickupCode varchar(50),
+	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50))	
+		
+		--select * from @DetailsTable
+
+		select @Id = id from @DetailsTable
+		if(@Id = 0)
+			Begin
+				insert into master.tblPickupCodeDetails
+				(driverLocations,driverLocationNDE,driverLocationDE,intermediateLocations,intermediatepresent,
+				 drivenLocations,drivenLocationDE,drivenLocationNDE,
+				 driverPickupCode,coupling1PickupCode,intermediatePickupCode,coupling2PickupCode,drivenPickupCode)
+				 select driverLocations,driverLocationNDE,driverLocationDE,intermediateLocations,intermediatepresent,
+				 drivenLocations,drivenLocationDE,drivenLocationNDE,
+				 driverPickupCode,coupling1PickupCode,intermediatePickupCode,coupling2PickupCode,drivenPickupCode from @DetailsTable
+				
+				set @Id = SCOPE_IDENTITY()
+
+			End
+		Else
+			Begin
+				Update master.tblPickupCodeDetails set 
+				driverLocations = d.driverLocations,
+				driverLocationNDE = d.driverLocationNDE,
+				driverLocationDE = d.driverLocationDE,
+				intermediateLocations = d.intermediateLocations,
+				intermediatepresent = d.intermediatepresent,
+				drivenLocations = d.drivenLocations,
+				drivenLocationDE = d.drivenLocationDE,
+				drivenLocationNDE = d.drivenLocationNDE,
+				driverPickupCode = d.driverPickupCode,
+				coupling1PickupCode = d.coupling1PickupCode,
+				intermediatePickupCode = d.intermediatePickupCode,
+				coupling2PickupCode = d.coupling2PickupCode,
+				drivenPickupCode = d.drivenPickupCode
+				from master.tblPickupCodeDetails a
+				inner join @DetailsTable d on a.id = d.id
+				where a.id = @Id
+
+			End
+	END TRY  
+	BEGIN CATCH  
+			set @Id = 0
+			--SELECT
+   -- ERROR_NUMBER() AS ErrorNumber,
+   -- ERROR_STATE() AS ErrorState,
+   -- ERROR_SEVERITY() AS ErrorSeverity,
+   -- ERROR_PROCEDURE() AS ErrorProcedure,
+   -- ERROR_LINE() AS ErrorLine,
+   -- ERROR_MESSAGE() AS ErrorMessage;
+	END CATCH
+
+	select @Id
+END
+GO
+
+----------------------------------------------------------------------------------------------8
+
 -- =============================================
 -- Author:      <Vishal Dhure>  Updated By: <Sandip Patil>
 -- Create Date: <05/05/2021>
 -- Description: <SP used for save Special Fault Codes Detail>
 -- =============================================
+
 CREATE PROCEDURE [dbo].[spAddOrUpdateSpecialFaultCodesDetails]
 (
    @xmlInput xml = ''
 )
 AS
 BEGIN
-
---	Declare  @xmlInput xml = ''
-
---	set @xmlInput = '<SpecialFaultCodesDetails xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
---  <id>0</id>
---  <specialfaultcodetype>Test1</specialfaultcodetype>
---  <specialmultiple>10</specialmultiple>
---  <specialcode>EP1</specialcode>
---</SpecialFaultCodesDetails>'
 	
 	Declare @Id bigint
 	BEGIN TRY  
@@ -728,14 +814,9 @@ BEGIN
 
 	select @Id
 END
+GO
 
-
---------------------------------------------------------------------------------------------- 8
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteCoupling1DetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spDeleteCoupling1DetailsById]
-Go
+----------------------------------------------------------------------------------------------9
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -752,12 +833,10 @@ BEGIN
 	select @id
 END
 
----------------------------------------------------------------------------------------------- 9
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteCoupling2DetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spDeleteCoupling2DetailsById]
-Go
+GO
+
+---------------------------------------------------------------------------------------------- 10
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -774,12 +853,10 @@ BEGIN
 	select @id
 END
 
-------------------------------------------------------------------------------------------- 10
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteCSDMdefsDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spDeleteCSDMdefsDetailsById]
-Go
+GO
+
+---------------------------------------------------------------------------------------------- 11
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -796,12 +873,11 @@ BEGIN
 	select @id
 END
 
-------------------------------------------------------------------------------------------- 11
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteDrivenDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spDeleteDrivenDetailsById]
-Go
+GO
+
+---------------------------------------------------------------------------------------------- 12
+
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -818,12 +894,10 @@ BEGIN
 	select @id
 END
 
-------------------------------------------------------------------------------------------- 12
+--Update master.tblDrivenDetails set isDeleted = 0
+GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteDriverDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spDeleteDriverDetailsById]
-Go
+---------------------------------------------------------------------------------------------- 13
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -839,13 +913,9 @@ BEGIN
 	Update master.tblDriverDetails set isDeleted = 1 where Id = @id
 	select @id
 END
+GO
 
-------------------------------------------------------------------------------------------- 13
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteIntermediateDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spDeleteIntermediateDetailsById]
-Go
+---------------------------------------------------------------------------------------------- 14
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -862,12 +932,30 @@ BEGIN
 	select @id
 END
 
-------------------------------------------------------------------------------------------- 14
+GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spDeleteSpecialFaultCodesDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spDeleteSpecialFaultCodesDetailsById]
-Go
+---------------------------------------------------------------------------------------------- 15
+
+-- =============================================
+-- Author:      <Vishal Dhure>
+-- Create Date: <28/04/2021>
+-- Description: <SP used for Delete Pickup Code Details By Id>
+-- =============================================
+
+Create PROCEDURE [dbo].[spDeletePickupCodeDetailsById]
+(
+   @id bigint
+)
+AS
+BEGIN
+	Update master.tblPickupCodeDetails set isDeleted = 1 where Id = @id
+	select @id
+END
+
+
+GO
+
+---------------------------------------------------------------------------------------------- 16
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -883,13 +971,15 @@ BEGIN
 	Update master.tblSpecialFaultCodesDetails set isDeleted = 1 where Id = @id
 	select @id
 END
+GO
 
-------------------------------------------------------------------------------------------- 15
+---------------------------------------------------------------------------------------------- 17
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGenerateMIDDerivation]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGenerateMIDDerivation]
-Go
+-- =============================================
+-- Author:      <Vishal Dhure>
+-- Create Date: <05/05/2021>
+-- Description: <SP used for Generate MID Derivation>
+-- =============================================
 
 CREATE Procedure [dbo].[spGenerateMIDDerivation]
 @xmlInput xml = ''
@@ -904,12 +994,9 @@ Declare @driverPickupCode varchar(50),@drivenPickupCode varchar(50),@intermediat
 @coupling1PickupCode varchar(50),@coupling2PickupCode varchar(50)
 
 --Declare variable for driver component --
-Declare @componentType varchar(100),@driverType varchar(100),@motorDrive varchar(100)
-Declare @locations int,@cylinders int,@mortorPoles int
-Declare @motorFan varchar(10),@motorBallBearings  varchar(10),@drivenBallBearings  varchar(10),@drivenBalanceable  varchar(10),
+Declare @componentType varchar(100),@driverType varchar(100),@motorDrive varchar(100),@locations int,@cylinders int,@motorPoles int,@motorFan varchar(10),@motorBallBearings  varchar(10),@drivenBallBearings  varchar(10),@drivenBalanceable  varchar(10),
 @turbineReductionGear  varchar(10),@turbineRotorSupported  varchar(10),@turbineBallBearing  varchar(10),@turbineThrustBearing  varchar(10),
-@turbineThrustBearingIsBall  varchar(10),@driverLocationNDE bit,@driverLocationDE bit
-Declare @driverRPM decimal(18,2) = null
+@turbineThrustBearingIsBall  varchar(10),@driverLocationNDE bit,@driverLocationDE bit,@driverRPM decimal(18,2) = null
 --Declare variable for driver component --
 
 --Declare variable for coupling1 component --
@@ -923,22 +1010,16 @@ Declare @c2componentType varchar(100),@c2couplingType varchar(100), @c2coupledCo
 --Declare variable for coupling2 component --
 
 --Declare variable for intermediate component --
-Declare @intercomponentType varchar(100),@immediateType varchar(100), 
-@drivenBy varchar(100),@inputBearing int ,@intermediateBearing1st varchar(1000),
-@intermediateBearing2nd varchar(1000),@outputBearing varchar(1000)
-Declare @speedChangesMax int,@interlocations int, @gearBoxLocations int,@intermediateSpeedRatio decimal(18,4)
-Declare @intermediatePresent bit
+Declare @intercomponentType varchar(100),@intermediateType varchar(100),@drivenBy varchar(100),@speedChangesMax int,@interlocations int, @intermediateSpeedRatio decimal(18,4),@intermediatePresent bit
 --Declare variable for intermediate component --
 
 --Declare variable for driven component --
 Declare @drivencomponentType varchar(100),@drivenType varchar(100), 
 @pumpType varchar(100),@compressorType varchar(1000) ,@fan_or_blowerType varchar(1000),
-@purifierDrivenBy varchar(100),@bearingType varchar(100),@col_cType varchar(100),
+@purifierDrivenBy varchar(100),@bearingType varchar(100),@vacuumPumpType varchar(100),
 @exciterOverhungOrSupported varchar(100),@bearingsType varchar(100),@thrustBearing varchar(100),
-@drivenBy1 varchar(100) = null
-Declare @drivenRPM decimal(18,2)
-Declare @drivenlocations int
-Declare @rotorOverhung  varchar(10),@attachedOilPump  varchar(10),@impellerOnMainShaft  varchar(10),@crankHasIntermediateBearing  varchar(10),
+@drivenBy1 varchar(100) = null,@drivenRPM decimal(18,2),@drivenlocations int,@rotorOverhung  varchar(10),
+@attachedOilPump  varchar(10),@impellerOnMainShaft  varchar(10),@crankHasIntermediateBearing  varchar(10),
 @fanStages  varchar(10),@exciter  varchar(10),@centrifugalPumpHasBallBearings  varchar(10),@propellerpumpHasBallBearings  varchar(10),
 @rotaryThreadPumpHasBallBearings  varchar(10), @gearPumpHasBallBearings  varchar(10),@screwPumpHasBallBearings  varchar(10),
 @slidingVanePumpHasBallBearings  varchar(10), @axialRecipPumpHasBallBearings  varchar(10),@centrifugalCompressorHasBallBearings  varchar(10),
@@ -948,27 +1029,45 @@ Declare @rotorOverhung  varchar(10),@attachedOilPump  varchar(10),@impellerOnMai
 --Declare variable for driven component --
 
 --- Read xml for driver component --
-select @componentType = case when componentType = '' then null else componentType end,@driverType = driverType, @motorDrive = motorDrive,
-@locations = locations,@cylinders = cylinders,@mortorPoles = mortorPoles,
+
+select @componentType = case when componentType = '' then null else componentType end,
+@locations = locations,
+@driverRPM = Convert(decimal(18,2),Case when rpm = '' then null else rpm end ),
+@driverLocationNDE  = Case when driverLocationNDE  = '' then null else driverLocationNDE end ,
+@driverLocationDE  = Case when driverLocationDE  = '' then null else driverLocationDE end ,
+@driverType = case when driverType = '' then null else driverType end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver',2)
+WITH (componentType varchar(100),locations int,rpm  varchar(10),driverLocationNDE varchar(10),driverLocationDE varchar(10),
+driverType varchar(100))
+
+select @cylinders = cylinders
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/drivers/diesel',2)
+WITH (cylinders int)
+
+
+select @motorDrive =  Case when motorDrive = '' then null else motorDrive end,
 @motorFan = Case when motorFan = '' then null else motorFan end ,
 @motorBallBearings = Case when motorBallBearings = '' then null else motorBallBearings end ,
 @drivenBallBearings = Case when drivenBallBearings = '' then null else drivenBallBearings end,
-@drivenBalanceable = Case when drivenBalanceable = '' then null else drivenBalanceable end ,
-@turbineReductionGear = Case when turbineReductionGear = '' then null else turbineReductionGear end ,
+@drivenBalanceable = Case when drivenBalanceable = '' then null else drivenBalanceable end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/drivers/motor',2)
+WITH (motorDrive varchar(100),motorFan varchar(10),motorBallBearings  varchar(10),drivenBallBearings  varchar(10),drivenBalanceable  varchar(10))
+
+select @motorPoles = motorPoles 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/drivers/motor/vfd',2)
+WITH (motorPoles int)
+
+select @turbineReductionGear = Case when turbineReductionGear = '' then null else turbineReductionGear end ,
 @turbineRotorSupported = Case when turbineRotorSupported = '' then null else turbineRotorSupported end ,
 @turbineBallBearing = Case when turbineBallBearing = '' then null else turbineBallBearing end ,
 @turbineThrustBearing = Case when turbineThrustBearing = '' then null else turbineThrustBearing end , 
-@turbineThrustBearingIsBall = Case when turbineThrustBearingIsBall = '' then null else turbineThrustBearingIsBall end  ,
-@driverLocationNDE  = Case when driverLocationNDE  = '' then null else driverLocationNDE end  ,
-@driverLocationDE  = Case when driverLocationDE  = '' then null else driverLocationDE end  ,
---@driverRPM = rpm
-@driverRPM = Convert(decimal(18,2),Case when rpm = '' then null else rpm end )
-FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver',2)
-WITH (componentType varchar(100),locations int,driverType varchar(100),cylinders int,motorDrive varchar(100),motorFan varchar(10),
-motorBallBearings  varchar(10),drivenBallBearings  varchar(10),drivenBalanceable  varchar(10),mortorPoles int,turbineReductionGear  varchar(10),
-turbineRotorSupported  varchar(10),turbineBallBearing  varchar(10),turbineThrustBearing  varchar(10),turbineThrustBearingIsBall  varchar(10),
-rpm  varchar(10),driverLocationDE varchar(10),driverLocationNDE varchar(10))
+@turbineThrustBearingIsBall = Case when turbineThrustBearingIsBall = '' then null else turbineThrustBearingIsBall end  
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/drivers/turbine',2)
+WITH (turbineReductionGear  varchar(10),
+turbineRotorSupported  varchar(10),turbineBallBearing  varchar(10),turbineThrustBearing  varchar(10),turbineThrustBearingIsBall  varchar(10))
+
 --- Read xml for driver component --
+
 
 --- Read xml for coupling1 component --
 select @c1componentType = case when componentType = '' then null else componentType end,@c1couplingType = couplingType,@c1coupledComponentType1 = coupledComponentType1,
@@ -977,99 +1076,347 @@ select @c1componentType = case when componentType = '' then null else componentT
 FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/coupling1',2)
 WITH (componentType varchar(100),couplingType varchar(100),coupledComponentType1 varchar(100),coupledComponentType2 varchar(100),
 couplingPosition int,locations int,speedratio varchar(20))
+
 --- Read xml for coupling1 component --
 
 --- Read xml for coupling2 component --
 select @c2componentType = case when componentType = '' then null else componentType end ,@c2couplingType = couplingType,@c2coupledComponentType1 = coupledComponentType1,
 @c2coupledComponentType2 = coupledComponentType2,@c2couplingPosition = couplingPosition,@c2locations = locations,
 @c2SpeedRatio = ISNULL(Convert(decimal(18,4),Case when speedratio = '' then null else speedratio end ),1) 
- FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/coupling2',2)
-WITH (componentType varchar(100),couplingType varchar(100),coupledComponentType1 varchar(100),coupledComponentType2 varchar(100),
-couplingPosition int,locations int,speedratio varchar(20))
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/coupling2',2)
+WITH (componentType varchar(100),couplingType varchar(100),coupledComponentType1 varchar(100),coupledComponentType2 varchar(100),couplingPosition int,locations int,speedratio varchar(20))
 --- Read xml for coupling2 component --
 
 --- Read xml for intermediate component --
-select @intercomponentType = case when componentType = '' then null else componentType end,@immediateType = immediateType, 
-@drivenBy = drivenBy,@inputBearing = inputBearing,@intermediateBearing1st = intermediateBearing1st,
-@intermediateBearing2nd = intermediateBearing2nd,@outputBearing = outputBearing,
-@speedChangesMax = speedChangesMax,@interlocations = locations, @gearBoxLocations = gearBoxLocations,
+select @intercomponentType = case when componentType = '' then null else componentType end,
+@intermediateType = case when intermediateType = '' then null else intermediateType end, 
+@interlocations = locations, 
 @intermediateSpeedRatio = ISNULL(Convert(decimal(18,4),Case when speedratio = '' then null else speedratio end ),1) 
 FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/intermediate',2)
-WITH (componentType varchar(100),immediateType varchar(100), 
-drivenBy varchar(100),inputBearing int ,intermediateBearing1st varchar(1000),
-intermediateBearing2nd varchar(1000),outputBearing varchar(1000),speedChangesMax int,
-locations int, gearBoxLocations int,speedratio varchar(20))
+WITH (componentType varchar(100),intermediateType varchar(100),locations int,speedratio varchar(20))
+
+select @speedChangesMax = case when speedChangesMax = '' then null else speedChangesMax end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/intermediate/intermediates/gearbox',2)
+WITH (speedChangesMax int)
+
+if(UPPER(RTRIM(LTRIM(@intermediateType))) = 'AOP')
+	Begin
+		select @drivenBy = case when drivenBy = '' then null else drivenBy end
+		FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/intermediate/intermediates/AOP',2)
+		WITH (drivenBy varchar(50))
+		set @speedChangesMax = null;
+	End
+else if(UPPER(RTRIM(LTRIM(@intermediateType))) = 'ACCDRGR')
+	Begin
+		select @drivenBy = case when drivenBy = '' then null else drivenBy end
+		FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/intermediate/intermediates/AccDrGr',2)
+		WITH (drivenBy varchar(50))
+		set @speedChangesMax = null;
+	End
+
+
 --- Read xml for intermediate component --
 
 --- Read xml for driven component --
-select @drivencomponentType = Case when componentType = '' then null else componentType end,@drivenType = drivenType, 
-@pumpType = pumpType,@compressorType = compressorType,@fan_or_blowerType = fan_or_blowerType,
-@purifierDrivenBy = purifierDrivenBy,@bearingType = bearingType,@col_cType = col_cType,
-@exciterOverhungOrSupported = exciterOverhungOrSupported,@bearingsType = bearingsType,
-@thrustBearing = thrustBearing,@drivenBy1 = drivenBy,@drivenlocations = locations,
-
-@rotorOverhung = Case when rotorOverhung = '' then null else rotorOverhung end ,
-@attachedOilPump = Case when attachedOilPump = '' then null else attachedOilPump end ,
-@impellerOnMainShaft = Case when impellerOnMainShaft = '' then null else impellerOnMainShaft end  ,
-@crankHasIntermediateBearing = Case when crankHasIntermediateBearing = '' then null else crankHasIntermediateBearing end ,
-@fanStages = Case when fanStages = '' then null else fanStages end ,
-@exciter = Case when exciter = '' then null else exciter end  ,
-@centrifugalPumpHasBallBearings = Case when centrifugalPumpHasBallBearings = '' then null else centrifugalPumpHasBallBearings end  ,
-@propellerpumpHasBallBearings = Case when propellerpumpHasBallBearings = '' then null else propellerpumpHasBallBearings end ,
-@rotaryThreadPumpHasBallBearings = Case when rotaryThreadPumpHasBallBearings = '' then null else rotaryThreadPumpHasBallBearings end  , 
-@gearPumpHasBallBearings = Case when gearPumpHasBallBearings = '' then null else gearPumpHasBallBearings end ,
-@screwPumpHasBallBearings = Case when screwPumpHasBallBearings = '' then null else screwPumpHasBallBearings end ,
-@slidingVanePumpHasBallBearings = Case when slidingVanePumpHasBallBearings = '' then null else slidingVanePumpHasBallBearings end , 
-@axialRecipPumpHasBallBearings = Case when axialRecipPumpHasBallBearings = '' then null else axialRecipPumpHasBallBearings end ,
-@centrifugalCompressorHasBallBearings = Case when centrifugalCompressorHasBallBearings = '' then null else centrifugalCompressorHasBallBearings end ,
-@reciprocatingCompressorHasBallBearings = Case when reciprocatingCompressorHasBallBearings = '' then null else reciprocatingCompressorHasBallBearings end ,
-@screwCompressorHasBallBearings = Case when screwCompressorHasBallBearings = '' then null else screwCompressorHasBallBearings end ,
-@screwTwinCompressorHasBallBearingsOnHPSide = Case when screwTwinCompressorHasBallBearingsOnHPSide = '' then null else screwTwinCompressorHasBallBearingsOnHPSide end  ,
-@lobedFanOrBlowerHasBallBearings = Case when lobedFanOrBlowerHasBallBearings = '' then null else lobedFanOrBlowerHasBallBearings end ,
-@overhungRotorFanOrBlowerHasBearings = Case when overhungRotorFanOrBlowerHasBearings = '' then null else overhungRotorFanOrBlowerHasBearings end  ,
-@supportedRotorFanOrBlowerHasBearings = Case when supportedRotorFanOrBlowerHasBearings = '' then null else supportedRotorFanOrBlowerHasBearings end  ,
---@drivenRPM = rpm
-@drivenRPM = Convert(decimal(18,2),Case when rpm = '' then null else rpm end ),
+select @drivencomponentType = Case when componentType = '' then null else componentType end,
+@drivenlocations = locations,
 @drivenLocationNDE  = Case when drivenLocationNDE  = '' then null else drivenLocationNDE end  ,
-@drivenLocationDE  = Case when drivenLocationDE  = '' then null else drivenLocationDE end  
+@drivenLocationDE  = Case when drivenLocationDE  = '' then null else drivenLocationDE end ,
+@drivenType = Case when drivenType = '' then null else drivenType end 
 FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven',2)
-WITH (componentType varchar(100),drivenType varchar(100),pumpType varchar(100),compressorType varchar(1000),
-fan_or_blowerType varchar(1000),purifierDrivenBy varchar(100),bearingType varchar(100),col_cType varchar(100),
-exciterOverhungOrSupported varchar(100),bearingsType varchar(100),thrustBearing varchar(100),drivenBy varchar(100),
-locations int,rotorOverhung  varchar(10),attachedOilPump  varchar(10),impellerOnMainShaft  varchar(10),crankHasIntermediateBearing  varchar(10),
-fanStages  varchar(10),exciter  varchar(10),centrifugalPumpHasBallBearings  varchar(10),propellerpumpHasBallBearings  varchar(10),
-rotaryThreadPumpHasBallBearings  varchar(10), gearPumpHasBallBearings  varchar(10),screwPumpHasBallBearings  varchar(10),
-slidingVanePumpHasBallBearings  varchar(10), axialRecipPumpHasBallBearings  varchar(10),centrifugalCompressorHasBallBearings  varchar(10),
-reciprocatingCompressorHasBallBearings  varchar(10),screwCompressorHasBallBearings  varchar(10),screwTwinCompressorHasBallBearingsOnHPSide  varchar(10),
-lobedFanOrBlowerHasBallBearings  varchar(10),overhungRotorFanOrBlowerHasBearings  varchar(10), supportedRotorFanOrBlowerHasBearings  varchar(10),
-rpm varchar(10),drivenLocationDE varchar(10),drivenLocationNDE varchar(10))
+WITH (componentType varchar(100),drivenType varchar(100),locations int,
+drivenLocationDE varchar(10),drivenLocationNDE varchar(10))
+
+--<pumpType>--
+select @pumpType = pumpType FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump',2)
+WITH (pumpType varchar(100))
+--<pumpType>--
+
+--<pumpCentrifugal>
+select @thrustBearing = thrustBearing,
+@rotorOverhung = Case when rotorOverhung = '' then null else rotorOverhung end ,
+@centrifugalPumpHasBallBearings = Case when centrifugalPumpHasBallBearings = '' then null else centrifugalPumpHasBallBearings end   
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpCentrifugal',2)
+WITH (thrustBearing varchar(100),rotorOverhung  varchar(10),centrifugalPumpHasBallBearings  varchar(10))
+--<pumpCentrifugal>
+
+
+--<pumpPropeller>
+select @propellerpumpHasBallBearings = Case when propellerpumpHasBallBearings = '' then null else propellerpumpHasBallBearings end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpPropeller',2)
+WITH (propellerpumpHasBallBearings  varchar(10))
+--<pumpPropeller>
+
+--<pumpRotaryThread>
+select @rotaryThreadPumpHasBallBearings = Case when rotaryThreadPumpHasBallBearings = '' then null else rotaryThreadPumpHasBallBearings end  
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotaryThread',2)
+WITH (rotaryThreadPumpHasBallBearings  varchar(10))
+--<pumpRotaryThread>
+
+--<pumpGear>
+select @gearPumpHasBallBearings = Case when gearPumpHasBallBearings = '' then null else gearPumpHasBallBearings end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpGear',2)
+WITH (gearPumpHasBallBearings  varchar(10))
+--<pumpGear>
+
+--<pumpRotaryScrew>
+select @screwPumpHasBallBearings = Case when screwPumpHasBallBearings = '' then null else screwPumpHasBallBearings end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotaryScrew',2)
+WITH (screwPumpHasBallBearings  varchar(10))
+--<pumpRotaryScrew>
+
+--<pumpRotarySlidingVane>
+select @rotorOverhung = Case when rotorOverhung = '' then null else rotorOverhung end ,
+@slidingVanePumpHasBallBearings = Case when slidingVanePumpHasBallBearings = '' then null else slidingVanePumpHasBallBearings end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotarySlidingVane',2)
+WITH (rotorOverhung  varchar(10),slidingVanePumpHasBallBearings  varchar(10))
+--<pumpRotarySlidingVane>
+
+--<pumpRotaryAxialRecip>
+select @attachedOilPump = Case when attachedOilPump = '' then null else attachedOilPump end ,
+@axialRecipPumpHasBallBearings = Case when axialRecipPumpHasBallBearings = '' then null else axialRecipPumpHasBallBearings end ,
+@thrustBearing = Case when thrustBearing = '' then null else thrustBearing end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotaryAxialRecip',2)
+WITH (attachedOilPump  varchar(10),axialRecipPumpHasBallBearings  varchar(10),thrustBearing varchar(50))
+--<pumpRotaryAxialRecip>
+
+--<compressor>
+select @compressorType = Case when compressorType = '' then null else compressorType end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor',2)
+WITH (compressorType varchar(50))
+--<compressor>
+
+--<compressorCentrifugal>
+select @impellerOnMainShaft = Case when impellerOnMainShaft = '' then null else impellerOnMainShaft end,  
+@centrifugalCompressorHasBallBearings = Case when centrifugalCompressorHasBallBearings = '' then null else centrifugalCompressorHasBallBearings end ,
+@thrustBearing = Case when thrustBearing = '' then null else thrustBearing end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorCentrifugal',2)
+WITH (impellerOnMainShaft  varchar(20),centrifugalCompressorHasBallBearings  varchar(20),thrustBearing  varchar(100))
+--<compressorCentrifugal>
+
+--<compressorReciporcating>
+select @crankHasIntermediateBearing = Case when crankHasIntermediateBearing = '' then null else crankHasIntermediateBearing end ,
+@reciprocatingCompressorHasBallBearings = Case when reciprocatingCompressorHasBallBearings = '' then null else reciprocatingCompressorHasBallBearings end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorReciporcating',2)
+WITH (crankHasIntermediateBearing  varchar(20),reciprocatingCompressorHasBallBearings  varchar(20))
+--<compressorReciporcating>
+
+--<compressorScrew>
+select @screwCompressorHasBallBearings = Case when screwCompressorHasBallBearings = '' then null else screwCompressorHasBallBearings end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorScrew',2)
+WITH (screwCompressorHasBallBearings  varchar(10))
+--<compressorScrew>
+
+--<compressorScrewTwin>
+select @screwTwinCompressorHasBallBearingsOnHPSide = Case when screwTwinCompressorHasBallBearingsOnHPSide = '' then null else screwTwinCompressorHasBallBearingsOnHPSide end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorScrewTwin',2)
+WITH (screwTwinCompressorHasBallBearingsOnHPSide  varchar(10))
+--<compressorScrewTwin>
+
+--<fan_or_blowerType>
+select @fan_or_blowerType = case when fan_or_blowerType = '' then null else fan_or_blowerType end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/fan_or_blower',2)
+WITH (fan_or_blowerType varchar(1000))
+--<fan_or_blowerType>
+
+--<fan_or_blowerLobed>
+select @lobedFanOrBlowerHasBallBearings = Case when lobedFanOrBlowerHasBallBearings = '' then null else lobedFanOrBlowerHasBallBearings end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/fan_or_blower/fan_or_blowerTypes/fan_or_blowerLobed',2)
+WITH (lobedFanOrBlowerHasBallBearings  varchar(10))
+--<fan_or_blowerLobed>
+
+--<fan_or_blowerOverhungRotor>
+select @fanStages = Case when fanStages = '' then null else fanStages end ,
+@overhungRotorFanOrBlowerHasBearings = Case when overhungRotorFanOrBlowerHasBearings = '' then null else overhungRotorFanOrBlowerHasBearings end  
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/fan_or_blower/fan_or_blowerTypes/fan_or_blowerOverhungRotor',2)
+WITH (fanStages  varchar(10),overhungRotorFanOrBlowerHasBearings  varchar(10))
+--<fan_or_blowerOverhungRotor>
+
+--<fan_or_blowerSupportedRotor>
+select @fanStages = Case when fanStages = '' then null else fanStages end ,
+@supportedRotorFanOrBlowerHasBearings = Case when supportedRotorFanOrBlowerHasBearings = '' then null else supportedRotorFanOrBlowerHasBearings end  
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/fan_or_blower/fan_or_blowerTypes/fan_or_blowerSupportedRotor',2)
+WITH (fanStages  varchar(10),supportedRotorFanOrBlowerHasBearings  varchar(10))
+--<fan_or_blowerSupportedRotor>
+
+--<purifier_centrifuge>
+select @purifierDrivenBy = case when purifierDrivenBy = '' then null else purifierDrivenBy end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/purifier_centrifuge',2)
+WITH (purifierDrivenBy varchar(100))
+--<purifier_centrifuge>
+
+--<generator>
+select @bearingType = case when bearingType = '' then null else bearingType end,
+@exciter = Case when exciter = '' then null else exciter end  ,
+@drivenBy1 = Case when drivenBy = '' then null else drivenBy end,
+@exciterOverhungOrSupported = Case when exciterOverhungOrSupported = '' then null else exciterOverhungOrSupported end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/generator',2)
+WITH (bearingType varchar(100),exciter  varchar(10),drivenBy varchar(100),exciterOverhungOrSupported varchar(100))
+--<generator>
+
+--<vacuumpumptype>
+select @vacuumPumpType = case when vacuumpumptype = '' then null else vacuumpumptype end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump',2)
+WITH (vacuumpumptype varchar(100))
+--<vacuumpumptype>
+
+--<vacuumpumpCentrifugal>
+select @rotorOverhung = Case when rotorOverhung = '' then null else rotorOverhung end,
+@impellerOnMainShaft = Case when impellerOnMainShaft = '' then null else impellerOnMainShaft end,
+@thrustBearing =  Case when thrustBearing = '' then null else thrustBearing end,
+@bearingsType = Case when bearingsType = '' then null else bearingsType end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpCentrifugal',2)
+WITH (rotorOverhung  varchar(100),impellerOnMainShaft  varchar(100),bearingsType varchar(500),thrustBearing varchar(100))
+--<vacuumpumpCentrifugal>
+
+--<vacuumpumpAxialRecip>
+select @attachedOilPump = Case when attachedOilPump = '' then null else attachedOilPump end,
+@bearingsType = bearingsType,
+@thrustBearing =  Case when thrustBearing = '' then null else thrustBearing end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpAxialRecip',2)
+WITH (attachedOilPump  varchar(10),bearingsType  varchar(100),thrustBearing varchar(100))
+--<vacuumpumpAxialRecip>
+
+--<vacuumpumpReciprocating>
+select @bearingsType = Case when bearingsType = '' then null else bearingsType end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpReciprocating',2)
+WITH (bearingsType  varchar(100))
+--<vacuumpumpReciprocating
+
+--<vacuumpumpLobed>
+select @bearingsType = Case when bearingsType = '' then null else bearingsType end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpLobed',2)
+WITH (bearingsType  varchar(100))
+--<vacuumpumpLobed
+
+--<spindle_or_shaft_or_bearing>
+Declare @spindleShaftBearing varchar(100)
+select  @spindleShaftBearing = Case when spindleShaftBearing = '' then null else spindleShaftBearing end 
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/spindle_or_shaft_or_bearing',2)
+WITH (spindleShaftBearing  varchar(100))
+--<spindle_or_shaft_or_bearing>
+
+--- Read xml for driven special code and insert into SpecialFaultCodesInputTable --
+insert into @SpecialFaultCodesInputTable select specialFaultCodeType,specialFaultCodeCount
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/specialFaultCodesInput/SpecialFaultCodesInput',2)
+WITH (specialFaultCodeType varchar(100),specialFaultCodeCount int)
+--- Read xml for driven special code and insert into SpecialFaultCodesInputTable --
+
+--<rpm>
+select  @drivenRPM = Convert(decimal(18,2),Case when rpm = '' then null else rpm end )
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens',2)
+WITH (rpm varchar(10))
+--<rpm>
+
 --- Read xml for driven component --
 
 --- Read xml for driver special code and insert into SpecialFaultCodesInputTable --
-insert into @SpecialFaultCodesInputTable
-select specialFaultCodeType,specialFaultCodeCount
+insert into @SpecialFaultCodesInputTable select specialFaultCodeType,specialFaultCodeCount
 FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/specialFaultCodesInput/SpecialFaultCodesInput',2)
 WITH (specialFaultCodeType varchar(100),specialFaultCodeCount int)
 --- Read xml for driver special code and insert into SpecialFaultCodesInputTable --
 
 --- Read xml for driven special code and insert into SpecialFaultCodesInputTable --
-insert into @SpecialFaultCodesInputTable
-select specialFaultCodeType,specialFaultCodeCount
+insert into @SpecialFaultCodesInputTable select specialFaultCodeType,specialFaultCodeCount
 FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/specialFaultCodesInput/SpecialFaultCodesInput',2)
 WITH (specialFaultCodeType varchar(100),specialFaultCodeCount int)
 --- Read xml for driven special code and insert into SpecialFaultCodesInputTable --
 
-select @intermediatePresent = case when @intercomponentType IS NOT NULL and @intercomponentType <> '' then convert(bit,1) 
-else convert(bit,0) end 
+select @intermediatePresent = case when @intercomponentType IS NOT NULL and @intercomponentType <> '' then convert(bit,1) else convert(bit,0) end 
 
 select @driverPickupCode = driverPickupCode,@drivenPickupCode = drivenPickupCode,@intermediatePickupCode = intermediatePickupCode,
-@coupling1PickupCode = coupling1PickupCode,@coupling2PickupCode = coupling2PickupCode
-from funGetPickupCodeDetails (@componentType,@drivencomponentType,@intercomponentType,@c2componentType,@c1componentType, ISNULL(@locations,0),ISNULL(@driverLocationNDE,convert(bit,0)),ISNULL(@driverLocationDE,convert(bit,0)),
-ISNULL(@interlocations,0),@intermediatePresent, ISNULL(@drivenlocations,0),
-ISNULL(@drivenLocationNDE,convert(bit,0)),ISNULL(@drivenLocationDE,convert(bit,0)))
+@coupling1PickupCode = coupling1PickupCode,@coupling2PickupCode = coupling2PickupCode from funGetPickupCodeDetails (@componentType,@drivencomponentType,@intercomponentType,@c2componentType,@c1componentType, ISNULL(@locations,0),ISNULL(@driverLocationNDE,convert(bit,0)),ISNULL(@driverLocationDE,convert(bit,0)),
+ISNULL(@interlocations,0),@intermediatePresent, ISNULL(@drivenlocations,0),ISNULL(@drivenLocationNDE,convert(bit,0)),ISNULL(@drivenLocationDE,convert(bit,0)))
+
+---============================================
+
+--Here is the logic to derive coupledComponentType1 and coupledComponentType2 
+Declare @drivencomponentType1 varchar(50)
+set @drivencomponentType1  = @drivenType 
+
+if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('pump'))))
+	Begin
+		set @drivencomponentType1 = @drivencomponentType1 + @pumpType
+	End
+else if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('compressor'))))
+	Begin
+		set @drivencomponentType1 = @drivencomponentType1 + @compressorType
+	End
+else if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('fan_or_blower'))))
+	Begin
+		set @drivencomponentType1 = @fan_or_blowerType
+	End
+else if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('vacuumpump'))))
+	Begin
+		set @drivencomponentType1 = @drivencomponentType1 + @vacuumPumpType
+	End
+
+if(@c1componentType <> '' and @c1componentType IS NOT NULL)
+  Begin
+
+	if not exists (select * from master.tblCoupling1Details where UPPER(RTRIM(LTRIM(componentType))) = UPPER(RTRIM(LTRIM(@c1componentType))) 
+	and couplingPosition = @c1couplingPosition and UPPER(RTRIM(LTRIM(couplingType))) = UPPER(RTRIM(LTRIM(@c1couplingType)))
+	and ISNULL(Convert(varchar(10),locations),'X') = Case when @c1locations = '' Or @c1locations IS NULL then 'X'
+    else convert(varchar(10),@c1locations) end and coupledComponentType1 IS NULL and coupledComponentType2 IS NULL
+	)
+	Begin
+		if(@c1couplingPosition = 1) 
+			Begin
+				set @c1coupledComponentType1 = @driverType  
+			
+				if(@intercomponentType <> '' and @intercomponentType IS NOT NULL)
+					Begin
+						set @c1coupledComponentType2 = @intermediateType
+					End
+				else
+					Begin
+						set @c1coupledComponentType2 = @drivencomponentType1
+					End
+			End
+		else
+			Begin
+				set @c1coupledComponentType1 = @intermediateType
+				set @c1coupledComponentType2= @drivencomponentType1
+		End
+	End
+End
+
+if(@c2componentType <> '' and @c2componentType IS NOT NULL)
+  Begin
+		if not exists (select * from master.tblCoupling2Details where UPPER(RTRIM(LTRIM(componentType))) = UPPER(RTRIM(LTRIM(@c2componentType))) 
+		and couplingPosition = @c2couplingPosition and UPPER(RTRIM(LTRIM(couplingType))) = UPPER(RTRIM(LTRIM(@c2couplingType)))
+		and ISNULL(Convert(varchar(10),locations),'X') = Case when @c2locations = '' Or @c2locations IS NULL then 'X'
+		else convert(varchar(10),@c2locations) end and coupledComponentType1 IS NULL and coupledComponentType2 IS NULL
+		)
+		Begin
+			if(@c2couplingPosition = 1) 
+				Begin
+					set @c2coupledComponentType1 = @drivenType  
+					if(@intercomponentType <> '' and @intercomponentType IS NOT NULL)
+						Begin
+							set @c2coupledComponentType2 = @intermediateType
+						End
+					else
+						Begin
+							set @c2coupledComponentType2 = @drivencomponentType1
+						End
+				End
+			else
+				Begin
+					set @c2coupledComponentType1 = @intermediateType
+					set @c2coupledComponentType2= @drivencomponentType1
+				End
+		End
+End
+
+Declare @MachineSpeedRatio decimal(18,4) = null
+set @c1SpeedRatio = ISNULL(@c1SpeedRatio,1)
+set @c2SpeedRatio = ISNULL(@c2SpeedRatio,1)
+set @intermediateSpeedRatio = ISNULL(@intermediateSpeedRatio,1)
+set @MachineSpeedRatio =  @c1SpeedRatio * @c2SpeedRatio * @intermediateSpeedRatio
 
 select 'Driver' as Component, ComponentCode, 
-@driverPickupCode as PickupCode
+@driverPickupCode as PickupCode, Convert(decimal(18,2),1) as SpeedRatio
 into #ComponentCodeDetails from master.tblDriverDetails 
 WHERE isDeleted = 0 and
 ISNULL(UPPER(RTRIM(LTRIM(componentType))),'X') = 
@@ -1108,9 +1455,9 @@ ISNULL(Convert(varchar(10),drivenBalanceable),'X') =
 	Case when @drivenBalanceable IS NULL then 'X'
 	else convert(varchar(10),Convert(bit,@drivenBalanceable)) end 
 and
-ISNULL(mortorPoles,0) = 
-	Case when @mortorPoles = '' Or @mortorPoles IS NULL then 0
-	else @mortorPoles end
+ISNULL(motorPoles,0) = 
+	Case when @motorPoles = '' Or @motorPoles IS NULL then 0
+	else @motorPoles end
 and
 ISNULL(Convert(varchar(10),turbineReductionGear),'X') = 
 	Case when @turbineReductionGear IS NULL then 'X'
@@ -1135,7 +1482,7 @@ ISNULL(Convert(varchar(10),turbineThrustBearingIsBall),'X') =
  union all
 
 select 'Coupling1' as Component, ComponentCode, 
-@coupling1PickupCode as PickupCode
+@coupling1PickupCode as PickupCode, @c1SpeedRatio as SpeedRatio
 from master.tblCoupling1Details 
 WHERE 
 ISNULL(UPPER(RTRIM(LTRIM(componentType))),'X') = 
@@ -1165,7 +1512,7 @@ ISNULL(Convert(varchar(10),locations),'X') =
 union all
 
 select 'Coupling2' as Component, Isnull(componentCode,null) as ComponentCode, 
-@coupling2PickupCode as pickupCode 
+@coupling2PickupCode as pickupCode, @c2SpeedRatio as SpeedRatio
 from master.tblCoupling2Details 
 WHERE 
 ISNULL(componentType,'X') = 
@@ -1195,36 +1542,20 @@ ISNULL(Convert(varchar(10),locations),'X') =
 union all
 
 select 'Intermediate' as Component, componentCode, 
-@intermediatePickupCode as pickupCode
+@intermediatePickupCode as pickupCode, @intermediateSpeedRatio as SpeedRatio
 from master.tblIntermediateDetails 
 WHERE 
 ISNULL(componentType,'X') = 
 	Case when @intercomponentType = '' Or @intercomponentType IS NULL then 'X'
 	else @intercomponentType end 
 and
-ISNULL(immediateType,'X') = 
-	Case when @immediateType = '' Or @immediateType IS NULL then 'X'
-	else @immediateType end 
+ISNULL(intermediateType,'X') = 
+	Case when @intermediateType = '' Or @intermediateType IS NULL then 'X'
+	else @intermediateType end 
 and
 ISNULL(drivenBy,'X') = 
 	Case when @drivenBy = '' Or @drivenBy IS NULL then 'X'
 	else @drivenBy end 
-and
-ISNULL(Convert(varchar(10),inputBearing),'X') = 
-	Case when @inputBearing = '' Or @inputBearing IS NULL then 'X'
-	else convert(varchar(10),@inputBearing) end 
-and
-ISNULL(intermediateBearing1st,'X') = 
-	Case when @intermediateBearing1st = '' Or @intermediateBearing1st IS NULL then 'X'
-	else @intermediateBearing1st end 
-and
-ISNULL(intermediateBearing2nd,'X') = 
-	Case when @intermediateBearing2nd = '' Or @intermediateBearing2nd IS NULL then 'X'
-	else @intermediateBearing2nd end 
-and
-ISNULL(outputBearing,'X') = 
-	Case when @outputBearing = '' Or @outputBearing IS NULL then 'X'
-	else @outputBearing end
 and
 ISNULL(Convert(varchar(10),speedChangesMax),'X') = 
 	Case when @speedChangesMax = '' Or @speedChangesMax IS NULL then 'X'
@@ -1233,15 +1564,11 @@ and
 ISNULL(Convert(varchar(10),locations),'X') = 
 	Case when @interlocations = '' Or @interlocations IS NULL then 'X'
 	else convert(varchar(10),@interlocations) end 
-and 
-ISNULL(Convert(varchar(10),gearBoxLocations),'X') = 
-	Case when @gearBoxLocations = '' Or @gearBoxLocations IS NULL then 'X'
-	else convert(varchar(10),@gearBoxLocations) end 
 
 union all
 
 select 'Driven' as Component, componentCode, 
-@drivenPickupCode as pickupCode
+@drivenPickupCode as pickupCode, Convert(decimal(18,4),1) as SpeedRatio
 from master.tblDrivenDetails 
 WHERE 
 ISNULL(UPPER(RTRIM(LTRIM(componentType))),'X') = 
@@ -1272,9 +1599,13 @@ ISNULL(UPPER(RTRIM(LTRIM(bearingType))),'X') =
 	Case when @bearingType = '' Or @bearingType IS NULL then 'X'
 	else UPPER(RTRIM(LTRIM(@bearingType))) end
 and
-ISNULL(UPPER(RTRIM(LTRIM(col_cType))),'X') = 
-	Case when @col_cType = '' Or @col_cType IS NULL then 'X'
-	else UPPER(RTRIM(LTRIM(@col_cType))) end
+ISNULL(UPPER(RTRIM(LTRIM(vacuumPumpType))),'X') = 
+	Case when @vacuumPumpType = '' Or @vacuumPumpType IS NULL then 'X'
+	else UPPER(RTRIM(LTRIM(@vacuumPumpType))) end
+and
+ISNULL(UPPER(RTRIM(LTRIM(spindleShaftBearing))),'X') = 
+	Case when @spindleShaftBearing = '' Or @spindleShaftBearing IS NULL then 'X'
+	else UPPER(RTRIM(LTRIM(@spindleShaftBearing))) end
 and
 ISNULL(UPPER(RTRIM(LTRIM(exciterOverhungOrSupported))),'X') = 
 	Case when @exciterOverhungOrSupported = '' Or @exciterOverhungOrSupported IS NULL then 'X'
@@ -1307,6 +1638,7 @@ and
 ISNULL(Convert(varchar(10),impellerOnMainShaft),'X') = 
 	Case when @impellerOnMainShaft IS NULL then 'X'
 	else convert(varchar(10),Convert(bit,@impellerOnMainShaft)) end 
+
 and
 ISNULL(Convert(varchar(10),crankHasIntermediateBearing),'X') = 
 	Case when @crankHasIntermediateBearing IS NULL then 'X'
@@ -1379,30 +1711,28 @@ ISNULL(Convert(varchar(10),supportedRotorFanOrBlowerHasBearings),'X') =
 
 	Declare @DriverComponentCode decimal(18,2),@DrivenComponentCode decimal(18,2)
 	Declare @FaultCodeMatrixJson nvarchar(max) = '';
-	Declare @MachineSpeedRatio decimal(18,4) = null
+	--Declare @MachineSpeedRatio decimal(18,4) = null
 
 	select @DriverComponentCode = componentCode from #ComponentCodeDetails where Component = 'Driver'
 	select @DrivenComponentCode = componentCode from #ComponentCodeDetails where Component = 'Driven'
 	
-	set @MachineSpeedRatio =  @c1SpeedRatio * @c2SpeedRatio * @intermediateSpeedRatio
-	--select @MachineSpeedRatio
-
 	Exec dbo.spGenerateMIDDerivation1 @xmlInput,@DriverComponentCode,@DrivenComponentCode,@MachineSpeedRatio,@FaultCodeMatrixJson output
 	
-	select Component,ComponentCode,PickupCode,null as FaultCodeMatrixJson from #ComponentCodeDetails
+	select Component,ComponentCode,PickupCode,null as FaultCodeMatrixJson,SpeedRatio from #ComponentCodeDetails
 	Union all
-	select  'FaultCodeMatrix' as Component,null,null,@FaultCodeMatrixJson as FaultCodeMatrixJson
+	select  'FaultCodeMatrix' as Component,null,null,@FaultCodeMatrixJson as FaultCodeMatrixJson,null
 	
 	drop table #ComponentCodeDetails
 End
+GO
 
+---------------------------------------------------------------------------------------------- 18
 
-------------------------------------------------------------------------------------------- 16
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGenerateMIDDerivation1]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGenerateMIDDerivation1]
-Go
+-- =============================================
+-- Author:      <Vishal Dhure>
+-- Create Date: <05/05/2021>
+-- Description: <SP used for Generate MID Derivation>
+-- =============================================
 
 CREATE Procedure [dbo].[spGenerateMIDDerivation1]
 @xmlInput xml = '',
@@ -1412,14 +1742,6 @@ CREATE Procedure [dbo].[spGenerateMIDDerivation1]
 @FaultCodeMatrixJson nvarchar(max) output
 As
 Begin
-
---Declare @machineSpeedRatio decimal(18,4) = 1.28
---Declare @driverComponentCode decimal(18,4) = 5.01
---Declare @drivenComponentCode decimal(18,4) = null
---Declare @xmlInput xml = ''
---Declare @FaultCodeMatrixJson nvarchar(max) --output
-
---set @xmlInput = '<MIDCodeCreatorRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><machineComponentsForMIDgeneration><driver><componentType>Driver</componentType><locations>1</locations><driverType>motor</driverType><cylinders xsi:nil="true" /><motorDrive>AC</motorDrive><motorFan>true</motorFan><motorBallBearings>true</motorBallBearings><drivenBallBearings>true</drivenBallBearings><drivenBalanceable>true</drivenBalanceable><mortorPoles xsi:nil="true" /><turbineReductionGear xsi:nil="true" /><turbineRotorSupported xsi:nil="true" /><turbineBallBearing xsi:nil="true" /><turbineThrustBearing xsi:nil="true" /><turbineThrustBearingIsBall xsi:nil="true" /><rpm>9</rpm><specialFaultCodesInput><SpecialFaultCodesInput><specialFaultCodeCount xsi:nil="true" /></SpecialFaultCodesInput></specialFaultCodesInput></driver><coupling1><id>0</id><componentType>coupling</componentType><couplingPosition>1</couplingPosition><couplingType>beltdrive</couplingType><locations xsi:nil="true" /><speedratio>3.2</speedratio></coupling1><intermediate><componentType>intermediate</componentType><immediateType>gearbox</immediateType><locations xsi:nil="true" /><speedChangesMax>1</speedChangesMax><gearBoxLocations>1</gearBoxLocations><inputBearing>3</inputBearing></intermediate><coupling2><componentType>coupling</componentType><couplingPosition>2</couplingPosition><couplingType>chaindrive</couplingType><locations xsi:nil="true" /><speedratio>1</speedratio></coupling2><driven><componentType>driven</componentType><drivenType>pump</drivenType><locations>1</locations><pumpType>centrifugal</pumpType><rotorOverhung xsi:nil="true" /><attachedOilPump xsi:nil="true" /><impellerOnMainShaft xsi:nil="true" /><crankHasIntermediateBearing xsi:nil="true" /><fanStages xsi:nil="true" /><exciter xsi:nil="true" /><centrifugalPumpHasBallBearings>true</centrifugalPumpHasBallBearings><propellerpumpHasBallBearings xsi:nil="true" /><rotaryThreadPumpHasBallBearings xsi:nil="true" /><gearPumpHasBallBearings xsi:nil="true" /><screwPumpHasBallBearings xsi:nil="true" /><slidingVanePumpHasBallBearings xsi:nil="true" /><axialRecipPumpHasBallBearings xsi:nil="true" /><centrifugalCompressorHasBallBearings xsi:nil="true" /><reciprocatingCompressorHasBallBearings xsi:nil="true" /><screwCompressorHasBallBearings xsi:nil="true" /><screwTwinCompressorHasBallBearingsOnHPSide xsi:nil="true" /><lobedFanOrBlowerHasBallBearings xsi:nil="true" /><overhungRotorFanOrBlowerHasBearings>true</overhungRotorFanOrBlowerHasBearings><supportedRotorFanOrBlowerHasBearings xsi:nil="true" /><rpm>25</rpm><specialFaultCodesInput><SpecialFaultCodesInput><specialFaultCodeType>vanes</specialFaultCodeType><specialFaultCodeCount>8</specialFaultCodeCount></SpecialFaultCodesInput></specialFaultCodesInput></driven></machineComponentsForMIDgeneration></MIDCodeCreatorRequest>'
 
 Declare @xmlDocumentHandle int
 EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
@@ -1495,7 +1817,6 @@ WITH (specialFaultCodeType varchar(100),specialFaultCodeCount int)
 	) 
 	select * into #RowTable from CTE
 
-	--Declare @FaultCodeMatrixJson nvarchar(max) = '';
 
 	DECLARE @SpecialFaultCodesDetails TABLE(Id INT,RowCode VARCHAR(30),SpecialMultiple int, SpecialFaultCodeCount int);
 			
@@ -1659,6 +1980,8 @@ AND type IN (N'P', N'PC'))
 	DROP PROCEDURE  [dbo].[spGetAllCoupling1Details]
 Go
 
+---------------------------------------------------------------------------------------------- 19
+
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <30/04/2021>
@@ -1692,13 +2015,9 @@ BEGIN
 			select * from master.tblCoupling1Details where isDeleted = 0
 		End
 END
+GO
 
-------------------------------------------------------------------------------------------- 18
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllCoupling2Details]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetAllCoupling2Details]
-Go
+---------------------------------------------------------------------------------------------- 20
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -1733,19 +2052,16 @@ BEGIN
 			select * from master.tblCoupling2Details where isDeleted = 0
 		End
 END
+GO
 
-------------------------------------------------------------------------------------------- 19
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllCSDMdefsDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetAllCSDMdefsDetails]
-Go
+---------------------------------------------------------------------------------------------- 21
 
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <06/05/2021>
 -- Description: <SP used for get CSDMdefs component data by csdmfile>
 -- =============================================
+
 CREATE PROCEDURE [dbo].[spGetAllCSDMdefsDetails]
 (
    @csdmfile varchar(50)
@@ -1763,13 +2079,9 @@ BEGIN
 			select * from master.tblCSDMdefsDetails where isDeleted = 0
 		End
 END
+GO
 
-------------------------------------------------------------------------------------------- 20
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllDrivenDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetAllDrivenDetails]
-Go
+---------------------------------------------------------------------------------------------- 22
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -1804,13 +2116,9 @@ BEGIN
 			select * from master.tblDrivenDetails where isDeleted = 0
 		End
 END
+GO
 
-------------------------------------------------------------------------------------------- 21
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetAllDriverDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetAllDriverDetails]
-Go
+---------------------------------------------------------------------------------------------- 23
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -1845,13 +2153,9 @@ BEGIN
 			select * from master.tblDriverDetails where isDeleted = 0
 		End
 END
+GO
 
-------------------------------------------------------------------------------------------- 22
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetAllIntermediateDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetAllIntermediateDetails]
-Go
+---------------------------------------------------------------------------------------------- 24
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -1866,19 +2170,16 @@ CREATE PROCEDURE [dbo].[spGetAllIntermediateDetails]
 AS
 BEGIN
 
- --Declare @componentType varchar(50) = 'vishal123345888'
- --  Declare @intermediateType varchar(50) = null
-
 	if(@componentType IS NOT NULL and @intermediateType IS NOT NULL)
 		Begin
 			select * from master.tblIntermediateDetails 
 			where UPPER(RTRIM(LTRIM(componentType))) = UPPER(RTRIM(LTRIM(@componentType))) and
-			UPPER(RTRIM(LTRIM(immediateType))) = UPPER(RTRIM(LTRIM(@intermediateType))) and isDeleted = 0
+			UPPER(RTRIM(LTRIM(intermediateType))) = UPPER(RTRIM(LTRIM(@intermediateType))) and isDeleted = 0
 		End
 	else if(@componentType IS NULL and @intermediateType IS NOT NULL)
 		Begin
 			select * from master.tblIntermediateDetails 
-			where UPPER(RTRIM(LTRIM(immediateType))) = UPPER(RTRIM(LTRIM(@intermediateType))) and isDeleted = 0
+			where UPPER(RTRIM(LTRIM(intermediateType))) = UPPER(RTRIM(LTRIM(@intermediateType))) and isDeleted = 0
 		End
 	else if(@componentType IS NOT NULL and @intermediateType IS NULL)
 		Begin
@@ -1890,13 +2191,9 @@ BEGIN
 			select * from master.tblIntermediateDetails where isDeleted = 0
 		End
 END
+GO
 
-------------------------------------------------------------------------------------------- 23
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetAllSpecialFaultCodesDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetAllSpecialFaultCodesDetails]
-Go
+---------------------------------------------------------------------------------------------- 25
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -1931,13 +2228,24 @@ BEGIN
 			select * from master.tblSpecialFaultCodesDetails where isDeleted = 0
 		End
 END
+GO
 
-------------------------------------------------------------------------------------------- 24
+---------------------------------------------------------------------------------------------- 26
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetCoupling1Details]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetCoupling1Details]
-Go
+-- =============================================
+-- Author:      <Vishal Dhure>
+-- Create Date: <27/04/2021>
+-- Description: <sp Get All Pickup Code Details>
+-- =============================================
+CREATE PROCEDURE [dbo].[spGetAllPickupCodeDetails]
+AS
+BEGIN
+	
+			select * from master.tblPickupCodeDetails where isDeleted = 0
+END
+GO
+
+---------------------------------------------------------------------------------------------- 27
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -1951,16 +2259,6 @@ CREATE PROCEDURE [dbo].[spGetCoupling1Details]
 AS
 BEGIN
 
---  Declare  @xmlInput xml = ''
---  set @xmlInput = '<?xml version="1.0"?>
---<Coupling1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
---  <id>0</id>
---  <componentType>Coupling1</componentType>
---  <couplingPosition xsi:nil="true" />
---  <locations xsi:nil="true" />
---  <speedratio xsi:nil="true" />
---</Coupling1>'
-	
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
@@ -2043,13 +2341,8 @@ BEGIN
 				else @c1locations end
 			End
 END
-
-------------------------------------------------------------------------------------------- 25
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetCoupling1DetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetCoupling1DetailsById]
-Go
+GO
+---------------------------------------------------------------------------------------------- 28
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -2064,13 +2357,9 @@ AS
 BEGIN
 	select * from master.tblCoupling1Details where id = @id and isDeleted = 0
 End
+GO
 
-------------------------------------------------------------------------------------------- 26
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetCoupling2Details]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetCoupling2Details]
-Go
+---------------------------------------------------------------------------------------------- 29
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -2084,15 +2373,6 @@ Create PROCEDURE [dbo].[spGetCoupling2Details]
 AS
 BEGIN
 
---  Declare  @xmlInput xml = ''
---  set @xmlInput = '<?xml version="1.0"?>
---<Coupling2 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
---  <id>0</id>
---  <componentType>Coupling2</componentType>
---  <couplingPosition xsi:nil="true" />
---  <locations xsi:nil="true" />
---  <speedratio xsi:nil="true" />
---</Coupling2>'
 	
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
@@ -2176,13 +2456,9 @@ BEGIN
 				else @c1locations end
 			End
 END
+GO
 
-------------------------------------------------------------------------------------------- 27
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetCoupling2DetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetCoupling2DetailsById]
-Go
+---------------------------------------------------------------------------------------------- 30
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -2198,7 +2474,7 @@ BEGIN
 	select * from master.tblCoupling2Details where id = @id and isDeleted = 0
 End
 
-------------------------------------------------------------------------------------------- 28
+------------------------------------------------------------------------------------------- 31
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetCSDMdefsDetails]') 
 AND type IN (N'P', N'PC'))
@@ -2215,6 +2491,7 @@ CREATE PROCEDURE [dbo].[spGetCSDMdefsDetails]
 )
 AS
 BEGIN
+
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
@@ -2296,13 +2573,9 @@ BEGIN
 				else convert(varchar(10),Convert(bit,@CSDMrelative)) end 
 			End
 END
+GO
 
-------------------------------------------------------------------------------------------- 29
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetCSDMdefsDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetCSDMdefsDetailsById]
-Go
+------------------------------------------------------------------------------------------- 32
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -2317,13 +2590,8 @@ AS
 BEGIN
 	select * from master.tblCSDMdefsDetails where id = @id and isDeleted = 0
 End
-
-------------------------------------------------------------------------------------------- 30
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetDrivenDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetDrivenDetails]
-Go
+GO
+------------------------------------------------------------------------------------------- 33
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -2336,8 +2604,6 @@ CREATE PROCEDURE [dbo].[spGetDrivenDetails]
 )
 AS
 BEGIN
-
-	
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
@@ -2345,7 +2611,7 @@ BEGIN
 		--Declare variable for driven component --
 		Declare @drivencomponentType varchar(100),@drivenType varchar(100), 
 		@pumpType varchar(100),@compressorType varchar(1000) ,@fan_or_blowerType varchar(1000),
-		@purifierDrivenBy varchar(100),@bearingType varchar(100),@col_cType varchar(100),
+		@purifierDrivenBy varchar(100),@bearingType varchar(100),@vacuumPumpType varchar(100),
 		@exciterOverhungOrSupported varchar(100),@bearingsType varchar(100),@thrustBearing varchar(100),
 		@drivenBy1 varchar(100) = null
 		Declare @drivenlocations int, @id int
@@ -2354,7 +2620,8 @@ BEGIN
 		@rotaryThreadPumpHasBallBearings  varchar(10), @gearPumpHasBallBearings  varchar(10),@screwPumpHasBallBearings  varchar(10),
 		@slidingVanePumpHasBallBearings  varchar(10), @axialRecipPumpHasBallBearings  varchar(10),@centrifugalCompressorHasBallBearings  varchar(10),
 		@reciprocatingCompressorHasBallBearings  varchar(10),@screwCompressorHasBallBearings  varchar(10),@screwTwinCompressorHasBallBearingsOnHPSide  varchar(10),
-		@lobedFanOrBlowerHasBallBearings  varchar(10),@overhungRotorFanOrBlowerHasBearings  varchar(10), @supportedRotorFanOrBlowerHasBearings  varchar(10)
+		@lobedFanOrBlowerHasBallBearings  varchar(10),@overhungRotorFanOrBlowerHasBearings  varchar(10), @supportedRotorFanOrBlowerHasBearings  varchar(10),
+		@spindleShaftBearing  varchar(100)
 		--Declare variable for driven component --
 
 
@@ -2367,7 +2634,7 @@ BEGIN
 		@fan_or_blowerType = Case when fan_or_blowerType = ''  then null else fan_or_blowerType end ,
 		@purifierDrivenBy = Case when purifierDrivenBy = ''  then null else purifierDrivenBy end,
 		@bearingType = Case when bearingType = ''  then null else bearingType end,
-		@col_cType = Case when col_cType = ''  then null else col_cType end,
+		@vacuumPumpType = Case when vacuumpumptype = ''  then null else vacuumpumptype end,
 		@exciterOverhungOrSupported = Case when exciterOverhungOrSupported = '' then null else exciterOverhungOrSupported end ,
 		@bearingsType = Case when bearingsType = '' then null else bearingsType end,
 		@thrustBearing = Case when thrustBearing = '' then null else thrustBearing end ,
@@ -2392,17 +2659,19 @@ BEGIN
 		@screwTwinCompressorHasBallBearingsOnHPSide = Case when screwTwinCompressorHasBallBearingsOnHPSide = '' then null else screwTwinCompressorHasBallBearingsOnHPSide end  ,
 		@lobedFanOrBlowerHasBallBearings = Case when lobedFanOrBlowerHasBallBearings = '' then null else lobedFanOrBlowerHasBallBearings end ,
 		@overhungRotorFanOrBlowerHasBearings = Case when overhungRotorFanOrBlowerHasBearings = '' then null else overhungRotorFanOrBlowerHasBearings end  ,
-		@supportedRotorFanOrBlowerHasBearings = Case when supportedRotorFanOrBlowerHasBearings = '' then null else supportedRotorFanOrBlowerHasBearings end  
+		@supportedRotorFanOrBlowerHasBearings = Case when supportedRotorFanOrBlowerHasBearings = '' then null else supportedRotorFanOrBlowerHasBearings end,
+		@spindleShaftBearing = Case when spindleShaftBearing = '' then null else @spindleShaftBearing end
 		FROM OPENXML (@xmlDocumentHandle, 'DrivenDetails',2)
 		WITH (id bigint,componentType varchar(100),drivenType varchar(100),pumpType varchar(100),compressorType varchar(1000),
-		fan_or_blowerType varchar(1000),purifierDrivenBy varchar(100),bearingType varchar(100),col_cType varchar(100),
+		fan_or_blowerType varchar(1000),purifierDrivenBy varchar(100),bearingType varchar(100),vacuumpumptype varchar(100),
 		exciterOverhungOrSupported varchar(100),bearingsType varchar(100),thrustBearing varchar(100),drivenBy varchar(100),
 		locations int,rotorOverhung  varchar(10),attachedOilPump  varchar(10),impellerOnMainShaft  varchar(10),crankHasIntermediateBearing  varchar(10),
 		fanStages  varchar(10),exciter  varchar(10),centrifugalPumpHasBallBearings  varchar(10),propellerpumpHasBallBearings  varchar(10),
 		rotaryThreadPumpHasBallBearings  varchar(10), gearPumpHasBallBearings  varchar(10),screwPumpHasBallBearings  varchar(10),
 		slidingVanePumpHasBallBearings  varchar(10), axialRecipPumpHasBallBearings  varchar(10),centrifugalCompressorHasBallBearings  varchar(10),
 		reciprocatingCompressorHasBallBearings  varchar(10),screwCompressorHasBallBearings  varchar(10),screwTwinCompressorHasBallBearingsOnHPSide  varchar(10),
-		lobedFanOrBlowerHasBallBearings  varchar(10),overhungRotorFanOrBlowerHasBearings  varchar(10), supportedRotorFanOrBlowerHasBearings  varchar(10))
+		lobedFanOrBlowerHasBallBearings  varchar(10),overhungRotorFanOrBlowerHasBearings  varchar(10), supportedRotorFanOrBlowerHasBearings  varchar(10),
+		spindleShaftBearing varchar(100))
 		--- Read xml for driven component --
 
 		if(@id = 0 )
@@ -2438,9 +2707,13 @@ BEGIN
 					Case when @bearingType = '' Or @bearingType IS NULL then 'X'
 					else UPPER(RTRIM(LTRIM(@bearingType))) end
 				and
-				ISNULL(UPPER(RTRIM(LTRIM(col_cType))),'X') = 
-					Case when @col_cType = '' Or @col_cType IS NULL then 'X'
-					else UPPER(RTRIM(LTRIM(@col_cType))) end
+				ISNULL(UPPER(RTRIM(LTRIM(vacuumpumptype))),'X') = 
+					Case when @vacuumPumpType = '' Or @vacuumPumpType IS NULL then 'X'
+					else UPPER(RTRIM(LTRIM(@vacuumPumpType))) end
+				and
+				ISNULL(UPPER(RTRIM(LTRIM(spindleShaftBearing))),'X') = 
+					Case when @spindleShaftBearing = '' Or @spindleShaftBearing IS NULL then 'X'
+					else UPPER(RTRIM(LTRIM(@spindleShaftBearing))) end
 				and
 				ISNULL(UPPER(RTRIM(LTRIM(exciterOverhungOrSupported))),'X') = 
 					Case when @exciterOverhungOrSupported = '' Or @exciterOverhungOrSupported IS NULL then 'X'
@@ -2575,9 +2848,13 @@ BEGIN
 					Case when @bearingType = '' Or @bearingType IS NULL then 'X'
 					else UPPER(RTRIM(LTRIM(@bearingType))) end
 				and
-				ISNULL(UPPER(RTRIM(LTRIM(col_cType))),'X') = 
-					Case when @col_cType = '' Or @col_cType IS NULL then 'X'
-					else UPPER(RTRIM(LTRIM(@col_cType))) end
+				ISNULL(UPPER(RTRIM(LTRIM(vacuumPumpType))),'X') = 
+					Case when @vacuumPumpType = '' Or @vacuumPumpType IS NULL then 'X'
+					else UPPER(RTRIM(LTRIM(@vacuumPumpType))) end
+				and
+				ISNULL(UPPER(RTRIM(LTRIM(spindleShaftBearing))),'X') = 
+					Case when @spindleShaftBearing = '' Or @spindleShaftBearing IS NULL then 'X'
+					else UPPER(RTRIM(LTRIM(@spindleShaftBearing))) end
 				and
 				ISNULL(UPPER(RTRIM(LTRIM(exciterOverhungOrSupported))),'X') = 
 					Case when @exciterOverhungOrSupported = '' Or @exciterOverhungOrSupported IS NULL then 'X'
@@ -2680,13 +2957,9 @@ BEGIN
 					else convert(varchar(10),Convert(bit,@supportedRotorFanOrBlowerHasBearings)) end
 			End
 END
+GO
 
-------------------------------------------------------------------------------------------- 31
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetDrivenDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetDrivenDetailsById]
-Go
+------------------------------------------------------------------------------------------- 34
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -2701,13 +2974,9 @@ AS
 BEGIN
 	select * from master.tblDrivenDetails where id = @id and isDeleted = 0
 End
+GO
 
-------------------------------------------------------------------------------------------- 32
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetDriverDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetDriverDetails]
-Go
+------------------------------------------------------------------------------------------- 35
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -2721,13 +2990,14 @@ CREATE PROCEDURE [dbo].[spGetDriverDetails]
 AS
 BEGIN
 
+
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
 		
 		--Declare variable for driver component --
 		Declare @componentType varchar(100),@driverType varchar(100),@motorDrive varchar(100)
-		Declare @locations int,@cylinders int,@mortorPoles int, @id int
+		Declare @locations int,@cylinders int,@motorPoles int, @id int
 		Declare @motorFan varchar(10),@motorBallBearings  varchar(10),@drivenBallBearings  varchar(10),@drivenBalanceable  varchar(10),
 		@turbineReductionGear  varchar(10),@turbineRotorSupported  varchar(10),@turbineBallBearing  varchar(10),@turbineThrustBearing  varchar(10),
 		@turbineThrustBearingIsBall  varchar(10)
@@ -2735,7 +3005,7 @@ BEGIN
 
 		--- Read xml for driver component --
 		select @Id = id, @componentType = componentType,@driverType = driverType, @motorDrive = motorDrive,
-		@locations = locations,@cylinders = cylinders,@mortorPoles = mortorPoles,
+		@locations = locations,@cylinders = cylinders,@motorPoles = motorPoles,
 		@motorFan = Case when motorFan = '' then null else motorFan end ,
 		@motorBallBearings = Case when motorBallBearings = '' then null else motorBallBearings end ,
 		@drivenBallBearings = Case when drivenBallBearings = '' then null else drivenBallBearings end,
@@ -2747,7 +3017,7 @@ BEGIN
 		@turbineThrustBearingIsBall = Case when turbineThrustBearingIsBall = '' then null else turbineThrustBearingIsBall end  
 		FROM OPENXML (@xmlDocumentHandle, 'DriverDetails',2)
 		WITH (id bigint,componentType varchar(100),locations int,driverType varchar(100),cylinders int,motorDrive varchar(100),motorFan varchar(10),
-		motorBallBearings  varchar(10),drivenBallBearings  varchar(10),drivenBalanceable  varchar(10),mortorPoles int,turbineReductionGear  varchar(10),
+		motorBallBearings  varchar(10),drivenBallBearings  varchar(10),drivenBalanceable  varchar(10),motorPoles int,turbineReductionGear  varchar(10),
 		turbineRotorSupported  varchar(10),turbineBallBearing  varchar(10),turbineThrustBearing  varchar(10),turbineThrustBearingIsBall  varchar(10))
 		--- Read xml for driver component --
 
@@ -2792,9 +3062,9 @@ BEGIN
 				Case when @drivenBalanceable IS NULL then 'X'
 				else convert(varchar(10),Convert(bit,@drivenBalanceable)) end 
 				and
-				ISNULL(convert(varchar(10),mortorPoles),'X') = 
-				Case when @mortorPoles = '' Or @mortorPoles IS NULL then 'X'
-				else convert(varchar(10),@mortorPoles) end
+				ISNULL(convert(varchar(10),motorPoles),'X') = 
+				Case when @motorPoles = '' Or @motorPoles IS NULL then 'X'
+				else convert(varchar(10),@motorPoles) end
 				and
 				ISNULL(Convert(varchar(10),turbineReductionGear),'X') = 
 				Case when @turbineReductionGear IS NULL then 'X'
@@ -2858,9 +3128,9 @@ BEGIN
 				Case when @drivenBalanceable IS NULL then 'X'
 				else convert(varchar(10),Convert(bit,@drivenBalanceable)) end 
 				and
-				ISNULL(convert(varchar(10),mortorPoles),'X') = 
-				Case when @mortorPoles = '' Or @mortorPoles IS NULL then 'X'
-				else convert(varchar(10),@mortorPoles) end
+				ISNULL(convert(varchar(10),motorPoles),'X') = 
+				Case when @motorPoles = '' Or @motorPoles IS NULL then 'X'
+				else convert(varchar(10),@motorPoles) end
 				and
 				ISNULL(Convert(varchar(10),turbineReductionGear),'X') = 
 				Case when @turbineReductionGear IS NULL then 'X'
@@ -2884,13 +3154,9 @@ BEGIN
 				else convert(varchar(10),Convert(bit,@turbineThrustBearingIsBall)) end 
 			End
 END
+GO
 
-------------------------------------------------------------------------------------------- 33
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetDriverDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetDriverDetailsById]
-Go
+------------------------------------------------------------------------------------------- 36
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -2905,14 +3171,333 @@ AS
 BEGIN
 	select * from master.tblDriverDetails where id = @id and isDeleted = 0
 End
+GO
 
-------------------------------------------------------------------------------------------- 34
+------------------------------------------------------------------------------------------- 37
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetIntermediateDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetIntermediateDetails]
-Go
+-- =============================================
+-- Author:      <Vishal Dhure>
+-- Create Date: <27/04/2021>
+-- Description: <SP used for get extra fault data>
+-- =============================================
+CREATE Procedure [dbo].[spGetExtraFaultData]
+@xmlInput xml = '',
+@type varchar(50)
+As
+Declare @ResultTable TABLE
+( componentName varchar(50),cylinders int,  motorbars int,motorfanblades int,turbineblades int,pumpvanes int, pumpblades int, pumpthreads int, pumpteeth int,
+ idlerthreads int,pumppistons int,compressorvanes int,compressorpistons int,compressorthreads int,compressorthreads1 int,idlerthreads1 int,compressorthreads2 int,
+ idlerthreads2 int,blowerlobes int,idlerlobes int, fanblades int,generatorbars int,pumplobes int
+) 
 
+BEGIN
+		Declare @xmlDocumentHandle int
+		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('diesel'))))
+			Begin
+				insert into @ResultTable(componentName,cylinders)
+				select 'Driver',cylinders FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/drivers/diesel',2)
+				WITH (cylinders int)
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('motor'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driver',0 as cylinders,  motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/drivers/motor/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('turbine'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driver',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driver/drivers/turbine/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpCentrifugal'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpCentrifugal/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+        
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpPropeller'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpPropeller/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpRotaryThread'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotaryThread/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+        
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpGear'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpGear/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+		
+			if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpRotaryScrew'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotaryScrew/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+        
+			if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpRotarySlidingVane'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotarySlidingVane/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+			if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpRotaryAxialRecip'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotaryAxialRecip/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+        
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('pumpRotaryRadialRecip'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven',0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/pump/pumpTypes/pumpRotaryRadialRecip/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+	
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('compressorCentrifugal'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorCentrifugal/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('compressorReciporcating'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorReciporcating/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('compressorScrew'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorScrew/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('compressorScrewTwin'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/compressor/compressorTypes/compressorScrewTwin/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('fan_or_blowerLobed'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/fan_or_blower/fan_or_blowerTypes/fan_or_blowerLobed/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('fan_or_blowerOverhungRotor'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/fan_or_blower/fan_or_blowerTypes/fan_or_blowerOverhungRotor/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('fan_or_blowerSupportedRotor'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/fan_or_blower/fan_or_blowerTypes/fan_or_blowerSupportedRotor/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('generator'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/generator/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('vacuumpumpCentrifugal'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpCentrifugal/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('vacuumpumpAxialRecip'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpAxialRecip/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('vacuumpumpRadialRecip'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpRadialRecip/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+		
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('vacuumpumpReciprocating'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpReciprocating/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+
+		if(UPPER(RTRIM(LTRIM(@type))) = UPPER(RTRIM(LTRIM('vacuumpumpLobed'))))
+			Begin
+				INSERT INTO @ResultTable
+				select 'Driven', 0 as cylinders, motorbars,motorfanblades,turbineblades,pumpvanes, pumpblades, pumpthreads, pumpteeth,
+				idlerthreads,pumppistons,compressorvanes,compressorpistons,compressorthreads,compressorthreads1,idlerthreads1,compressorthreads2,
+				idlerthreads2,blowerlobes,idlerlobes, fanblades,generatorbars,pumplobes   
+				FROM OPENXML (@xmlDocumentHandle, 'MIDCodeCreatorRequest/machineComponentsForMIDgeneration/driven/drivens/vacuumpump/vacuumpumpTypes/vacuumpumpLobed/extraFaultData',2)
+				WITH (motorbars int,motorfanblades int, turbineblades int,pumpvanes int,pumpblades int, pumpthreads int, pumpteeth int,
+				idlerthreads int,pumppistons int, compressorvanes int, compressorpistons int, compressorthreads int, compressorthreads1 int,
+				idlerthreads1 int, compressorthreads2 int, idlerthreads2 int, blowerlobes int, idlerlobes int, fanblades int, generatorbars int, pumplobes int)
+			End
+
+			select * from @ResultTable
+RETURN
+END
+GO
+---------------------------------------------------------------------------------------------38
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -2925,7 +3510,8 @@ CREATE PROCEDURE [dbo].[spGetIntermediateDetails]
 )
 AS
 BEGIN
-	
+
+
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
@@ -2934,18 +3520,19 @@ BEGIN
 		Declare @id bigint, @intercomponentType varchar(100),@intermediateType varchar(100), 
 		@drivenBy varchar(100),@inputBearing int ,@intermediateBearing1st varchar(1000),
 		@intermediateBearing2nd varchar(1000),@outputBearing varchar(1000)
-		Declare @speedChangesMax int,@interlocations int, @gearBoxLocations int
+		Declare @speedChangesMax int,@interlocations int--, @gearBoxLocations int
 		--Declare variable for intermediate component --
 
 		--- Read xml for intermediate component --
 		select @id= id, @intercomponentType = componentType,@intermediateType = intermediateType, 
 		@drivenBy = drivenBy,@inputBearing = inputBearing,@intermediateBearing1st = intermediateBearing1st,
 		@intermediateBearing2nd = intermediateBearing2nd,@outputBearing = outputBearing,
-		@speedChangesMax = speedChangesMax,@interlocations = locations, @gearBoxLocations = gearBoxLocations FROM OPENXML (@xmlDocumentHandle, 'IntermediateDetails',2)
+		@speedChangesMax = speedChangesMax,@interlocations = locations--, @gearBoxLocations = gearBoxLocations 
+		FROM OPENXML (@xmlDocumentHandle, 'IntermediateDetails',2)
 		WITH (id bigint,componentType varchar(100),intermediateType varchar(100), 
 		drivenBy varchar(100),inputBearing int ,intermediateBearing1st varchar(1000),
 		intermediateBearing2nd varchar(1000),outputBearing varchar(1000),speedChangesMax int,
-		locations int, gearBoxLocations int)
+		locations int)
 		--- Read xml for intermediate component --
 
 		if(@id = 0 )
@@ -2956,7 +3543,7 @@ BEGIN
 				Case when @intercomponentType = '' Or @intercomponentType IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@intercomponentType))) end 
 			and
-			ISNULL(UPPER(RTRIM(LTRIM(immediateType))),'X') = 
+			ISNULL(UPPER(RTRIM(LTRIM(intermediateType))),'X') = 
 				Case when @intermediateType = '' Or @intermediateType IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@intermediateType))) end 
 			and
@@ -2964,33 +3551,14 @@ BEGIN
 				Case when @drivenBy = '' Or @drivenBy IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@drivenBy))) end 
 			and
-			ISNULL(Convert(varchar(10),inputBearing),'X') = 
-				Case when @inputBearing = '' Or @inputBearing IS NULL then 'X'
-				else convert(varchar(10),@inputBearing) end 
-			and
-			ISNULL(UPPER(RTRIM(LTRIM(intermediateBearing1st))),'X') = 
-				Case when @intermediateBearing1st = '' Or @intermediateBearing1st IS NULL then 'X'
-				else UPPER(RTRIM(LTRIM(@intermediateBearing1st))) end 
-			and
-			ISNULL(UPPER(RTRIM(LTRIM(intermediateBearing2nd))),'X') = 
-				Case when @intermediateBearing2nd = '' Or @intermediateBearing2nd IS NULL then 'X'
-				else UPPER(RTRIM(LTRIM(@intermediateBearing2nd))) end 
-			and
-			ISNULL(UPPER(RTRIM(LTRIM(outputBearing))),'X') = 
-				Case when @outputBearing = '' Or @outputBearing IS NULL then 'X'
-				else UPPER(RTRIM(LTRIM(@outputBearing))) end
-			and
-			ISNULL(Convert(varchar(10),speedChangesMax),'X') = 
-				Case when @speedChangesMax = '' Or @speedChangesMax IS NULL then 'X'
-				else convert(varchar(10),@speedChangesMax) end 
+			
+			ISNULL(speedChangesMax,0) = 
+				Case when @speedChangesMax = '' Or @speedChangesMax IS NULL then 0
+				else @speedChangesMax end 
 			and 
-			ISNULL(locations,'0') = 
-				Case when @interlocations = '' Or @interlocations IS NULL then '0'
+			ISNULL(locations,0) = 
+				Case when @interlocations = '' Or @interlocations IS NULL then 0
 				else @interlocations end
-			and 
-			ISNULL(gearBoxLocations,'0') = 
-				Case when @gearBoxLocations = '' Or @gearBoxLocations IS NULL then '0'
-				else @gearBoxLocations end
 
 			End
 		else
@@ -3001,7 +3569,7 @@ BEGIN
 				Case when @intercomponentType = '' Or @intercomponentType IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@intercomponentType))) end 
 			and
-			ISNULL(UPPER(RTRIM(LTRIM(immediateType))),'X') = 
+			ISNULL(UPPER(RTRIM(LTRIM(intermediateType))),'X') = 
 				Case when @intermediateType = '' Or @intermediateType IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@intermediateType))) end 
 			and
@@ -3009,42 +3577,19 @@ BEGIN
 				Case when @drivenBy = '' Or @drivenBy IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@drivenBy))) end 
 			and
-			ISNULL(Convert(varchar(10),inputBearing),'X') = 
-				Case when @inputBearing = '' Or @inputBearing IS NULL then 'X'
-				else convert(varchar(10),@inputBearing) end 
-			and
-			ISNULL(UPPER(RTRIM(LTRIM(intermediateBearing1st))),'X') = 
-				Case when @intermediateBearing1st = '' Or @intermediateBearing1st IS NULL then 'X'
-				else UPPER(RTRIM(LTRIM(@intermediateBearing1st))) end 
-			and
-			ISNULL(UPPER(RTRIM(LTRIM(intermediateBearing2nd))),'X') = 
-				Case when @intermediateBearing2nd = '' Or @intermediateBearing2nd IS NULL then 'X'
-				else UPPER(RTRIM(LTRIM(@intermediateBearing2nd))) end 
-			and
-			ISNULL(UPPER(RTRIM(LTRIM(outputBearing))),'X') = 
-				Case when @outputBearing = '' Or @outputBearing IS NULL then 'X'
-				else UPPER(RTRIM(LTRIM(@outputBearing))) end
-			and
-			ISNULL(Convert(varchar(10),speedChangesMax),'X') = 
-				Case when @speedChangesMax = '' Or @speedChangesMax IS NULL then 'X'
-				else convert(varchar(10),@speedChangesMax) end 
+			
+			ISNULL(speedChangesMax,0) = 
+				Case when @speedChangesMax = '' Or @speedChangesMax IS NULL then 0
+				else @speedChangesMax end 
 			and 
-			ISNULL(locations,'0') = 
-				Case when @interlocations = '' Or @interlocations IS NULL then '0'
-				else @interlocations end
-			and 
-			ISNULL(gearBoxLocations,'0') = 
-				Case when @gearBoxLocations = '' Or @gearBoxLocations IS NULL then '0'
-				else @gearBoxLocations end  
+			ISNULL(locations,0) = 
+				Case when @interlocations = '' Or @interlocations IS NULL then 0
+				else @interlocations end 
 			End
 END
+GO
 
-------------------------------------------------------------------------------------------- 35
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetIntermediateDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetIntermediateDetailsById]
-Go
+---------------------------------------------------------------------------------------------39
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -3059,13 +3604,151 @@ AS
 BEGIN
 	select * from master.tblIntermediateDetails where id = @id and isDeleted = 0
 End
+GO
 
-------------------------------------------------------------------------------------------- 36
+---------------------------------------------------------------------------------------------40
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetSpecialFaultCodesDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE  [dbo].[spGetSpecialFaultCodesDetails]
-Go
+ --=============================================
+ --Author:      <Vishal Dhure>
+-- Create Date: <11/05/2021>
+-- Description: <SP used for get Pickup Code data>
+-- =============================================
+CREATE PROCEDURE [dbo].[spGetPickupCodeDetails]
+(
+   @xmlInput xml = ''
+)
+AS
+BEGIN
+
+	
+		SET NOCOUNT ON
+		Declare @xmlDocumentHandle int
+		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
+		
+		--Declare variable for PickupCode  --
+		Declare @Id int,@driverLocations int,@driverLocationNDE bit,@driverLocationDE bit,
+	    @intermediateLocations int,@intermediatepresent bit,@drivenLocations int,@drivenLocationDE bit,
+		@drivenLocationNDE bit,@driverPickupCode varchar(50),@coupling1PickupCode varchar(50),@intermediatePickupCode varchar(50),
+	    @coupling2PickupCode varchar(50),@drivenPickupCode varchar(50)
+		--Declare variable for PickupCode  --
+
+		--- Read xml for PickupCode  --
+		select @Id = id,
+		@driverLocations = Case when driverLocations  = '' then null else driverLocations end ,
+		@driverLocationNDE = Case when driverLocationNDE  = '' then null else driverLocationNDE end ,
+		@driverLocationDE = Case when driverLocationDE  = '' then null else driverLocationDE end ,
+		@intermediateLocations = Case when intermediateLocations  = '' then null else intermediateLocations end,
+		@intermediatepresent = Case when intermediatepresent  = '' then null else intermediatepresent end,
+		@drivenLocations = Case when drivenLocations  = '' then null else drivenLocations end ,
+		@drivenLocationDE = Case when drivenLocationDE  = '' then null else drivenLocationDE end,
+		@drivenLocationNDE = Case when drivenLocationNDE  = '' then null else drivenLocationNDE end ,
+		@driverPickupCode = Case when driverPickupCode = '' then null else driverPickupCode end ,
+		@coupling1PickupCode = Case when coupling1PickupCode = '' then null else coupling1PickupCode end,
+		@intermediatePickupCode = Case when intermediatePickupCode = '' then null else intermediatePickupCode end,
+		@coupling2PickupCode = Case when coupling2PickupCode = '' then null else coupling2PickupCode end ,
+		@drivenPickupCode = Case when drivenPickupCode = '' then null else drivenPickupCode end 
+		FROM OPENXML (@xmlDocumentHandle, 'PickupCodeDetails',2)
+		WITH (id int,driverLocations int,driverLocationNDE bit,driverLocationDE bit,
+	    intermediateLocations int,intermediatepresent bit,drivenLocations int,drivenLocationDE bit,
+		drivenLocationNDE bit,driverPickupCode varchar(50),coupling1PickupCode varchar(50),intermediatePickupCode varchar(50),
+	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50))	
+		
+		if(@id = 0 )
+		Begin
+				select * from master.tblPickupCodeDetails
+				WHERE isDeleted = 0 
+				and 
+				ISNULL(driverLocations,0) = 
+				Case when @driverLocations = '' Or @driverLocations IS NULL then 0
+				else @driverLocations end 
+				and
+				ISNULL(driverLocationNDE,Convert(bit,0)) = 
+				Case when @driverLocationNDE = '' Or @driverLocationNDE IS NULL then Convert(bit,0)
+				else @driverLocationNDE end 
+				and
+				ISNULL(driverLocationDE,Convert(bit,0)) = 
+				Case when @driverLocationDE = '' Or @driverLocationDE IS NULL then Convert(bit,0)
+				else @driverLocationDE end 
+				and
+				ISNULL(intermediateLocations,0) = 
+				Case when @intermediateLocations = '' Or @intermediateLocations IS NULL then 0
+				else @intermediateLocations end 
+				and
+				ISNULL(intermediatepresent,Convert(bit,0)) = 
+				Case when @intermediatepresent = '' Or @intermediatepresent IS NULL then Convert(bit,0)
+				else @intermediatepresent end 
+				and
+				ISNULL(drivenLocations,0) = 
+				Case when @drivenLocations = '' Or @drivenLocations IS NULL then 0
+				else @drivenLocations end 
+				and
+				ISNULL(drivenLocationDE,Convert(bit,0)) = 
+				Case when @drivenLocationDE = '' Or @drivenLocationDE IS NULL then Convert(bit,0)
+				else @drivenLocationDE end 
+				and
+				ISNULL(drivenLocationNDE,Convert(bit,0)) = 
+				Case when @drivenLocationNDE = '' Or @drivenLocationNDE IS NULL then Convert(bit,0)
+				else @drivenLocationNDE end 
+				
+			End
+		else
+			Begin
+				select * from master.tblPickupCodeDetails
+				WHERE isDeleted = 0 and id <> @id
+				and 
+				ISNULL(driverLocations,0) = 
+				Case when @driverLocations = '' Or @driverLocations IS NULL then 0
+				else @driverLocations end 
+				and
+				ISNULL(driverLocationNDE,Convert(bit,0)) = 
+				Case when @driverLocationNDE = '' Or @driverLocationNDE IS NULL then Convert(bit,0)
+				else @driverLocationNDE end 
+				and
+				ISNULL(driverLocationDE,Convert(bit,0)) = 
+				Case when @driverLocationDE = '' Or @driverLocationDE IS NULL then Convert(bit,0)
+				else @driverLocationDE end 
+				and
+				ISNULL(intermediateLocations,0) = 
+				Case when @intermediateLocations = '' Or @intermediateLocations IS NULL then 0
+				else @intermediateLocations end 
+				and
+				ISNULL(intermediatepresent,Convert(bit,0)) = 
+				Case when @intermediatepresent = '' Or @intermediatepresent IS NULL then Convert(bit,0)
+				else @intermediatepresent end 
+				and
+				ISNULL(drivenLocations,0) = 
+				Case when @drivenLocations = '' Or @drivenLocations IS NULL then 0
+				else @drivenLocations end 
+				and
+				ISNULL(drivenLocationDE,Convert(bit,0)) = 
+				Case when @drivenLocationDE = '' Or @drivenLocationDE IS NULL then Convert(bit,0)
+				else @drivenLocationDE end 
+				and
+				ISNULL(drivenLocationNDE,Convert(bit,0)) = 
+				Case when @drivenLocationNDE = '' Or @drivenLocationNDE IS NULL then Convert(bit,0)
+				else @drivenLocationNDE end 
+			End
+END
+GO
+
+---------------------------------------------------------------------------------------------41
+
+-- =============================================
+-- Author:      <Vishal Dhure>
+-- Create Date: <11/05/2021>
+-- Description: <SP used for get Pickup code details by id>
+-- =============================================
+CREATE PROCEDURE [dbo].[spGetPickupCodeDetailsById]
+(
+   @id bigint
+)
+AS
+BEGIN
+	select * from master.tblPickupCodeDetails where id = @id and isDeleted = 0
+End
+GO
+
+---------------------------------------------------------------------------------------------42
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -3078,20 +3761,21 @@ CREATE PROCEDURE [dbo].[spGetSpecialFaultCodesDetails]
 )
 AS
 BEGIN
+
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
 		EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
 		
-		Declare @id bigint,@specialmultiple int
-		Declare @specialfaultcodetype varchar(50),@specialcode varchar(50)
+		Declare @id bigint
+		Declare @specialfaultcodetype varchar(50),@specialcode varchar(50), @specialmultiple int
 
 		--- Read xml for SpecialFaultCodesDetails component --
 		select @id = id, 
 		@specialfaultcodetype = specialfaultcodetype,
-		@specialmultiple = specialmultiple ,
-		@specialcode = specialcode 
+		@specialcode = specialcode ,
+		@specialmultiple = specialmultiple
 		FROM OPENXML (@xmlDocumentHandle, 'SpecialFaultCodesDetails',2)
-		WITH (id bigint,specialmultiple int,specialfaultcodetype varchar(100),specialcode varchar(100))
+		WITH (id bigint,specialfaultcodetype varchar(100),specialcode varchar(100),specialmultiple int)
 		--- Read xml for SpecialFaultCodesDetails component --
 
 		if(@id = 0 )
@@ -3107,9 +3791,8 @@ BEGIN
 				Case when @specialcode = '' Or @specialcode IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@specialcode))) end 
 				and
-				ISNULL(specialmultiple,0) = 
-				Case when @specialmultiple = '' Or @specialmultiple IS NULL then 0
-				else @specialmultiple end 
+				specialmultiple = @specialmultiple
+				 
 			End
 		else
 			Begin
@@ -3124,18 +3807,12 @@ BEGIN
 				Case when @specialcode = '' Or @specialcode IS NULL then 'X'
 				else UPPER(RTRIM(LTRIM(@specialcode))) end 
 				and
-				ISNULL(specialmultiple,0) = 
-				Case when @specialmultiple = '' Or @specialmultiple IS NULL then 0
-				else @specialmultiple end 
+				specialmultiple = @specialmultiple
 			End
 END
+GO
 
-------------------------------------------------------------------------------------------- 37
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetSpecialFaultCodesDetailsById]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spGetSpecialFaultCodesDetailsById]
-Go
+---------------------------------------------------------------------------------------------43
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -3149,5 +3826,581 @@ Create PROCEDURE [dbo].[spGetSpecialFaultCodesDetailsById]
 AS
 BEGIN
 	select * from master.tblSpecialFaultCodesDetails where id = @id and isDeleted = 0
+End
+GO
+
+---------------------------------------------------------------------------------------------44
+-- =============================================
+-- Author:      <Vishal Dhure>
+-- Create Date: < >
+-- Description: <SP MID Code Deconstruction Logic>
+-- =============================================
+
+CREATE Procedure [dbo].[spMIDCodeDeconstruction]
+@xmlInput xml = ''
+As
+Begin
+
+Declare @xmlDocumentHandle int
+EXEC sp_xml_preparedocument @xmlDocumentHandle OUTPUT, @xmlInput;
+
+Declare @driverPickupCode varchar(50),@drivenPickupCode varchar(50),@intermediatePickupCode varchar(50),
+@coupling1PickupCode varchar(50),@coupling2PickupCode varchar(50),@driverComponentCode varchar(50),
+@drivenComponentCode varchar(50),@intermediateComponentCode varchar(50),@coupling1ComponentCode varchar(50),
+@coupling2ComponentCode varchar(50),@cylinders int, @driverLocations int,@driverLocationNDE int,@driverLocationDE int,@intermediateLocations int,
+@intermediatepresent bit,@drivenLocations int, @drivenLocationDE int, @drivenLocationNDE int,
+@driverComponentType varchar(100),@drivenComponentType varchar(100),@coupling1ComponentType varchar(100),
+@coupling2ComponentType varchar(100),@intermediateComponentType varchar(100),@coupling1Location int,
+@coupling2Location int, @driverType varchar(100),@drivenType varchar(100), @coupling1SpeedRatio decimal(18,4),@intermediateSpeedRatio decimal(18,2),
+@coupling2SpeedRatio decimal(18,4),@coupling1Position int,@coupling2Position int,@coupling1Type varchar(100),
+@coupling2Type varchar(100),@intermediateType varchar(100),@drivenId bigint,
+@driverJson nvarchar(max),@drivenJson nvarchar(max),@driverId bigint,@motorPoles int,@driverSpeedRatio decimal(18,4) = 1.0000,
+@interMediateJson nvarchar(max),@intermediateSpeedChangeMax int, @intermediateDrivenBy varchar(50),
+@spindleShaftBearing varchar(50),@pumpType varchar(50),@rotorOverhung bit, @centrifugalPumpHasBallBearings bit, @thrustBearing varchar(50),
+@pumpVanes int, @drivenSpeedRatio decimal(18,4),@compressorType varchar(50),@fan_or_blowerType varchar(50),
+@vacuumpumpType varchar(50)
+
+select frequencyCode as FrequencyCode,faultcode as Faultcode into #FaultCodeMatrixTableForDriver
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeDeconstructionRequest/machineComponentsForMIDdeconstruction/FaultCodeMatrix/rows/Row',2)
+WITH (rowId int,frequencyCode varchar(100), faultcode decimal(18,4))
+
+--- Read xml for driver component --
+select @driverPickupCode = case when PickupCode = '' then null else PickupCode end,
+@driverComponentCode = case when ComponentCode = '' then null else ComponentCode end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeDeconstructionRequest/machineComponentsForMIDdeconstruction/Driver',2)
+WITH (PickupCode varchar(100),ComponentCode varchar(100))
+--- Read xml for driver component --
+
+--- Read xml for driven Coupling1 --
+select @coupling1PickupCode = case when PickupCode = '' then null else PickupCode end,
+@coupling1ComponentCode = case when ComponentCode = '' then null else ComponentCode end,
+@coupling1SpeedRatio = Convert(decimal(18,4),case when SpeedRatio = '' then null else SpeedRatio end)
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeDeconstructionRequest/machineComponentsForMIDdeconstruction/Coupling1',2)
+WITH (PickupCode varchar(100),ComponentCode varchar(100),SpeedRatio varchar(100))
+--- Read xml for driven Coupling1 --
+
+--- Read xml for driven Coupling2 --
+select @coupling2PickupCode = case when PickupCode = '' then null else PickupCode end,
+@coupling2ComponentCode = case when ComponentCode = '' then null else ComponentCode end,
+@coupling2SpeedRatio = Convert(decimal(18,4),case when SpeedRatio = '' then null else SpeedRatio end)
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeDeconstructionRequest/machineComponentsForMIDdeconstruction/Coupling2',2)
+WITH (PickupCode varchar(100),ComponentCode varchar(100),SpeedRatio varchar(100))
+--- Read xml for driven Coupling2 --
+
+--- Read xml for driven Intermediate --
+select @intermediatePickupCode = case when PickupCode = '' then null else PickupCode end,
+@intermediateComponentCode = case when ComponentCode = '' then null else ComponentCode end,
+@intermediateSpeedRatio = Convert(decimal(18,4),case when SpeedRatio = '' then null else SpeedRatio end)
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeDeconstructionRequest/machineComponentsForMIDdeconstruction/Intermediate',2)
+WITH (PickupCode varchar(100),ComponentCode varchar(100),SpeedRatio varchar(100))
+--- Read xml for driven Intermediate --
+
+--- Read xml for driven Driven --
+select @drivenPickupCode = case when PickupCode = '' then null else PickupCode end,
+@drivenComponentCode = case when ComponentCode = '' then null else ComponentCode end
+FROM OPENXML (@xmlDocumentHandle, 'MIDCodeDeconstructionRequest/machineComponentsForMIDdeconstruction/Driven',2)
+WITH (PickupCode varchar(100),ComponentCode varchar(100))
+--- Read xml for driven Driven --
+
+
+select Top 1 @driverId = id, @driverComponentType = componentType,@driverLocations = locations,@driverType = driverType,@cylinders = cylinders, @motorPoles = motorPoles from master.tblDriverDetails where isDeleted = 0 and componentCode = convert(decimal(18,2),@driverComponentCode) order by id 
+select Top 1 @drivenId = id, @drivenComponentType = componentType, @drivenLocations = locations,@drivenType = drivenType, @spindleShaftBearing = spindleShaftBearing, @pumpType = pumpType ,
+@rotorOverhung = rotorOverhung,@centrifugalPumpHasBallBearings = centrifugalPumpHasBallBearings,@thrustBearing = thrustBearing,@compressorType = compressorType,@fan_or_blowerType = fan_or_blowerType,@vacuumpumpType = vacuumpumpType
+from master.tblDrivenDetails where isDeleted = 0 and componentCode = convert(decimal(18,2),@drivenComponentCode)  order by id 
+select Top 1 @intermediateComponentType = componentType, @intermediateLocations = locations,@intermediateType = intermediateType, @intermediateSpeedChangeMax = speedChangesMax, @intermediateDrivenBy =  drivenBy from master.tblIntermediateDetails where isDeleted = 0 and componentCode = convert(decimal(18,2),@intermediateComponentCode) order by id 
+select Top 1 @coupling1ComponentType = componentType, @coupling1Location = locations, @coupling1Type = couplingType, @coupling1Position = couplingPosition from master.tblCoupling1Details where isDeleted = 0 and componentCode = convert(decimal(18,2),@coupling1ComponentCode) order by id 
+select Top 1 @coupling2ComponentType = componentType, @coupling2Location = locations, @coupling2Type = couplingType, @coupling2Position = couplingPosition from master.tblCoupling2Details where isDeleted = 0 and componentCode = convert(decimal(18,2),@coupling2ComponentCode) order by id 
+
+Declare  @LocationDetails table (driverLocations int,driverLocationNDE int,driverLocationDE int,
+intermediateLocations int,drivenLocations int,drivenLocationDE int,drivenLocationNDE int)
+Declare @sqlStr nvarchar(max) 
+set @sqlStr = dbo.funGetLocationDetailsFromPickupCodeDetailsTable(@driverPickupCode,@drivenPickupCode,@intermediatePickupCode,@coupling1PickupCode,@coupling2PickupCode)
+
+insert into @LocationDetails
+EXECUTE sp_executesql @sqlStr
+
+select @driverLocations = driverLocations,@driverLocationNDE = driverLocationNDE,@driverLocationDE = driverLocationDE,@intermediateLocations = intermediateLocations,
+@drivenLocations = drivenLocations,@drivenLocationDE = drivenLocationDE,@drivenLocationNDE = drivenLocationNDE from @LocationDetails
+
+
+Declare @driverFaultCode decimal(18,4)
+
+select @driverFaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+where A.componentType = @driverComponentType
+and A.componentTypeSub1 = @driverType
+
+if(UPPER(RTRIM(LTRIM(@driverType))) = UPPER(RTRIM(LTRIM('diesel'))))
+	Begin
+		set @driverJson  = (select Convert(int,@driverFaultCode) as [diesel.cylinders] for Json Path)
+		set @driverJson = REPLACE(@driverJson,'[','') set @driverJson = REPLACE(@driverJson,']','')
+	End
+	
+if(UPPER(RTRIM(LTRIM(@driverType))) = UPPER(RTRIM(LTRIM('motor'))))
+	Begin
+		Declare @motorbarsFaultCode decimal(18,4), @motorFanBladesFaultCode decimal(18,4)
+
+		select @motorbarsFaultCode = Faultcode from master.tblSpecialFaultCodesDetails A
+		inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+		where A.componentType = @driverComponentType
+		and A.componentTypeSub1 = @driverType and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('motorbars')))
+
+		select @motorFanBladesFaultCode = Faultcode from master.tblSpecialFaultCodesDetails A
+		inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+		where A.componentType = @driverComponentType
+		and A.componentTypeSub1 = @driverType and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('motorfanblades')))
+		
+		set @driverJson = (select motorDrive,motorFan,motorBallBearings,drivenBallBearings,drivenBalanceable,@motorPoles as [vfd.motorPoles],
+		Convert(int,Convert(decimal(18,4),@motorbarsFaultCode)/Convert(decimal(18,4),@driverSpeedRatio)) as [extraFaultData.motorbars],
+		Convert(int,Convert(decimal(18,4),@motorFanBladesFaultCode)/Convert(decimal(18,4),@driverSpeedRatio)) as [extraFaultData.motorfanblades]
+		from master.tblDriverDetails where Id = @driverId for Json Path, Root ('motor'))
+		set @driverJson = REPLACE(@driverJson,'[','') set @driverJson = REPLACE(@driverJson,']','')
+	End
+	
+if(UPPER(RTRIM(LTRIM(@driverType))) = UPPER(RTRIM(LTRIM('turbine'))))
+	Begin
+		set @driverJson = (select turbineReductionGear,turbineRotorSupported,turbineBallBearing,turbineThrustBearing,turbineThrustBearingIsBall,
+		Convert(int,Convert(decimal(18,4),@driverFaultCode)/Convert(decimal(18,4),@driverSpeedRatio)) as [extraFaultData.turbineblades]
+		from master.tblDriverDetails where Id = @driverId for Json Path, Root ('turbine'))
+		set @driverJson = REPLACE(@driverJson,'[','') set @driverJson = REPLACE(@driverJson,']','')
+	End
+
+----======================== Intermediate ======================================================
+if(UPPER(RTRIM(LTRIM(@intermediateType))) = UPPER(RTRIM(LTRIM('gearbox'))))
+	Begin
+		set @interMediateJson  = (select @intermediateSpeedChangeMax as [gearbox.speedChangesMax] for Json Path)
+		set @interMediateJson = REPLACE(@interMediateJson,'[','') set @interMediateJson = REPLACE(@interMediateJson,']','')
+	End	
+
+if(UPPER(RTRIM(LTRIM(@intermediateType))) = UPPER(RTRIM(LTRIM('AOP'))))
+	Begin
+		set @interMediateJson  = (select @intermediateDrivenBy as [AOP.drivenBy] for Json Path)
+		set @interMediateJson = REPLACE(@interMediateJson,'[','') set @interMediateJson = REPLACE(@interMediateJson,']','')
+	End	
+
+if(UPPER(RTRIM(LTRIM(@intermediateType))) = UPPER(RTRIM(LTRIM('AccDrGr'))))
+	Begin
+		set @interMediateJson  = (select @intermediateDrivenBy as [AccDrGr.drivenBy] for Json Path)
+		set @interMediateJson = REPLACE(@interMediateJson,'[','') set @interMediateJson = REPLACE(@interMediateJson,']','')
+	End
+----======================== Intermediate ======================================================
+
+--======================== Driven ======================================================
+
+	Declare @drivenFaultCode decimal(18,4),@drivenComponentTypeSub2 varchar(50)
+
+	if(@drivenType = 'pump')
+		Begin
+			set @drivenComponentTypeSub2 = @pumpType
+		End
+	if(@drivenType = 'compressor')
+		Begin
+			set @drivenComponentTypeSub2 = @compressorType
+		End
+	if(@drivenType = 'fan_or_blower')
+		Begin
+			set @drivenComponentTypeSub2 = @fan_or_blowerType
+		End
+	if(@drivenType = 'vacuumpump')
+		Begin
+			set @drivenComponentTypeSub2 = @vacuumpumpType
+		End
+		
+
+	select @drivenFaultCode = Convert(decimal(18,4),B.Faultcode) from master.tblSpecialFaultCodesDetails A
+	inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+	where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+	and componentTypeSub2 = @drivenComponentTypeSub2
+
+	set @drivenSpeedRatio = ISNULL(@intermediateSpeedRatio,1) * ISNULL(@coupling1SpeedRatio,1) * ISNULL(@coupling2SpeedRatio,1)
+	
+	if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('pump'))))
+		Begin
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('centrifugal'))))
+				Begin
+					set @drivenJson = (select @pumpType as pumpType,@rotorOverhung as [pumpTypes.pumpCentrifugal.rotorOverhung],
+					@centrifugalPumpHasBallBearings as [pumpTypes.pumpCentrifugal.centrifugalPumpHasBallBearings],
+					@thrustBearing as [pumpTypes.pumpCentrifugal.thrustBearing],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpCentrifugal.extraFaultData.pumpvanes]
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+			End
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('propeller'))))
+				Begin
+					Declare @propplerPumpVanesFaultcode decimal(18,4), @propplerpumpBladesFaultcode decimal(18,4)
+					
+					select @propplerPumpVanesFaultcode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('pumpvanes')))
+
+					select @propplerpumpBladesFaultcode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('pumpblades')))
+
+					set @drivenJson = (select @pumpType as pumpType,propellerpumpHasBallBearings as [pumpTypes.pumpPropeller.propellerpumpHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@propplerPumpVanesFaultcode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpPropeller.extraFaultData.pumpvanes],
+					Convert(int,Convert(decimal(18,4),@propplerpumpBladesFaultcode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpPropeller.extraFaultData.pumpblades]
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+			End
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('rotarythread'))))
+				Begin
+					set @drivenJson = (select @pumpType as pumpType,rotaryThreadPumpHasBallBearings as [pumpTypes.pumpRotaryThread.rotaryThreadPumpHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpRotaryThread.extraFaultData.pumpthreads]
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+			End
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('gear'))))
+				Begin
+					set @drivenJson = (select @pumpType as pumpType,gearPumpHasBallBearings as [pumpTypes.pumpGear.gearPumpHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpGear.extraFaultData.pumpteeth]
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+			End
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('screw'))))
+				Begin
+					Declare @screwPumpthreadsFaultcode decimal(18,4), 
+					@idlerThreadsFaultcode decimal(18,4)
+					
+					select @screwPumpthreadsFaultcode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('pumpthreads')))
+
+					select @idlerThreadsFaultcode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('idlerthreads')))
+
+					set @drivenJson = (select @pumpType as pumpType,screwPumpHasBallBearings as [pumpTypes.pumpRotaryScrew.screwPumpHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@screwPumpthreadsFaultcode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpRotaryScrew.extraFaultData.pumpthreads],
+
+					Convert(int,Convert(decimal(18,4),@idlerThreadsFaultcode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpRotaryScrew.extraFaultData.idlerthreads]
+					
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+			End
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('slidingvane'))))
+				Begin
+					set @drivenJson = (select @pumpType as pumpType,rotorOverhung as [pumpTypes.pumpRotarySlidingVane.rotorOverhung],
+					slidingVanePumpHasBallBearings as [pumpTypes.pumpRotarySlidingVane.slidingVanePumpHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpRotarySlidingVane.extraFaultData.pumpvanes]
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('axialrecip'))))
+				Begin
+					set @drivenJson = (select @pumpType as pumpType,attachedOilPump as [pumpTypes.pumpRotaryAxialRecip.attachedOilPump],
+					axialRecipPumpHasBallBearings as [pumpTypes.pumpRotaryAxialRecip.axialRecipPumpHasBallBearings],
+					thrustBearing as [pumpTypes.pumpRotaryAxialRecip.thrustBearing],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpRotaryAxialRecip.extraFaultData.pumppistons]
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+			if(UPPER(RTRIM(LTRIM(@pumpType))) = UPPER(RTRIM(LTRIM('radialrecip'))))
+				Begin
+					set @drivenJson = (select @pumpType as pumpType,
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [pumpTypes.pumpRotaryRadialRecip.extraFaultData.pumppistons]
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('pump'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+	End
+
+	if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('compressor'))))
+		Begin
+			if(UPPER(RTRIM(LTRIM(@compressorType))) = UPPER(RTRIM(LTRIM('centrifugal'))))
+				Begin
+					set @drivenJson = (select @compressorType as compressorType,impellerOnMainShaft as [compressorTypes.compressorCentrifugal.impellerOnMainShaft],
+					centrifugalCompressorHasBallBearings as [compressorTypes.compressorCentrifugal.centrifugalCompressorHasBallBearings],
+					thrustBearing as [compressorTypes.compressorCentrifugal.thrustBearing],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorCentrifugal.extraFaultData.compressorvanes] from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('compressor'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+
+			if(UPPER(RTRIM(LTRIM(@compressorType))) = UPPER(RTRIM(LTRIM('reciprocating'))))
+				Begin
+					set @drivenJson = (select @compressorType as compressorType,crankHasIntermediateBearing as [compressorTypes.compressorReciporcating.crankHasIntermediateBearing],
+					reciprocatingCompressorHasBallBearings as [compressorTypes.compressorReciporcating.reciprocatingCompressorHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorReciporcating.extraFaultData.compressorpistons] from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('compressor'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+
+			if(UPPER(RTRIM(LTRIM(@compressorType))) = UPPER(RTRIM(LTRIM('screw'))))
+				Begin
+				
+					Declare @screwCompressorthreadsFaultCode decimal(18,4), @screwidlerthreadsFaultCode decimal(18,4)
+					
+					select @screwCompressorthreadsFaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('compressorthreads')))
+
+					select @screwidlerthreadsFaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('idlerthreads')))
+
+					set @drivenJson = (select @compressorType as compressorType,screwCompressorHasBallBearings as [compressorTypes.compressorScrew.screwCompressorHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@screwCompressorthreadsFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorScrew.extraFaultData.compressorthreads] ,
+					Convert(int,Convert(decimal(18,4),@screwidlerthreadsFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorScrew.extraFaultData.idlerthreads] 
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('compressor'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+					--select @drivenJson
+				End
+
+			if(UPPER(RTRIM(LTRIM(@compressorType))) = UPPER(RTRIM(LTRIM('screwtwin'))))
+				Begin
+					Declare @screwtwinCompressorThreads1FaultCode decimal(18,4), 
+					@screwtwinIdlerThreads1FaultCode decimal(18,4),
+					@screwtwinCompressorthreads2FaultCode decimal(18,4),
+					@screwtwinidlerthreads2FaultCode decimal(18,4)
+					
+					select top 1 @screwtwinCompressorThreads1FaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('compressorthreads1')))
+					order by Faultcode
+
+					select top 1 @screwtwinIdlerThreads1FaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('idlerthreads1')))
+					order by Faultcode
+
+					select top 1 @screwtwinCompressorthreads2FaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('compressorthreads2')))
+					order by Faultcode
+
+					select @screwtwinidlerthreads2FaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('idlerthreads2')))
+					order by Faultcode
+
+					set @drivenJson = (select @compressorType as compressorType,
+					screwTwinCompressorHasBallBearingsOnHPSide as [compressorTypes.compressorScrewTwin.screwTwinCompressorHasBallBearingsOnHPSide],
+					Convert(int,Convert(decimal(18,4),@screwtwinCompressorThreads1FaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorScrewTwin.extraFaultData.compressorthreads1] ,
+
+					Convert(int,Convert(decimal(18,4),@screwtwinIdlerThreads1FaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorScrewTwin.extraFaultData.idlerthreads1] ,
+
+					Convert(int,Convert(decimal(18,4),@screwtwinCompressorthreads2FaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorScrewTwin.extraFaultData.compressorthreads2] ,
+
+					Convert(int,Convert(decimal(18,4),@screwtwinidlerthreads2FaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [compressorTypes.compressorScrewTwin.extraFaultData.idlerthreads2] 
+
+					from master.tblDrivenDetails where Id = @drivenId
+					for Json Path, Root ('compressor'))
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+
+				End
+		End
+	
+	if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('fan_or_blower'))))
+		Begin
+					
+			if(UPPER(RTRIM(LTRIM(@fan_or_blowerType))) = UPPER(RTRIM(LTRIM('lobed'))))
+				Begin
+					Declare @lobbedBlowerlobesFaultCode decimal(18,4), @lobbedIdlerlobesFaultCode decimal(18,4)
+					
+					select @lobbedBlowerlobesFaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('blowerlobes')))
+
+					select @lobbedIdlerlobesFaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('idlerlobes')))
+
+					set @drivenJson = (select @fan_or_blowerType as fan_or_blowerType,lobedFanOrBlowerHasBallBearings as [fan_or_blowerTypes.fan_or_blowerLobed.lobedFanOrBlowerHasBallBearings],
+					Convert(int,Convert(decimal(18,4),@lobbedBlowerlobesFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [fan_or_blowerTypes.fan_or_blowerLobed.extraFaultData.blowerlobes],
+					Convert(int,Convert(decimal(18,4),@lobbedIdlerlobesFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [fan_or_blowerTypes.fan_or_blowerLobed.extraFaultData.idlerlobes] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('fan_or_blower'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+
+				End
+
+			if(UPPER(RTRIM(LTRIM(@fan_or_blowerType))) = UPPER(RTRIM(LTRIM('overhungrotor'))))
+				Begin
+					
+					set @drivenJson = (select @fan_or_blowerType as fan_or_blowerType,fanStages as [fan_or_blowerTypes.fan_or_blowerOverhungRotor.fanStages],
+					overhungRotorFanOrBlowerHasBearings as [fan_or_blowerTypes.fan_or_blowerOverhungRotor.overhungRotorFanOrBlowerHasBearings],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [fan_or_blowerTypes.fan_or_blowerOverhungRotor.extraFaultData.fanblades] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('fan_or_blower'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+
+			if(UPPER(RTRIM(LTRIM(@fan_or_blowerType))) = UPPER(RTRIM(LTRIM('supportedrotor'))))
+				Begin
+					set @drivenJson = (select @fan_or_blowerType as fan_or_blowerType,supportedRotorFanOrBlowerHasBearings as [fan_or_blowerTypes.fan_or_blowerSupportedRotor.supportedRotorFanOrBlowerHasBearings],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [fan_or_blowerTypes.fan_or_blowerSupportedRotor.extraFaultData.fanblades] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('fan_or_blower'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+		End
+
+	if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('purifier_centrifuge'))))
+		Begin
+			set @drivenJson = (select purifierDrivenBy --as [purifier_centrifuge.purifierDrivenBy]
+			from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('purifier_centrifuge'))
+
+			set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+
+		End
+
+	if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('generator'))))
+		Begin
+				Declare @generatorFaultCode decimal(18,4)
+				
+				select @generatorFaultCode = B.Faultcode from master.tblSpecialFaultCodesDetails A
+				inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+				where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+
+				set @drivenJson = (select bearingType,exciter ,exciterOverhungOrSupported ,
+				drivenBy ,Convert(int,Convert(decimal(18,4),@generatorFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+				as [extraFaultData.generatorbars]
+				from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('generator'))
+			
+				set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+		End
+
+	if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('vacuumpump'))))
+		Begin
+			if(UPPER(RTRIM(LTRIM(@vacuumpumpType))) = UPPER(RTRIM(LTRIM('centrifugal'))))
+				Begin
+					set @drivenJson = (select @vacuumpumpType as vacuumpumptype,rotorOverhung as [vacuumpumpTypes.vacuumpumpCentrifugal.rotorOverhung],
+					impellerOnMainShaft as [vacuumpumpTypes.vacuumpumpCentrifugal.impellerOnMainShaft],
+					bearingsType as [vacuumpumpTypes.vacuumpumpCentrifugal.bearingsType],
+					thrustBearing as [vacuumpumpTypes.vacuumpumpCentrifugal.thrustBearing],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [vacuumpumpTypes.vacuumpumpCentrifugal.extraFaultData.pumpvanes] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('vacuumpump'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+
+				End
+
+			if(UPPER(RTRIM(LTRIM(@vacuumpumpType))) = UPPER(RTRIM(LTRIM('axialrecip'))))
+				Begin
+					set @drivenJson = (select @vacuumpumpType as vacuumpumptype,attachedOilPump as [vacuumpumpTypes.vacuumpumpAxialRecip.attachedOilPump],
+					bearingsType as [vacuumpumpTypes.vacuumpumpAxialRecip.bearingsType],
+					thrustBearing as [vacuumpumpTypes.vacuumpumpAxialRecip.thrustBearing],
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [vacuumpumpTypes.vacuumpumpAxialRecip.extraFaultData.pumppistons] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('vacuumpump'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+
+			if(UPPER(RTRIM(LTRIM(@vacuumpumpType))) = UPPER(RTRIM(LTRIM('radialrecip'))))
+				Begin
+					set @drivenJson = (select Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [vacuumpumpTypes.vacuumpumpRadialRecip.extraFaultData.pumppistons] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('vacuumpump'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+
+			if(UPPER(RTRIM(LTRIM(@vacuumpumpType))) = UPPER(RTRIM(LTRIM('reciprocating'))))
+				Begin
+					set @drivenJson = (select bearingsType, 
+					Convert(int,Convert(decimal(18,4),@drivenFaultCode)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [vacuumpumpTypes.vacuumpumpReciprocating.extraFaultData.pumppistons] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('vacuumpump'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+
+			if(UPPER(RTRIM(LTRIM(@vacuumpumpType))) = UPPER(RTRIM(LTRIM('lobed'))))
+				Begin
+					Declare @pumplobesVacuumpumpLobed decimal(18,4), 
+					@idlerlobesVacuumpumpLobed decimal(18,4)
+					
+					select @pumplobesVacuumpumpLobed = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('pumplobes')))
+
+					select @idlerlobesVacuumpumpLobed = B.Faultcode from master.tblSpecialFaultCodesDetails A
+					inner join #FaultCodeMatrixTableForDriver B on Upper(Rtrim(Ltrim(A.specialcode))) = Upper(Rtrim(Ltrim(B.FrequencyCode)))
+					where A.componentType = @drivenComponentType and A.componentTypeSub1 = @drivenType
+					and componentTypeSub2 = @drivenComponentTypeSub2 and UPPER(RTRIM(LTRIM(specialfaultcodetype))) = UPPER(RTRIM(LTRIM('idlerlobes')))
+
+					set @drivenJson = (select bearingsType as [vacuumpumpTypes.vacuumpumpLobed.bearingsType],
+					Convert(int,Convert(decimal(18,4),@pumplobesVacuumpumpLobed)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [vacuumpumpTypes.vacuumpumpLobed.extraFaultData.pumplobes],
+					Convert(int,Convert(decimal(18,4),@idlerlobesVacuumpumpLobed)/Convert(decimal(18,4),@drivenSpeedRatio))
+					as [vacuumpumpTypes.vacuumpumpLobed.extraFaultData.idlerlobes] 
+					from master.tblDrivenDetails where Id = @drivenId for Json Path, Root ('vacuumpump'))
+
+					set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+				End
+		End
+
+	if(UPPER(RTRIM(LTRIM(@drivenType))) = UPPER(RTRIM(LTRIM('spindle_or_shaft_or_bearing'))))
+		Begin
+			set @drivenJson  = (select @spindleShaftBearing as [spindle_or_shaft_or_bearing.spindleShaftBearing] for Json Path)
+			set @drivenJson = REPLACE(@drivenJson,'[','') set @drivenJson = REPLACE(@drivenJson,']','')
+		End
+
+--======================== Driven ====================================================
+
+select * from (
+select @driverComponentType as ComponentType, 'Driver' as  Component,@driverLocations as Locations, null as Rpm, @driverLocationDE as LocationDE, @driverLocationNDE as LocationNDE,
+@driverType as DriverType,null as SpeedRatio,null as CouplingPosition, null as CouplingType, null as IntermediateType,null as DrivenType,@driverJson as TypeDeatils
+Union all
+select @drivenComponentType as ComponentType, 'Driven' as  Component,@drivenLocations as locations, null,@drivenLocationDE,@drivenLocationNDE,
+null,null,null,null,null,@drivenType as DrivenType,@drivenJson
+Union all
+select @coupling1ComponentType as ComponentType, 'Coupling1' as  Component,@coupling1Location as locations, null,null,null,
+null,@coupling1SpeedRatio,@coupling1Position, @coupling1Type,null,null,null 
+Union all
+select @coupling2ComponentType as ComponentType, 'Coupling2' as  Component,@coupling2Location as locations, null,null,null,
+null,@coupling2SpeedRatio,@coupling2Position, @coupling2Type,null,null,null
+Union all
+select @intermediateComponentType as ComponentType, 'Intermediate' as  Component,@intermediateLocations as locations, null,null,null,
+null,@intermediateSpeedRatio,null, null,@intermediateType ,null,@interMediateJson
+) as T where ComponentType IS NOT NULL
+
+drop table #FaultCodeMatrixTableForDriver
+
 End
 GO

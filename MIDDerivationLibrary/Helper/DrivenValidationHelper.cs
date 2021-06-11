@@ -9,7 +9,7 @@ using static MIDDerivationLibrary.Enums.DrivenEnums;
 
 namespace MIDDerivationLibrary.Helper
 {
-    public class DrivenValidationHelper
+    public static class DrivenValidationHelper
     {
         public static void ValidateDrivenInput(ref ModelStateDictionary modelState, ref DrivenDetails model)
         {
@@ -48,13 +48,13 @@ namespace MIDDerivationLibrary.Helper
                         if (model.thrustBearing == null || !Enum.IsDefined(typeof(DrivenThrustBearing), model.thrustBearing.ToLower()))
                             modelState.AddModelError(nameof(model.thrustBearing), Constants.drivensThrustBearingValidationMsg);
 
-                        //model.propellerpumpHasBallBearings = null;
-                        //model.rotaryThreadPumpHasBallBearings = null;
-                        //model.gearPumpHasBallBearings = null;
-                        //model.screwPumpHasBallBearings = null;
-                        //model.slidingVanePumpHasBallBearings = null;
-                        //model.axialRecipPumpHasBallBearings = null;
-                        //model.attachedOilPump = null;
+                        model.propellerpumpHasBallBearings = null;
+                        model.rotaryThreadPumpHasBallBearings = null;
+                        model.gearPumpHasBallBearings = null;
+                        model.screwPumpHasBallBearings = null;
+                        model.slidingVanePumpHasBallBearings = null;
+                        model.axialRecipPumpHasBallBearings = null;
+                        model.attachedOilPump = null;
                     }
 
                     if (model.pumpType == DrivenPumpType.propeller.ToString())
@@ -63,16 +63,16 @@ namespace MIDDerivationLibrary.Helper
                         if (model.propellerpumpHasBallBearings == null)
                             modelState.AddModelError(nameof(model.propellerpumpHasBallBearings), Constants.drivensPropellerpumpHasBallBearingsValidationMsg);
 
-                        //model.rotorOverhung = null;
-                        //model.centrifugalPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.rotaryThreadPumpHasBallBearings = null;
-                        //model.gearPumpHasBallBearings = null;
-                        //model.screwPumpHasBallBearings = null;
-                        //model.slidingVanePumpHasBallBearings = null;
-                        //model.axialRecipPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.attachedOilPump = null;
+                        model.rotorOverhung = null;
+                        model.centrifugalPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.rotaryThreadPumpHasBallBearings = null;
+                        model.gearPumpHasBallBearings = null;
+                        model.screwPumpHasBallBearings = null;
+                        model.slidingVanePumpHasBallBearings = null;
+                        model.axialRecipPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.attachedOilPump = null;
                     }
 
                     if (model.pumpType == DrivenPumpType.rotarythread.ToString())
@@ -81,16 +81,16 @@ namespace MIDDerivationLibrary.Helper
                         if (model.rotaryThreadPumpHasBallBearings == null)
                             modelState.AddModelError(nameof(model.rotaryThreadPumpHasBallBearings), Constants.drivensRotaryThreadPumpHasBallBearingsValidationMsg);
 
-                        //model.rotorOverhung = null;
-                        //model.centrifugalPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.propellerpumpHasBallBearings = null;
-                        //model.gearPumpHasBallBearings = null;
-                        //model.screwPumpHasBallBearings = null;
-                        //model.slidingVanePumpHasBallBearings = null;
-                        //model.axialRecipPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.attachedOilPump = null;
+                        model.rotorOverhung = null;
+                        model.centrifugalPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.propellerpumpHasBallBearings = null;
+                        model.gearPumpHasBallBearings = null;
+                        model.screwPumpHasBallBearings = null;
+                        model.slidingVanePumpHasBallBearings = null;
+                        model.axialRecipPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.attachedOilPump = null;
                     }
 
                     if (model.pumpType == DrivenPumpType.gear.ToString())
@@ -99,16 +99,16 @@ namespace MIDDerivationLibrary.Helper
                         if (model.gearPumpHasBallBearings == null)
                             modelState.AddModelError(nameof(model.gearPumpHasBallBearings), Constants.drivensGearPumpHasBallBearingsValidationMsg);
 
-                        //model.rotorOverhung = null;
-                        //model.centrifugalPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.propellerpumpHasBallBearings = null;
-                        //model.rotaryThreadPumpHasBallBearings = null;
-                        //model.screwPumpHasBallBearings = null;
-                        //model.slidingVanePumpHasBallBearings = null;
-                        //model.axialRecipPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.attachedOilPump = null;
+                        model.rotorOverhung = null;
+                        model.centrifugalPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.propellerpumpHasBallBearings = null;
+                        model.rotaryThreadPumpHasBallBearings = null;
+                        model.screwPumpHasBallBearings = null;
+                        model.slidingVanePumpHasBallBearings = null;
+                        model.axialRecipPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.attachedOilPump = null;
                     }
 
                     if (model.pumpType == DrivenPumpType.screw.ToString())
@@ -117,16 +117,16 @@ namespace MIDDerivationLibrary.Helper
                         if (model.screwPumpHasBallBearings == null)
                             modelState.AddModelError(nameof(model.screwPumpHasBallBearings), Constants.drivensScrewPumpHasBallBearingsValidationMsg);
 
-                        //model.rotorOverhung = null;
-                        //model.centrifugalPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.propellerpumpHasBallBearings = null;
-                        //model.rotaryThreadPumpHasBallBearings = null;
-                        //model.gearPumpHasBallBearings = null;
-                        //model.slidingVanePumpHasBallBearings = null;
-                        //model.axialRecipPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.attachedOilPump = null;
+                        model.rotorOverhung = null;
+                        model.centrifugalPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.propellerpumpHasBallBearings = null;
+                        model.rotaryThreadPumpHasBallBearings = null;
+                        model.gearPumpHasBallBearings = null;
+                        model.slidingVanePumpHasBallBearings = null;
+                        model.axialRecipPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.attachedOilPump = null;
                     }
 
                     if (model.pumpType == DrivenPumpType.slidingvane.ToString())
@@ -135,16 +135,16 @@ namespace MIDDerivationLibrary.Helper
                         if (model.slidingVanePumpHasBallBearings == null)
                             modelState.AddModelError(nameof(model.slidingVanePumpHasBallBearings), Constants.drivenSlidingVanePumpHasBallBearingsValidationMsg);
 
-                        //model.rotorOverhung = null;
-                        //model.centrifugalPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.propellerpumpHasBallBearings = null;
-                        //model.rotaryThreadPumpHasBallBearings = null;
-                        //model.gearPumpHasBallBearings = null;
-                        //model.screwPumpHasBallBearings = null;
-                        //model.axialRecipPumpHasBallBearings = null;
-                        //model.thrustBearing = null;
-                        //model.attachedOilPump = null;
+                        model.rotorOverhung = null;
+                        model.centrifugalPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.propellerpumpHasBallBearings = null;
+                        model.rotaryThreadPumpHasBallBearings = null;
+                        model.gearPumpHasBallBearings = null;
+                        model.screwPumpHasBallBearings = null;
+                        model.axialRecipPumpHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.attachedOilPump = null;
                     }
 
                     if (model.pumpType == DrivenPumpType.axialrecip.ToString())
@@ -157,17 +157,26 @@ namespace MIDDerivationLibrary.Helper
                         if (model.thrustBearing != null && !Enum.IsDefined(typeof(PumpRotaryAxialRecipThrustBearing), model.thrustBearing.ToLower()))
                             modelState.AddModelError(nameof(model.thrustBearing), Constants.drivenThrustBearingValidationMsg);
 
-                        //model.rotorOverhung = null;
-                        //model.centrifugalPumpHasBallBearings = null;
-                        //model.propellerpumpHasBallBearings = null;
-                        //model.rotaryThreadPumpHasBallBearings = null;
-                        //model.gearPumpHasBallBearings = null;
-                        //model.screwPumpHasBallBearings = null;
-                        //model.slidingVanePumpHasBallBearings = null;
+                        model.rotorOverhung = null;
+                        model.centrifugalPumpHasBallBearings = null;
+                        model.propellerpumpHasBallBearings = null;
+                        model.rotaryThreadPumpHasBallBearings = null;
+                        model.gearPumpHasBallBearings = null;
+                        model.screwPumpHasBallBearings = null;
+                        model.slidingVanePumpHasBallBearings = null;
                     }
-                }
 
-                //--
+                    ClearCompressorDetails(ref model);
+                    ClearFanOrBlowerDetails(ref model);
+                    ClearPurifierCentrifugeDetails(ref model);
+                    ClearGeneratorDetails(ref model);
+                    ClearVacuumpumpDetails(ref model);
+                    ClearSpindleOrShaftOrBearingDetails(ref model);
+
+                    model.rotorOverhung = null;
+                    model.attachedOilPump = null;
+                    model.impellerOnMainShaft = null;
+                }
 
                 //compressor
                 if (!string.IsNullOrEmpty(model.drivenType) && model.drivenType.ToLower() == DrivenType.compressor.ToString())
@@ -187,8 +196,13 @@ namespace MIDDerivationLibrary.Helper
                             modelState.AddModelError(nameof(model.centrifugalCompressorHasBallBearings), Constants.drivensCompressorCentrifugalCompressorHasBallBearings);
 
                         //thrustBearing
-                        if (model.drivenType.ToLower() == DrivenType.compressor.ToString() && model.thrustBearing != null && !Enum.IsDefined(typeof(DrivenCompressorThrustBearing), model.thrustBearing.ToLower()))
+                        if (model.thrustBearing != null && !Enum.IsDefined(typeof(DrivenCompressorThrustBearing), model.thrustBearing.ToLower()))
                             modelState.AddModelError(nameof(model.thrustBearing), Constants.drivensCompressorThrustBearingValidationMsg);
+
+                        model.crankHasIntermediateBearing = null;
+                        model.reciprocatingCompressorHasBallBearings = null;
+                        model.screwCompressorHasBallBearings = null;
+                        model.screwTwinCompressorHasBallBearingsOnHPSide = null;
                     }
 
                     if (model.compressorType == DrivenCompressorType.reciprocating.ToString())
@@ -196,6 +210,13 @@ namespace MIDDerivationLibrary.Helper
                         //reciprocatingCompressorHasBallBearings
                         if (model.reciprocatingCompressorHasBallBearings == null)
                             modelState.AddModelError(nameof(model.reciprocatingCompressorHasBallBearings), Constants.drivensReciprocatingCompressorHasBallBearingsValidationMsg);
+
+                        model.impellerOnMainShaft = null;
+                        model.centrifugalCompressorHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.crankHasIntermediateBearing = null;
+                        model.screwCompressorHasBallBearings = null;
+                        model.screwTwinCompressorHasBallBearingsOnHPSide = null;
                     }
 
                     if (model.compressorType == DrivenPumpType.screw.ToString())
@@ -203,6 +224,13 @@ namespace MIDDerivationLibrary.Helper
                         //screwCompressorHasBallBearings
                         if (model.screwCompressorHasBallBearings == null)
                             modelState.AddModelError(nameof(model.screwCompressorHasBallBearings), Constants.drivensScrewCompressorHasBallBearingsValidationMsg);
+
+                        model.impellerOnMainShaft = null;
+                        model.centrifugalCompressorHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.crankHasIntermediateBearing = null;
+                        model.reciprocatingCompressorHasBallBearings = null;
+                        model.screwTwinCompressorHasBallBearingsOnHPSide = null;
                     }
 
                     if (model.compressorType == DrivenCompressorType.screwtwin.ToString())
@@ -210,7 +238,24 @@ namespace MIDDerivationLibrary.Helper
                         //screwTwinCompressorHasBallBearingsOnHPSide
                         if (model.screwTwinCompressorHasBallBearingsOnHPSide == null)
                             modelState.AddModelError(nameof(model.screwTwinCompressorHasBallBearingsOnHPSide), Constants.drivensScrewTwinCompressorHasBallBearingsOnHPSideValidationMsg);
+
+                        model.impellerOnMainShaft = null;
+                        model.centrifugalCompressorHasBallBearings = null;
+                        model.thrustBearing = null;
+                        model.crankHasIntermediateBearing = null;
+                        model.reciprocatingCompressorHasBallBearings = null;
+                        model.screwCompressorHasBallBearings = null;
                     }
+
+                    ClearPumpDetails(ref model);
+                    ClearFanOrBlowerDetails(ref model);
+                    ClearPurifierCentrifugeDetails(ref model);
+                    ClearGeneratorDetails(ref model);
+                    ClearVacuumpumpDetails(ref model);
+                    ClearSpindleOrShaftOrBearingDetails(ref model);
+
+                    model.rotorOverhung = null;
+                    model.attachedOilPump = null;
                 }
 
                 //fan_or_blower
@@ -220,12 +265,16 @@ namespace MIDDerivationLibrary.Helper
                     if (string.IsNullOrEmpty(model.fan_or_blowerType) || !Enum.IsDefined(typeof(DrivenFan_or_BlowerType), model.fan_or_blowerType.ToLower()))
                         modelState.AddModelError(nameof(model.fan_or_blowerType), Constants.drivensFan_or_blowerTypeValidationMsg);
 
-
                     if (model.fan_or_blowerType == DrivenFan_or_BlowerType.lobed.ToString())
                     {
                         //lobedFanOrBlowerHasBallBearings
                         if (model.lobedFanOrBlowerHasBallBearings == null)
                             modelState.AddModelError(nameof(model.lobedFanOrBlowerHasBallBearings), Constants.drivensLobedFanOrBlowerHasBallBearingsValidationMsg);
+
+                        model.fan_or_blowerType = null;
+                        model.fanStages = null;
+                        model.overhungRotorFanOrBlowerHasBearings = null;
+                        model.supportedRotorFanOrBlowerHasBearings = null;
                     }
 
                     if (model.fan_or_blowerType == DrivenFan_or_BlowerType.overhungrotor.ToString())
@@ -237,7 +286,30 @@ namespace MIDDerivationLibrary.Helper
                         //overhungRotorFanOrBlowerHasBearings
                         if (model.overhungRotorFanOrBlowerHasBearings == null)
                             modelState.AddModelError(nameof(model.overhungRotorFanOrBlowerHasBearings), Constants.drivensOverhungRotorFanOrBlowerHasBearingsValidationMsg);
+
+                        model.fan_or_blowerType = null;
+                        model.lobedFanOrBlowerHasBallBearings = null;
+                        model.supportedRotorFanOrBlowerHasBearings = null;
                     }
+
+                    if (model.fan_or_blowerType == DrivenFan_or_BlowerType.supportedrotor.ToString())
+                    {
+                        model.lobedFanOrBlowerHasBallBearings = null;
+                        model.fanStages = null;
+                        model.overhungRotorFanOrBlowerHasBearings = null;
+                    }
+
+                    ClearPumpDetails(ref model);
+                    ClearCompressorDetails(ref model);
+                    ClearPurifierCentrifugeDetails(ref model);
+                    ClearGeneratorDetails(ref model);
+                    ClearVacuumpumpDetails(ref model);
+                    ClearSpindleOrShaftOrBearingDetails(ref model);
+
+                    model.rotorOverhung = null;
+                    model.thrustBearing = null;
+                    model.impellerOnMainShaft = null;
+                    model.attachedOilPump = null;
                 }
 
                 //purifier_centrifuge
@@ -249,6 +321,18 @@ namespace MIDDerivationLibrary.Helper
                         if (string.IsNullOrEmpty(model.purifierDrivenBy) || !Enum.IsDefined(typeof(DrivenPurifierDrivenBy), model.purifierDrivenBy.ToLower()))
                             modelState.AddModelError(nameof(model.purifierDrivenBy), Constants.drivenPurifierDrivenByValidationMsg);
                     }
+
+                    ClearPumpDetails(ref model);
+                    ClearCompressorDetails(ref model);
+                    ClearFanOrBlowerDetails(ref model);
+                    ClearGeneratorDetails(ref model);
+                    ClearVacuumpumpDetails(ref model);
+                    ClearSpindleOrShaftOrBearingDetails(ref model);
+
+                    model.rotorOverhung = null;
+                    model.thrustBearing = null;
+                    model.impellerOnMainShaft = null;
+                    model.attachedOilPump = null;
                 }
 
                 //generator
@@ -269,6 +353,18 @@ namespace MIDDerivationLibrary.Helper
                     //drivenBy
                     if (string.IsNullOrEmpty(model.drivenBy) || !Enum.IsDefined(typeof(DrivenGeneratorDrivenBy), model.drivenBy.ToLower()))
                         modelState.AddModelError(nameof(model.drivenBy), Constants.drivensDrivenByValidationMsg);
+
+                    ClearPumpDetails(ref model);
+                    ClearCompressorDetails(ref model);
+                    ClearFanOrBlowerDetails(ref model);
+                    ClearPurifierCentrifugeDetails(ref model);
+                    ClearVacuumpumpDetails(ref model);
+                    ClearSpindleOrShaftOrBearingDetails(ref model);
+
+                    model.rotorOverhung = null;
+                    model.thrustBearing = null;
+                    model.impellerOnMainShaft = null;
+                    model.attachedOilPump = null;
                 }
 
                 //vacuumpump
@@ -287,6 +383,14 @@ namespace MIDDerivationLibrary.Helper
                         //thrustBearing
                         if (!string.IsNullOrEmpty(model.thrustBearing) && !Enum.IsDefined(typeof(DrivenVaccumPumpThrustBearing), model.thrustBearing.ToLower()))
                             modelState.AddModelError(nameof(model.thrustBearing), Constants.drivensVaccumPumpThrustBearingValidationMsg);
+
+                        model.attachedOilPump = null;
+                    }
+
+                    if (model.vacuumPumpType == DrivenVacuumPumpType.axialrecip.ToString())
+                    {
+                        model.rotorOverhung = null;
+                        model.impellerOnMainShaft = null;
                     }
 
                     if (model.vacuumPumpType == DrivenVacuumPumpType.reciprocating.ToString())
@@ -294,6 +398,11 @@ namespace MIDDerivationLibrary.Helper
                         //bearingsType
                         if (model.bearingsType == null || !Enum.IsDefined(typeof(DrivenVacuumPumpReciprocating), model.bearingsType.ToLower()))
                             modelState.AddModelError(nameof(model.bearingsType), Constants.drivensVacuumpumpReciprocatingValidationMsg);
+
+                        model.rotorOverhung = null;
+                        model.impellerOnMainShaft = null;
+                        model.thrustBearing = null;
+                        model.attachedOilPump = null;
                     }
 
                     if (model.vacuumPumpType == DrivenVacuumPumpType.lobed.ToString())
@@ -301,8 +410,19 @@ namespace MIDDerivationLibrary.Helper
                         //bearingsType
                         if (string.IsNullOrEmpty(model.bearingsType) || !Enum.IsDefined(typeof(DrivenVacuumpumpLobedBearingsType), model.bearingsType.ToLower()))
                             modelState.AddModelError(nameof(model.bearingsType), Constants.drivensVacuumpumpLobedBearingsTypeValidationMsg);
+
+                        model.rotorOverhung = null;
+                        model.impellerOnMainShaft = null;
+                        model.thrustBearing = null;
+                        model.attachedOilPump = null;
                     }
 
+                    ClearPumpDetails(ref model);
+                    ClearCompressorDetails(ref model);
+                    ClearFanOrBlowerDetails(ref model);
+                    ClearPurifierCentrifugeDetails(ref model);
+                    ClearGeneratorDetails(ref model);
+                    ClearSpindleOrShaftOrBearingDetails(ref model);
                 }
 
                 //spindle_or_shaft_or_bearing
@@ -313,9 +433,79 @@ namespace MIDDerivationLibrary.Helper
                         //spindleShaftBearing
                         if (string.IsNullOrEmpty(model.spindleShaftBearing) || !Enum.IsDefined(typeof(DrivenSpindleShaftBearing), model.spindleShaftBearing.ToLower()))
                             modelState.AddModelError(nameof(model.spindleShaftBearing), Constants.drivenspindleShaftBearingValidationMsg);
+
+                        ClearPumpDetails(ref model);
+                        ClearCompressorDetails(ref model);
+                        ClearFanOrBlowerDetails(ref model);
+                        ClearPurifierCentrifugeDetails(ref model);
+                        ClearGeneratorDetails(ref model);
+                        ClearVacuumpumpDetails(ref model);
+
+                        model.rotorOverhung = null;
+                        model.thrustBearing = null;
+                        model.impellerOnMainShaft = null;
+                        model.attachedOilPump = null;
                     }
                 }
             }
+        }
+
+        public static void ClearPumpDetails(ref DrivenDetails model)
+        {
+            //model.rotorOverhung = null;
+            model.centrifugalPumpHasBallBearings = null;
+            //model.thrustBearing = null;
+            model.propellerpumpHasBallBearings = null;
+            model.rotaryThreadPumpHasBallBearings = null;
+            model.gearPumpHasBallBearings = null;
+            model.screwPumpHasBallBearings = null;
+            model.slidingVanePumpHasBallBearings = null;
+            model.axialRecipPumpHasBallBearings = null;
+            model.thrustBearing = null;
+            //model.attachedOilPump = null;
+            model.pumpType = null;
+        }
+        public static void ClearCompressorDetails(ref DrivenDetails model)
+        {
+            model.compressorType = null;
+            //model.impellerOnMainShaft = null;
+            model.centrifugalCompressorHasBallBearings = null;
+            // model.thrustBearing = null;
+            model.crankHasIntermediateBearing = null;
+            model.reciprocatingCompressorHasBallBearings = null;
+            model.screwCompressorHasBallBearings = null;
+            model.screwTwinCompressorHasBallBearingsOnHPSide = null;
+        }
+        public static void ClearFanOrBlowerDetails(ref DrivenDetails model)
+        {
+            model.fan_or_blowerType = null;
+            model.lobedFanOrBlowerHasBallBearings = null;
+            model.fanStages = null;
+            model.overhungRotorFanOrBlowerHasBearings = null;
+            model.supportedRotorFanOrBlowerHasBearings = null;
+        }
+        public static void ClearPurifierCentrifugeDetails(ref DrivenDetails model)
+        {
+            model.purifierDrivenBy = null;
+        }
+        public static void ClearGeneratorDetails(ref DrivenDetails model)
+        {
+            model.bearingType = null;
+            model.exciter = null;
+            model.exciterOverhungOrSupported = null;
+            model.drivenBy = null;
+        }
+        public static void ClearVacuumpumpDetails(ref DrivenDetails model)
+        {
+            // model.rotorOverhung = null;
+            // model.impellerOnMainShaft = null;
+            // model.attachedOilPump = null;
+            //  model.thrustBearing = null;
+            model.bearingsType = null;
+        }
+        public static void ClearSpindleOrShaftOrBearingDetails(ref DrivenDetails model)
+        {
+            model.spindleShaftBearing = null;
         }
     }
 }

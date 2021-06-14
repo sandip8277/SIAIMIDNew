@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MIDCodeGenerator.Helper;
 using MIDDerivationLibrary.Business.SpecialFaultCodes;
+using MIDDerivationLibrary.Helper;
 using MIDDerivationLibrary.Models;
 using MIDDerivationLibrary.Models.APIResponse;
 using MIDDerivationLibrary.Models.SpecialFaultCodeModels;
@@ -28,29 +30,37 @@ namespace MIDDerivationLibrary.Controllers
         public ActionResult AddSpecialFaultCodesDetails(SpecialFaultCodesDetails model)
         {
             long id = 0;
-            try
+            ModelStateDictionary ModelState = new ModelStateDictionary();
+            SpecialFaultCodeValidationHelper.ValidateSpecialFaultCodeInput(ref ModelState, ref model);
+
+            if (ModelState.IsValid)
             {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-
-                bool isExist = _service.CheckIsSpecialFaultCodesDetailsExist(xmlString);
-
-                if (isExist == true)
-                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
-                else
+                try
                 {
-                    id = _service.AddOrUpdateSpecialFaultCodesDetails(xElement.ToString());
-                    if (id > 0)
-                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    string xmlString = XmlHelper.ConvertObjectToXML(model);
+                    XElement xElement = XElement.Parse(xmlString);
+
+                    bool isExist = _service.CheckIsSpecialFaultCodesDetailsExist(xmlString);
+
+                    if (isExist == true)
+                        return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                     else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    {
+                        id = _service.AddOrUpdateSpecialFaultCodesDetails(xElement.ToString());
+                        if (id > 0)
+                            return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
                 }
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return Ok(new ApiOkResponse(id));
+            else
+                return BadRequest(new ApiBadRequestResponse(ModelState));
         }
 
         [HttpPut]
@@ -58,29 +68,40 @@ namespace MIDDerivationLibrary.Controllers
         public ActionResult UpdateSpecialFaultCodesDetails(SpecialFaultCodesDetails model)
         {
             long id = 0;
-            try
+            ModelStateDictionary ModelState = new ModelStateDictionary();
+            SpecialFaultCodeValidationHelper.ValidateSpecialFaultCodeInput(ref ModelState, ref model);
+
+            if (model.id == 0)
+                ModelState.AddModelError(nameof(SpecialFaultCodesDetails.id), Constants.idValidationMessage);
+
+            if (ModelState.IsValid)
             {
-                string xmlString = XmlHelper.ConvertObjectToXML(model);
-                XElement xElement = XElement.Parse(xmlString);
-
-                bool isExist = _service.CheckIsSpecialFaultCodesDetailsExist(xmlString);
-
-                if (isExist == true)
-                    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
-                else
+                try
                 {
-                    id = _service.AddOrUpdateSpecialFaultCodesDetails(xElement.ToString());
-                    if (id > 0)
-                        return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                    string xmlString = XmlHelper.ConvertObjectToXML(model);
+                    XElement xElement = XElement.Parse(xmlString);
+
+                    bool isExist = _service.CheckIsSpecialFaultCodesDetailsExist(xmlString);
+
+                    if (isExist == true)
+                        return StatusCode(StatusCodes.Status409Conflict, new ApiResponse(404, Constants.recordExist));
                     else
-                        return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    {
+                        id = _service.AddOrUpdateSpecialFaultCodesDetails(xElement.ToString());
+                        if (id > 0)
+                            return Ok(new ApiOkResponse(id, Constants.recordSaved));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ApiResponse(500, null));
                 }
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
-            }
-            return Ok(new ApiOkResponse(id));
+            else
+                return BadRequest(new ApiBadRequestResponse(ModelState));
         }
 
         [HttpGet]

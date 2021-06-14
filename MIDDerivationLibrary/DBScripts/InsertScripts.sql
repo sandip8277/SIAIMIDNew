@@ -1,6 +1,6 @@
 
 --====================== [master].[tblCoupling1Details] ================================================= 
-
+SET IDENTITY_INSERT [master].[tblCoupling1Details] ON
 INSERT [master].[tblCoupling1Details] ([id], [componentType], [couplingPosition], [couplingType], [locations], [coupledComponentType1], [coupledComponentType2], [componentCode], [isDeleted]) VALUES (1, N'Coupling', 1, N'none_rigid', NULL, NULL, NULL, CAST(0.00 AS Decimal(18, 2)), 0)
 
 INSERT [master].[tblCoupling1Details] ([id], [componentType], [couplingPosition], [couplingType], [locations], [coupledComponentType1], [coupledComponentType2], [componentCode], [isDeleted]) VALUES (2, N'Coupling', 1, N'beltdrive', NULL, NULL, NULL, CAST(4.11 AS Decimal(18, 2)), 0)
@@ -79,10 +79,12 @@ INSERT [master].[tblCoupling1Details] ([id], [componentType], [couplingPosition]
 
 INSERT [master].[tblCoupling1Details] ([id], [componentType], [couplingPosition], [couplingType], [locations], [coupledComponentType1], [coupledComponentType2], [componentCode], [isDeleted]) VALUES (39, N'Coupling', 1, N'flexible', NULL, N'motor', N'spindle_or_shaft_or_bearing', CAST(10.82 AS Decimal(18, 2)), 0)
 
+SET IDENTITY_INSERT [master].[tblCoupling1Details] OFF
 --====================== [master].[tblCoupling1Details] ================================================= 
 
 --====================== [master].[tblCoupling2Details] ================================================= 
 
+SET IDENTITY_INSERT [master].[tblCoupling2Details] ON
 
 INSERT [master].[tblCoupling2Details] ([id], [componentType], [couplingPosition], [couplingType], [locations], [coupledComponentType1], [coupledComponentType2], [componentCode], [isDeleted]) VALUES (1, N'coupling', 2, N'none_rigid', NULL, NULL, NULL, CAST(0.00 AS Decimal(18, 2)), 0)
 
@@ -118,9 +120,13 @@ INSERT [master].[tblCoupling2Details] ([id], [componentType], [couplingPosition]
 
 INSERT [master].[tblCoupling2Details] ([id], [componentType], [couplingPosition], [couplingType], [locations], [coupledComponentType1], [coupledComponentType2], [componentCode], [isDeleted]) VALUES (17, N'coupling', 2, N'flexible', NULL, N'gearbox', N'fan_or_blowerSupportedRotor', CAST(10.60 AS Decimal(18, 2)), 0)
 
+SET IDENTITY_INSERT [master].[tblCoupling2Details] OFF
+
 --====================== [master].[tblCoupling2Details] ================================================= 
 
 --====================== [master].[tblCSDMdefsDetails] ================================================= 
+
+SET IDENTITY_INSERT [master].[tblCSDMdefsDetails] ON
 
 INSERT [master].[tblCSDMdefsDetails] ([id], [CSDMfile], [componentcoderangestart], [componentcoderangeend], [CSDMsize], [CSDMrelative], [defaultshaftlabel], [isDeleted]) VALUES (1, N'ONECLSTR', CAST(0.01 AS Decimal(18, 2)), CAST(0.99 AS Decimal(18, 2)), 1, 0, NULL, 0)
 
@@ -230,11 +236,14 @@ INSERT [master].[tblCSDMdefsDetails] ([id], [CSDMfile], [componentcoderangestart
 
 INSERT [master].[tblCSDMdefsDetails] ([id], [CSDMfile], [componentcoderangestart], [componentcoderangeend], [CSDMsize], [CSDMrelative], [defaultshaftlabel], [isDeleted]) VALUES (54, N'Test1', CAST(10.00 AS Decimal(18, 2)), CAST(10.00 AS Decimal(18, 2)), 1, 1, N'Na', 1)
 
+SET IDENTITY_INSERT [master].[tblCSDMdefsDetails] OFF
+
 
 --====================== [master].[tblCSDMdefsDetails] ================================================= 
 
 --====================== [master].[tblDrivenDetails] ================================================= 
 
+SET IDENTITY_INSERT [master].[tblDrivenDetails] ON
 
 INSERT [master].[tblDrivenDetails] ([id], [componentType], [drivenType], [locations], [pumpType], [compressorType], [fan_or_blowerType], [purifierDrivenBy], [bearingType], [vacuumPumpType], [spindleShaftBearing], [rotorOverhung], [attachedOilPump], [impellerOnMainShaft], [crankHasIntermediateBearing], [fanStages], [exciter], [centrifugalPumpHasBallBearings], [propellerpumpHasBallBearings], [rotaryThreadPumpHasBallBearings], [gearPumpHasBallBearings], [screwPumpHasBallBearings], [slidingVanePumpHasBallBearings], [axialRecipPumpHasBallBearings], [centrifugalCompressorHasBallBearings], [reciprocatingCompressorHasBallBearings], [screwCompressorHasBallBearings], [screwTwinCompressorHasBallBearingsOnHPSide], [lobedFanOrBlowerHasBallBearings], [overhungRotorFanOrBlowerHasBearings], [supportedRotorFanOrBlowerHasBearings], [exciterOverhungOrSupported], [bearingsType], [thrustBearing], [drivenBy], [componentCode], [isDeleted]) VALUES (1, N'driven', N'pump', 1, N'centrifugal', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'journal', NULL, CAST(2.01 AS Decimal(18, 2)), 0)
 
@@ -586,9 +595,13 @@ INSERT [master].[tblDrivenDetails] ([id], [componentType], [drivenType], [locati
 
 INSERT [master].[tblDrivenDetails] ([id], [componentType], [drivenType], [locations], [pumpType], [compressorType], [fan_or_blowerType], [purifierDrivenBy], [bearingType], [vacuumPumpType], [spindleShaftBearing], [rotorOverhung], [attachedOilPump], [impellerOnMainShaft], [crankHasIntermediateBearing], [fanStages], [exciter], [centrifugalPumpHasBallBearings], [propellerpumpHasBallBearings], [rotaryThreadPumpHasBallBearings], [gearPumpHasBallBearings], [screwPumpHasBallBearings], [slidingVanePumpHasBallBearings], [axialRecipPumpHasBallBearings], [centrifugalCompressorHasBallBearings], [reciprocatingCompressorHasBallBearings], [screwCompressorHasBallBearings], [screwTwinCompressorHasBallBearingsOnHPSide], [lobedFanOrBlowerHasBallBearings], [overhungRotorFanOrBlowerHasBearings], [supportedRotorFanOrBlowerHasBearings], [exciterOverhungOrSupported], [bearingsType], [thrustBearing], [drivenBy], [componentCode], [isDeleted]) VALUES (182, N'TestDriven0035', N'spindle_or_shaft_or_bearing', 3, N'centrifugal', NULL, NULL, NULL, NULL, NULL, N'spindle', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0)
 
+SET IDENTITY_INSERT [master].[tblDrivenDetails] OFF
+
 --====================== [master].[tblDrivenDetails] ================================================= 
 
 --====================== [master].[tblDriverDetails] ================================================= 
+
+SET IDENTITY_INSERT [master].[tblDriverDetails] ON
 
 INSERT [master].[tblDriverDetails] ([id], [componentType], [locations], [driverType], [cylinders], [motorDrive], [motorFan], [motorBallBearings], [drivenBallBearings], [drivenBalanceable], [motorPoles], [turbineReductionGear], [turbineRotorSupported], [turbineBallBearing], [turbineThrustBearing], [turbineThrustBearingIsBall], [componentCode], [isDeleted]) VALUES (1, N'driver', 1, N'diesel', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(30.11 AS Decimal(18, 2)), 0)
 
@@ -978,10 +991,13 @@ INSERT [master].[tblDriverDetails] ([id], [componentType], [locations], [driverT
 
 INSERT [master].[tblDriverDetails] ([id], [componentType], [locations], [driverType], [cylinders], [motorDrive], [motorFan], [motorBallBearings], [drivenBallBearings], [drivenBalanceable], [motorPoles], [turbineReductionGear], [turbineRotorSupported], [turbineBallBearing], [turbineThrustBearing], [turbineThrustBearingIsBall], [componentCode], [isDeleted]) VALUES (194, N'Test19/05', 1, N'diesel', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
 
+SET IDENTITY_INSERT [master].[tblDriverDetails] OFF
 
 --====================== [master].[tblDriverDetails] ================================================= 
 
 --====================== [master].[tblIntermediateDetails] ================================================= 
+
+SET IDENTITY_INSERT [master].[tblIntermediateDetails] ON
 
 INSERT [master].[tblIntermediateDetails] ([id], [componentType], [intermediateType], [locations], [drivenBy], [speedChangesMax], [componentCode], [isDeleted]) VALUES (1, N'Intermediate', N'none_rigid', NULL, NULL, NULL, NULL, 0)
 
@@ -1025,9 +1041,13 @@ INSERT [master].[tblIntermediateDetails] ([id], [componentType], [intermediateTy
 
 INSERT [master].[tblIntermediateDetails] ([id], [componentType], [intermediateType], [locations], [drivenBy], [speedChangesMax], [componentCode], [isDeleted]) VALUES (23, N'Test', N'Gr', NULL, NULL, 2, CAST(0.00 AS Decimal(18, 2)), 1)
 
+SET IDENTITY_INSERT [master].[tblIntermediateDetails] OFF
+
 --====================== [master].[tblIntermediateDetails] ================================================= 
 
 --====================== [master].[tblPickupCodeDetails] ================================================= 
+
+SET IDENTITY_INSERT [master].[tblPickupCodeDetails] ON
 
 INSERT [master].[tblPickupCodeDetails] ([id], [driverLocations], [driverLocationNDE], [driverLocationDE], [intermediateLocations], [intermediatepresent], [drivenLocations], [drivenLocationDE], [drivenLocationNDE], [driverPickupCode], [coupling1PickupCode], [intermediatePickupCode], [coupling2PickupCode], [drivenPickupCode], [isDeleted]) VALUES (1, 1, 1, 0, 0, 0, 0, 0, 0, N'1,0', N'1,0', NULL, NULL, NULL, 0)
 
@@ -1225,9 +1245,13 @@ INSERT [master].[tblPickupCodeDetails] ([id], [driverLocations], [driverLocation
 
 INSERT [master].[tblPickupCodeDetails] ([id], [driverLocations], [driverLocationNDE], [driverLocationDE], [intermediateLocations], [intermediatepresent], [drivenLocations], [drivenLocationDE], [drivenLocationNDE], [driverPickupCode], [coupling1PickupCode], [intermediatePickupCode], [coupling2PickupCode], [drivenPickupCode], [isDeleted]) VALUES (100, 11, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1)
 
+SET IDENTITY_INSERT [master].[tblPickupCodeDetails] OFF
+
 --====================== [master].[tblPickupCodeDetails] ================================================= 
 
 --====================== [master].[tblSpecialFaultCodesDetails] ================================================= 
+
+SET IDENTITY_INSERT [master].[tblSpecialFaultCodesDetails] ON
 
 INSERT [master].[tblSpecialFaultCodesDetails] ([id], [specialfaultcodetype], [specialmultiple], [specialcode], [componentType], [componentTypeSub1], [componentTypeSub2], [isDeleted]) VALUES (1, N'blowerlobes', 3, N'BL', N'driven', N'fan_or_blower', N'lobed', 0)
 
@@ -1304,6 +1328,9 @@ INSERT [master].[tblSpecialFaultCodesDetails] ([id], [specialfaultcodetype], [sp
 INSERT [master].[tblSpecialFaultCodesDetails] ([id], [specialfaultcodetype], [specialmultiple], [specialcode], [componentType], [componentTypeSub1], [componentTypeSub2], [isDeleted]) VALUES (37, N'stage2_gearbox', 3, N'G2', NULL, NULL, NULL, 0)
 
 INSERT [master].[tblSpecialFaultCodesDetails] ([id], [specialfaultcodetype], [specialmultiple], [specialcode], [componentType], [componentTypeSub1], [componentTypeSub2], [isDeleted]) VALUES (38, N'turbineblades', 3, N'TB', N'driver', N'turbine', NULL, 0)
+
+SET IDENTITY_INSERT [master].[tblSpecialFaultCodesDetails] OFF
+
 
 --====================== [master].[tblSpecialFaultCodesDetails] ================================================= 
 

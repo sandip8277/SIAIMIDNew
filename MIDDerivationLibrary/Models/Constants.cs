@@ -23,7 +23,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string spCheckIsDriverDetailsExist = "spGetDriverDetails";
 
-
         public static string spAddOrUpdateDrivenDetails = "spAddOrUpdateDrivenDetails";
 
         public static string spCheckIsDrivenDetailsExist = "spGetDrivenDetails";
@@ -34,7 +33,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string spGetAllDrivenDetails = "spGetAllDrivenDetails";
 
-
         public static string spAddOrUpdateIntermediateDetails = "spAddOrUpdateIntermediateDetails";
 
         public static string spCheckIsIntermediateDetailsExist = "spGetIntermediateDetails";
@@ -44,7 +42,6 @@ namespace MIDDerivationLibrary.Models
         public static string spGetIntermediateDetailsById = "spGetIntermediateDetailsById";
 
         public static string spGetAllIntermediateDetails = "spGetAllIntermediateDetails";
-
         
         public static string spAddOrUpdateCoupling1Details = "spAddOrUpdateCoupling1Details";
 
@@ -56,7 +53,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string spGetAllCoupling1Details = "spGetAllCoupling1Details";
 
-
         public static string spAddOrUpdateCoupling2Details = "spAddOrUpdateCoupling2Details";
 
         public static string spCheckIsCoupling2DetailsExist = "spGetCoupling2Details";
@@ -66,8 +62,6 @@ namespace MIDDerivationLibrary.Models
         public static string spGetCoupling2DetailsById = "spGetCoupling2DetailsById";
 
         public static string spGetAllCoupling2Details = "spGetAllCoupling2Details";
-
-
 
         public static string spAddOrUpdateSpecialFaultCodesDetails = "spAddOrUpdateSpecialFaultCodesDetails";
 
@@ -79,7 +73,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string spGetAllSpecialFaultCodesDetails = "spGetAllSpecialFaultCodesDetails";
 
-
         public static string spAddOrUpdateCSDMdefsDetails = "spAddOrUpdateCSDMdefsDetails";
 
         public static string spCheckIsCSDMdefsDetailsExist = "spGetCSDMdefsDetails";
@@ -90,7 +83,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string spGetAllCSDMdefsDetails = "spGetAllCSDMdefsDetails";
 
-
         public static string spAddOrUpdatePickupCodeDetails = "spAddOrUpdatePickupCodeDetails";
 
         public static string spCheckIsPickupCodeDetailsExist = "spGetPickupCodeDetails";
@@ -100,8 +92,6 @@ namespace MIDDerivationLibrary.Models
         public static string spGetPickupCodeDetailsById = "spGetPickupCodeDetailsById";
 
         public static string spGetAllPickupCodeDetails = "spGetAllPickupCodeDetails";
-
-
 
         public static string componentType = "componentType";
 
@@ -128,7 +118,6 @@ namespace MIDDerivationLibrary.Models
         public static string recordNotFound = "Record not found";
 
         public static string recordExist = "Record already exist";
-
 
         //Driver validation message
 
@@ -170,7 +159,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string driverSpecialFaultCodesInputValidationMsg = "specialFaultCodeCount is a required integer if specialFaultCodeType is not null";
 
-
         //Coupling1 validation message
 
         public static string coupling1ComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
@@ -188,6 +176,7 @@ namespace MIDDerivationLibrary.Models
         public static string idValidationMessage = "id should be greater than 0";
 
         //Coupling2 validation message
+
         public static string coupling2ComponentTypeRequiredMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
 
         public static string coupling2ComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven; must be null if intermediate is not present";
@@ -222,7 +211,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string intermediateDrivenByRequiredValidationMsg = "drivenBy is a required string and must be inputshaft, intermediateshaft, outputshaft, inputshaft, intermediateshaft, outputshaft";
 
-
         //Driven validation message
 
         public static string drivenComponentTypeValidationMsg = "componentType is a required string and must be driver, coupling, intermediate, driven";
@@ -232,8 +220,6 @@ namespace MIDDerivationLibrary.Models
         public static string drivenLocationNDEValidationMsg = "drivenLocationNDE is a required boolean";
 
         public static string drivenLocationDEValidationMsg = "drivenLocationDE is a required boolean";
-
-
 
         public static string drivenTypeValidationMsg = "drivenType is a required string and must be pump, compressor, fan_or_blower, purifier_centrifuge, decanter, generator, vacuumpump, spindle_or_shaft_or_bearing";
 
@@ -264,7 +250,6 @@ namespace MIDDerivationLibrary.Models
         public static string drivenAxialRecipPumpHasBallBearingsValidationMsg = "axialRecipPumpHasBallBearings is an optional boolean if drivenType is pump and pumpType is axialrecip";
 
         public static string drivenThrustBearingValidationMsg = "thrustBearing is an optional string journal,ball if drivenType is pump and pumpType is axialrecip";
-
 
         public static string drivensCompressorTypeValidationMsg = "pumpType is a required string and must be centrifugal, reciprocating, screw, screwtwin";
 
@@ -324,8 +309,6 @@ namespace MIDDerivationLibrary.Models
 
         public static string drivensSpecialFaultCodeCountValidationMsg = "specialFaultCodeCount should be between 1 and 99";
 
-
-
         public static string coupling2SpeedRatioRequiredMessage = "speedratio is required decimal - default is 1.0000";
         
         public static string c1AndC2CouplingValidationMessage = "Any one coupling speedratio value should be <> 1";
@@ -334,5 +317,10 @@ namespace MIDDerivationLibrary.Models
 
         public static string motorDriverType = "motor";
 
+        public static string specialFaultCodeTypeRequired = "special fault code type is required";
+
+        public static string specialMultipleRequired = "special multiple is required";
+
+        public static string specialCodeRequired = "special code is required";
     }
 }

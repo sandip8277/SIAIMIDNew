@@ -4,8 +4,9 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[funGe
      DROP FUNCTION [dbo].[funGetPickupCodeDetails]
 GO
 
-CREATE FUNCTION [dbo].[funGetPickupCodeDetails]
+Create FUNCTION [dbo].[funGetPickupCodeDetails]
 (
+@drivenType varchar(50),
 @componentType varchar(50),
 @drivencomponentType varchar(50),
 @intercomponentType varchar(50),
@@ -26,9 +27,33 @@ RETURNS @PickupCodeTable  TABLE
    coupling1PickupCode varchar(50),coupling2PickupCode varchar(50)
 )
 AS
-	Begin
+Begin
+--Declare @drivenType varchar(50) = 'spindle_or_shaft_or_bearing'
+--Declare @componentType varchar(50) = 'driver'
+--Declare @drivencomponentType varchar(50) = 'driven'
+--Declare @intercomponentType varchar(50) = null
+--Declare @c2componentType varchar(50) = null
+--Declare @c1componentType varchar(50) = 'coupling'	
+--Declare @locations int = 1
+--Declare @driverLocationNDE bit = 0
+--Declare @driverLocationDE bit = 1
+--Declare @interlocations int = 0
+--Declare @intermediatePresent bit = 0
+--Declare @drivenlocations int = 2
+--Declare @drivenLocationNDE bit = 1
+--Declare @drivenLocationDE bit = 1
+
 		Declare @driverPickupCode varchar(50),@drivenPickupCode varchar(50),@intermediatePickupCode varchar(50),
-		@coupling1PickupCode varchar(50),@coupling2PickupCode varchar(50)
+		@coupling1PickupCode varchar(50),@coupling2PickupCode varchar(50),@spindle_shaft_with_2locations bit
+		
+		if(RTRIM(LTRIM(UPPER(@drivenType))) = 'spindle_or_shaft_or_bearing')
+			Begin
+				set @spindle_shaft_with_2locations = convert(bit,1)
+			End
+		else	
+			Begin
+				set @spindle_shaft_with_2locations = convert(bit,0)
+			End
 
 		select @driverPickupCode = driverPickupCode,
 		@drivenPickupCode = drivenPickupCode,
@@ -43,7 +68,8 @@ AS
 		intermediatePresent = @intermediatePresent and
 		drivenlocations = @drivenlocations and
 		drivenLocationDE = @drivenLocationDE and
-		drivenLocationNDE = @drivenLocationNDE
+		drivenLocationNDE = @drivenLocationNDE and
+		spindle_shaft_with_2locations = @spindle_shaft_with_2locations
 
 		if(@componentType IS NULL)
 			Begin
@@ -73,7 +99,6 @@ AS
 		insert into @PickupCodeTable  
 		select @driverPickupCode,@drivenPickupCode,@intermediatePickupCode,
 		@coupling1PickupCode,@coupling2PickupCode
-
 	Return 
 End
 

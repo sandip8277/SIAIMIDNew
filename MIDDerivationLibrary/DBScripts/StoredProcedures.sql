@@ -1325,7 +1325,7 @@ WITH (specialFaultCodeType varchar(100),specialFaultCodeCount int)
 select @intermediatePresent = case when @intercomponentType IS NOT NULL and @intercomponentType <> '' then convert(bit,1) else convert(bit,0) end 
 
 select @driverPickupCode = driverPickupCode,@drivenPickupCode = drivenPickupCode,@intermediatePickupCode = intermediatePickupCode,
-@coupling1PickupCode = coupling1PickupCode,@coupling2PickupCode = coupling2PickupCode from funGetPickupCodeDetails (@componentType,@drivencomponentType,@intercomponentType,@c2componentType,@c1componentType, ISNULL(@locations,0),ISNULL(@driverLocationNDE,convert(bit,0)),ISNULL(@driverLocationDE,convert(bit,0)),
+@coupling1PickupCode = coupling1PickupCode,@coupling2PickupCode = coupling2PickupCode from funGetPickupCodeDetails (@drivenType,@componentType,@drivencomponentType,@intercomponentType,@c2componentType,@c1componentType, ISNULL(@locations,0),ISNULL(@driverLocationNDE,convert(bit,0)),ISNULL(@driverLocationDE,convert(bit,0)),
 ISNULL(@interlocations,0),@intermediatePresent, ISNULL(@drivenlocations,0),ISNULL(@drivenLocationNDE,convert(bit,0)),ISNULL(@drivenLocationDE,convert(bit,0)))
 
 ---============================================

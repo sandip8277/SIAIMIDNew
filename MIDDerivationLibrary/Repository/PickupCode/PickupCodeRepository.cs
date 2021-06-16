@@ -47,7 +47,8 @@ namespace MIDDerivationLibrary.Repository.PickupCode
                     coupling1PickupCode = dataRow.Field<string>("coupling1PickupCode"),
                     intermediatePickupCode = dataRow.Field<string>("intermediatePickupCode"),
                     coupling2PickupCode = dataRow.Field<string>("coupling2PickupCode"),
-                    drivenPickupCode = dataRow.Field<string>("drivenPickupCode")
+                    drivenPickupCode = dataRow.Field<string>("drivenPickupCode"),
+                    spindle_shaft_with_2locations = dataRow.Field<bool>("spindle_shaft_with_2locations")
 
                 }).ToList();
             }
@@ -78,7 +79,8 @@ namespace MIDDerivationLibrary.Repository.PickupCode
                     coupling1PickupCode = dataRow.Field<string>("coupling1PickupCode"),
                     intermediatePickupCode = dataRow.Field<string>("intermediatePickupCode"),
                     coupling2PickupCode = dataRow.Field<string>("coupling2PickupCode"),
-                    drivenPickupCode = dataRow.Field<string>("drivenPickupCode")
+                    drivenPickupCode = dataRow.Field<string>("drivenPickupCode"),
+                    spindle_shaft_with_2locations = dataRow.Field<bool>("spindle_shaft_with_2locations")
 
                 }).FirstOrDefault();
             }
@@ -116,8 +118,8 @@ namespace MIDDerivationLibrary.Repository.PickupCode
                     coupling1PickupCode = dataRow.Field<string>("coupling1PickupCode"),
                     intermediatePickupCode = dataRow.Field<string>("intermediatePickupCode"),
                     coupling2PickupCode = dataRow.Field<string>("coupling2PickupCode"),
-                    drivenPickupCode = dataRow.Field<string>("drivenPickupCode")
-
+                    drivenPickupCode = dataRow.Field<string>("drivenPickupCode"),
+                    spindle_shaft_with_2locations = dataRow.Field<bool>("spindle_shaft_with_2locations")
                 }).FirstOrDefault();
             }
             return details;

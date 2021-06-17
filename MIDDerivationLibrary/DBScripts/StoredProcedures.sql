@@ -168,14 +168,6 @@ BEGIN
 	select @Id
 END
 
-
-------------------------------------------------------------------------------------------- 3
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAddOrUpdateCSDMdefsDetails]') 
-AND type IN (N'P', N'PC'))
-	DROP PROCEDURE [dbo].[spAddOrUpdateCSDMdefsDetails]
-GO
-
 ---------------------------------------------------------------------------------------- 3
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAddOrUpdateCSDMdefsDetails]') 
@@ -752,7 +744,10 @@ END
 GO
 
 ----------------------------------------------------------------------------------------------8
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spAddOrUpdateSpecialFaultCodesDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spAddOrUpdateSpecialFaultCodesDetails]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>  Updated By: <Sandip Patil>
 -- Create Date: <05/05/2021>
@@ -819,7 +814,10 @@ END
 GO
 
 ----------------------------------------------------------------------------------------------9
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteCoupling1DetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeleteCoupling1DetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <27/04/2021>
@@ -839,7 +837,10 @@ END
 GO
 
 ---------------------------------------------------------------------------------------------- 10
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteCoupling2DetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeleteCoupling2DetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <04/05/2021>
@@ -859,7 +860,10 @@ END
 GO
 
 ---------------------------------------------------------------------------------------------- 11
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteCSDMdefsDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeleteCSDMdefsDetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <06/05/2021>
@@ -880,7 +884,10 @@ GO
 
 ---------------------------------------------------------------------------------------------- 12
 
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteDrivenDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeleteDrivenDetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <28/04/2021>
@@ -900,7 +907,10 @@ END
 GO
 
 ---------------------------------------------------------------------------------------------- 13
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteDriverDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeleteDriverDetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <27/04/2021>
@@ -918,7 +928,10 @@ END
 GO
 
 ---------------------------------------------------------------------------------------------- 14
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteIntermediateDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeleteIntermediateDetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <28/04/2021>
@@ -937,7 +950,10 @@ END
 GO
 
 ---------------------------------------------------------------------------------------------- 15
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeletePickupCodeDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeletePickupCodeDetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <28/04/2021>
@@ -958,7 +974,10 @@ END
 GO
 
 ---------------------------------------------------------------------------------------------- 16
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spDeleteSpecialFaultCodesDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spDeleteSpecialFaultCodesDetailsById]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <05/05/2021>
@@ -976,7 +995,10 @@ END
 GO
 
 ---------------------------------------------------------------------------------------------- 17
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGenerateMIDDerivation]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spGenerateMIDDerivation]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <05/05/2021>
@@ -1729,7 +1751,10 @@ End
 GO
 
 ---------------------------------------------------------------------------------------------- 18
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGenerateMIDDerivation1]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE [dbo].[spGenerateMIDDerivation1]
+GO
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <05/05/2021>
@@ -1982,8 +2007,6 @@ AND type IN (N'P', N'PC'))
 	DROP PROCEDURE  [dbo].[spGetAllCoupling1Details]
 Go
 
----------------------------------------------------------------------------------------------- 19
-
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <30/04/2021>
@@ -2019,8 +2042,11 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 20
-
+---------------------------------------------------------------------------------------------- 18
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllCoupling2Details]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetAllCoupling2Details]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <04/05/2021>
@@ -2056,8 +2082,11 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 21
-
+---------------------------------------------------------------------------------------------- 19
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllCSDMdefsDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetAllCSDMdefsDetails]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <06/05/2021>
@@ -2083,8 +2112,11 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 22
-
+---------------------------------------------------------------------------------------------- 20
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllDrivenDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetAllDrivenDetails]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <28/04/2021>
@@ -2120,8 +2152,11 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 23
-
+---------------------------------------------------------------------------------------------- 21
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllDriverDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetAllDriverDetails]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <27/04/2021>
@@ -2157,8 +2192,11 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 24
-
+---------------------------------------------------------------------------------------------- 22
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllIntermediateDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetAllIntermediateDetails]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <29/04/2021>
@@ -2195,8 +2233,11 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 25
-
+---------------------------------------------------------------------------------------------- 23
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllSpecialFaultCodesDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetAllSpecialFaultCodesDetails]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <27/04/2021>
@@ -2232,8 +2273,11 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 26
-
+---------------------------------------------------------------------------------------------- 24
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetAllPickupCodeDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetAllPickupCodeDetails]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <27/04/2021>
@@ -2247,8 +2291,12 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 27
+---------------------------------------------------------------------------------------------- 25
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetCoupling1Details]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetCoupling1Details]
+Go
  --=============================================
  --Author:      <Vishal Dhure>
 -- Create Date: <30/04/2021>
@@ -2344,7 +2392,11 @@ BEGIN
 			End
 END
 GO
----------------------------------------------------------------------------------------------- 28
+---------------------------------------------------------------------------------------------- 26
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetCoupling1DetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetCoupling1DetailsById]
+Go
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -2361,8 +2413,11 @@ BEGIN
 End
 GO
 
----------------------------------------------------------------------------------------------- 29
-
+---------------------------------------------------------------------------------------------- 27
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetCoupling2Details]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetCoupling2Details]
+Go
  --=============================================
  --Author:      <Vishal Dhure>
 -- Create Date: <04/05/2021>
@@ -2460,8 +2515,12 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------- 30
+---------------------------------------------------------------------------------------------- 28
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetCoupling2DetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetCoupling2DetailsById]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <04/05/2021>
@@ -2476,7 +2535,7 @@ BEGIN
 	select * from master.tblCoupling2Details where id = @id and isDeleted = 0
 End
 
-------------------------------------------------------------------------------------------- 31
+------------------------------------------------------------------------------------------- 29
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[spGetCSDMdefsDetails]') 
 AND type IN (N'P', N'PC'))
@@ -2577,8 +2636,12 @@ BEGIN
 END
 GO
 
-------------------------------------------------------------------------------------------- 32
+------------------------------------------------------------------------------------------- 30
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetCSDMdefsDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetCSDMdefsDetailsById]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <06/05/2021>
@@ -2593,8 +2656,11 @@ BEGIN
 	select * from master.tblCSDMdefsDetails where id = @id and isDeleted = 0
 End
 GO
-------------------------------------------------------------------------------------------- 33
-
+------------------------------------------------------------------------------------------- 31
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetDrivenDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetDrivenDetails]
+Go
  --=============================================
  --Author:      <Vishal Dhure>
 -- Create Date: <28/04/2021>
@@ -2961,8 +3027,12 @@ BEGIN
 END
 GO
 
-------------------------------------------------------------------------------------------- 34
+------------------------------------------------------------------------------------------- 32
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetDrivenDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetDrivenDetailsById]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <28/04/2021>
@@ -2978,7 +3048,12 @@ BEGIN
 End
 GO
 
-------------------------------------------------------------------------------------------- 35
+------------------------------------------------------------------------------------------- 33
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetDriverDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetDriverDetails]
+Go
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -3158,8 +3233,12 @@ BEGIN
 END
 GO
 
-------------------------------------------------------------------------------------------- 36
+------------------------------------------------------------------------------------------- 34
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetDriverDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetDriverDetailsById]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <27/04/2021>
@@ -3175,7 +3254,12 @@ BEGIN
 End
 GO
 
-------------------------------------------------------------------------------------------- 37
+------------------------------------------------------------------------------------------- 35
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetExtraFaultData]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetExtraFaultData]
+Go
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -3499,7 +3583,11 @@ BEGIN
 RETURN
 END
 GO
----------------------------------------------------------------------------------------------38
+---------------------------------------------------------------------------------------------36
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetIntermediateDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetIntermediateDetails]
+Go
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -3591,8 +3679,12 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------39
+---------------------------------------------------------------------------------------------37
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetIntermediateDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetIntermediateDetailsById]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <29/04/2021>
@@ -3608,8 +3700,12 @@ BEGIN
 End
 GO
 
----------------------------------------------------------------------------------------------40
+---------------------------------------------------------------------------------------------38
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetPickupCodeDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetPickupCodeDetails]
+Go
  --=============================================
  --Author:      <Vishal Dhure>
 -- Create Date: <11/05/2021>
@@ -3742,7 +3838,12 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------41
+---------------------------------------------------------------------------------------------39
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetPickupCodeDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetPickupCodeDetailsById]
+Go
 
 -- =============================================
 -- Author:      <Vishal Dhure>
@@ -3759,7 +3860,12 @@ BEGIN
 End
 GO
 
----------------------------------------------------------------------------------------------42
+---------------------------------------------------------------------------------------------40
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetSpecialFaultCodesDetails]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetSpecialFaultCodesDetails]
+Go
 
  --=============================================
  --Author:      <Vishal Dhure>
@@ -3823,8 +3929,12 @@ BEGIN
 END
 GO
 
----------------------------------------------------------------------------------------------43
+---------------------------------------------------------------------------------------------42
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spGetSpecialFaultCodesDetailsById]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spGetSpecialFaultCodesDetailsById]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: <05/05/2021>
@@ -3840,7 +3950,11 @@ BEGIN
 End
 GO
 
----------------------------------------------------------------------------------------------44
+---------------------------------------------------------------------------------------------43
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' [dbo].[spMIDCodeDeconstruction]') 
+AND type IN (N'P', N'PC'))
+	DROP PROCEDURE  [dbo].[spMIDCodeDeconstruction]
+Go
 -- =============================================
 -- Author:      <Vishal Dhure>
 -- Create Date: < >

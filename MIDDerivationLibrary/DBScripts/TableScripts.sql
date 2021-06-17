@@ -22,7 +22,7 @@ CREATE TABLE [master].[tblCoupling1Details](
 	[coupledComponentType1] [varchar](100) NULL,
 	[coupledComponentType2] [varchar](100) NULL,
 	[componentCode] [decimal](18, 2) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
  CONSTRAINT [PK__tblCoupl__3213E83F86600997] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -39,8 +39,6 @@ CREATE TABLE [master].[tblCoupling1Details](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [master].[tblCoupling1Details] ADD  CONSTRAINT [DF_tblCoupling1Details_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
-GO
 --====================================tblCoupling1Details==========================================================
 
 
@@ -67,7 +65,7 @@ CREATE TABLE [master].[tblCoupling2Details](
 	[coupledComponentType1] [varchar](100) NULL,
 	[coupledComponentType2] [varchar](100) NULL,
 	[componentCode] [decimal](18, 2) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
  CONSTRAINT [PK__tblCoupl__3213E83FFD9F2402] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -83,8 +81,6 @@ CREATE TABLE [master].[tblCoupling2Details](
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 
-ALTER TABLE [master].[tblCoupling2Details] ADD  CONSTRAINT [DF_tblCoupling2Details_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
-GO
 --==============================================tblCoupling2Details===============================================================
 
 
@@ -111,7 +107,7 @@ CREATE TABLE [master].[tblCSDMdefsDetails](
 	[CSDMsize] [int] NULL,
 	[CSDMrelative] [bit] NULL,
 	[defaultshaftlabel] [varchar](50) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
  CONSTRAINT [PK__tblCSDMd__3213E83F95DEAFE7] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -128,8 +124,6 @@ CREATE TABLE [master].[tblCSDMdefsDetails](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [master].[tblCSDMdefsDetails] ADD  CONSTRAINT [DF_tblCSDMdefsDetails_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
-GO
 --=============================================tblCSDMdefsDetails========================================================
 
 
@@ -185,7 +179,7 @@ CREATE TABLE [master].[tblDrivenDetails](
 	[thrustBearing] [varchar](50) NULL,
 	[drivenBy] [varchar](50) NULL,
 	[componentCode] [decimal](18, 2) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
  CONSTRAINT [PK_tblDrivenDetails] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -228,8 +222,6 @@ CREATE TABLE [master].[tblDrivenDetails](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [master].[tblDrivenDetails] ADD  CONSTRAINT [DF_tblDrivenDetails_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
-GO
 --=============================================tblDrivenDetails========================================================
 
 
@@ -265,7 +257,7 @@ CREATE TABLE [master].[tblDriverDetails](
 	[turbineThrustBearing] [bit] NULL,
 	[turbineThrustBearingIsBall] [bit] NULL,
 	[componentCode] [decimal](18, 2) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
  CONSTRAINT [PK__tblDrive__3213E83F01706ADD] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -291,8 +283,6 @@ CREATE TABLE [master].[tblDriverDetails](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [master].[tblDriverDetails] ADD  CONSTRAINT [DF_tblDriverDetails_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
-GO
 --=============================================tblDriverDetails========================================================
 
 
@@ -318,7 +308,7 @@ CREATE TABLE [master].[tblIntermediateDetails](
 	[drivenBy] [varchar](100) NULL,
 	[speedChangesMax] [int] NULL,
 	[componentCode] [decimal](18, 2) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
  CONSTRAINT [PK__tblInter__3213E83F73606679] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -334,8 +324,6 @@ CREATE TABLE [master].[tblIntermediateDetails](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [master].[tblIntermediateDetails] ADD  CONSTRAINT [DF_tblIntermediateDetails_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
-GO
 --=============================================tblIntermediateDetails========================================================
 
 
@@ -364,12 +352,13 @@ CREATE TABLE [master].[tblPickupCodeDetails](
 	[drivenLocations] [int] NOT NULL,
 	[drivenLocationDE] [bit] NOT NULL,
 	[drivenLocationNDE] [bit] NOT NULL,
+	[spindle_shaft_with_2locations] [bit] NOT NULL DEFAULT 0,
 	[driverPickupCode] [varchar](50) NULL,
 	[coupling1PickupCode] [varchar](50) NULL,
 	[intermediatePickupCode] [varchar](50) NULL,
 	[coupling2PickupCode] [varchar](50) NULL,
 	[drivenPickupCode] [varchar](50) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
  CONSTRAINT [PK__tblPicku__3213E83F7423A78E] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -383,13 +372,12 @@ CREATE TABLE [master].[tblPickupCodeDetails](
 	[intermediatepresent] ASC,
 	[drivenLocations] ASC,
 	[drivenLocationDE] ASC,
-	[drivenLocationNDE] ASC
+	[drivenLocationNDE] ASC,
+	[spindle_shaft_with_2locations] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [master].[tblPickupCodeDetails] ADD  CONSTRAINT [DF__tblPickup__isDel__4F47C5E3]  DEFAULT ((0)) FOR [isDeleted]
-GO
 --=============================================tblPickupCodeDetails========================================================
 
 
@@ -415,7 +403,7 @@ CREATE TABLE [master].[tblSpecialFaultCodesDetails](
 	[componentType] [varchar](50) NULL,
 	[componentTypeSub1] [varchar](50) NULL,
 	[componentTypeSub2] [varchar](50) NULL,
-	[isDeleted] [bit] NOT NULL,
+	[isDeleted] [bit] NOT NULL DEFAULT 0,
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -428,9 +416,6 @@ PRIMARY KEY CLUSTERED
 	[componentTypeSub2] ASC
 )WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-GO
-
-ALTER TABLE [master].[tblSpecialFaultCodesDetails] ADD  CONSTRAINT [DF_tblSpecialFaultCodesDetails_isDeleted]  DEFAULT ((0)) FOR [isDeleted]
 GO
 
 --=============================================tblSpecialFaultCodesDetails========================================================

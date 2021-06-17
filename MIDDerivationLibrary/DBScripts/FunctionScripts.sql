@@ -46,7 +46,7 @@ Begin
 		Declare @driverPickupCode varchar(50),@drivenPickupCode varchar(50),@intermediatePickupCode varchar(50),
 		@coupling1PickupCode varchar(50),@coupling2PickupCode varchar(50),@spindle_shaft_with_2locations bit
 		
-		if(RTRIM(LTRIM(UPPER(@drivenType))) = 'spindle_or_shaft_or_bearing')
+		if(RTRIM(LTRIM(UPPER(@drivenType))) = 'spindle_or_shaft_or_bearing' and @drivenlocations = 2)
 			Begin
 				set @spindle_shaft_with_2locations = convert(bit,1)
 			End

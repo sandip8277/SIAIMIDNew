@@ -38,7 +38,6 @@ namespace MIDDerivationLibrary.Controllers
             this._deconstructionService = deconstructionService;
         }
 
-
         [HttpPost]
         //[Authorize]
         [Route("GenerateCodes")]

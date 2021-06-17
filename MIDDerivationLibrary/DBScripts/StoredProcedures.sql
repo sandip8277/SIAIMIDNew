@@ -663,7 +663,7 @@ CREATE PROCEDURE [dbo].[spAddOrUpdatePickupCodeDetails]
 )
 AS
 BEGIN
-	
+		
 	Declare @Id bigint
 	BEGIN TRY  
 		SET NOCOUNT ON
@@ -673,7 +673,7 @@ BEGIN
 		Declare @DetailsTable table (id int,driverLocations int,driverLocationNDE bit,driverLocationDE bit,
 	    intermediateLocations int,intermediatepresent bit,drivenLocations int,drivenLocationDE bit,
 		drivenLocationNDE bit,driverPickupCode varchar(50),coupling1PickupCode varchar(50),intermediatePickupCode varchar(50),
-	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50))
+	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50),spindle_shaft_with_2locations bit)
 		
 		insert into @DetailsTable
 		select id,
@@ -689,12 +689,13 @@ BEGIN
 		Case when coupling1PickupCode = '' then null else coupling1PickupCode end as coupling1PickupCode,
 		Case when intermediatePickupCode = '' then null else intermediatePickupCode end as intermediatePickupCode,
 		Case when coupling2PickupCode = '' then null else coupling2PickupCode end as coupling2PickupCode,
-		Case when drivenPickupCode = '' then null else drivenPickupCode end as drivenPickupCode
+		Case when drivenPickupCode = '' then null else drivenPickupCode end as drivenPickupCode,
+		spindle_shaft_with_2locations
 		FROM OPENXML (@xmlDocumentHandle, 'PickupCodeDetails',2)
 		WITH (id int,driverLocations int,driverLocationNDE bit,driverLocationDE bit,
 	    intermediateLocations int,intermediatepresent bit,drivenLocations int,drivenLocationDE bit,
 		drivenLocationNDE bit,driverPickupCode varchar(50),coupling1PickupCode varchar(50),intermediatePickupCode varchar(50),
-	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50))	
+	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50),spindle_shaft_with_2locations bit)	
 		
 		--select * from @DetailsTable
 
@@ -704,10 +705,10 @@ BEGIN
 				insert into master.tblPickupCodeDetails
 				(driverLocations,driverLocationNDE,driverLocationDE,intermediateLocations,intermediatepresent,
 				 drivenLocations,drivenLocationDE,drivenLocationNDE,
-				 driverPickupCode,coupling1PickupCode,intermediatePickupCode,coupling2PickupCode,drivenPickupCode)
+				 driverPickupCode,coupling1PickupCode,intermediatePickupCode,coupling2PickupCode,drivenPickupCode,spindle_shaft_with_2locations)
 				 select driverLocations,driverLocationNDE,driverLocationDE,intermediateLocations,intermediatepresent,
 				 drivenLocations,drivenLocationDE,drivenLocationNDE,
-				 driverPickupCode,coupling1PickupCode,intermediatePickupCode,coupling2PickupCode,drivenPickupCode from @DetailsTable
+				 driverPickupCode,coupling1PickupCode,intermediatePickupCode,coupling2PickupCode,drivenPickupCode,spindle_shaft_with_2locations from @DetailsTable
 				
 				set @Id = SCOPE_IDENTITY()
 
@@ -727,7 +728,8 @@ BEGIN
 				coupling1PickupCode = d.coupling1PickupCode,
 				intermediatePickupCode = d.intermediatePickupCode,
 				coupling2PickupCode = d.coupling2PickupCode,
-				drivenPickupCode = d.drivenPickupCode
+				drivenPickupCode = d.drivenPickupCode,
+				spindle_shaft_with_2locations = d.spindle_shaft_with_2locations
 				from master.tblPickupCodeDetails a
 				inner join @DetailsTable d on a.id = d.id
 				where a.id = @Id
@@ -3620,6 +3622,7 @@ CREATE PROCEDURE [dbo].[spGetPickupCodeDetails]
 AS
 BEGIN
 
+
 	
 		SET NOCOUNT ON
 		Declare @xmlDocumentHandle int
@@ -3629,7 +3632,7 @@ BEGIN
 		Declare @Id int,@driverLocations int,@driverLocationNDE bit,@driverLocationDE bit,
 	    @intermediateLocations int,@intermediatepresent bit,@drivenLocations int,@drivenLocationDE bit,
 		@drivenLocationNDE bit,@driverPickupCode varchar(50),@coupling1PickupCode varchar(50),@intermediatePickupCode varchar(50),
-	    @coupling2PickupCode varchar(50),@drivenPickupCode varchar(50)
+	    @coupling2PickupCode varchar(50),@drivenPickupCode varchar(50),@spindle_shaft_with_2locations bit
 		--Declare variable for PickupCode  --
 
 		--- Read xml for PickupCode  --
@@ -3646,12 +3649,13 @@ BEGIN
 		@coupling1PickupCode = Case when coupling1PickupCode = '' then null else coupling1PickupCode end,
 		@intermediatePickupCode = Case when intermediatePickupCode = '' then null else intermediatePickupCode end,
 		@coupling2PickupCode = Case when coupling2PickupCode = '' then null else coupling2PickupCode end ,
-		@drivenPickupCode = Case when drivenPickupCode = '' then null else drivenPickupCode end 
+		@drivenPickupCode = Case when drivenPickupCode = '' then null else drivenPickupCode end ,
+		@spindle_shaft_with_2locations = spindle_shaft_with_2locations
 		FROM OPENXML (@xmlDocumentHandle, 'PickupCodeDetails',2)
 		WITH (id int,driverLocations int,driverLocationNDE bit,driverLocationDE bit,
 	    intermediateLocations int,intermediatepresent bit,drivenLocations int,drivenLocationDE bit,
 		drivenLocationNDE bit,driverPickupCode varchar(50),coupling1PickupCode varchar(50),intermediatePickupCode varchar(50),
-	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50))	
+	    coupling2PickupCode varchar(50),drivenPickupCode varchar(50),spindle_shaft_with_2locations bit)	
 		
 		if(@id = 0 )
 		Begin
@@ -3689,7 +3693,10 @@ BEGIN
 				ISNULL(drivenLocationNDE,Convert(bit,0)) = 
 				Case when @drivenLocationNDE = '' Or @drivenLocationNDE IS NULL then Convert(bit,0)
 				else @drivenLocationNDE end 
-				
+				and
+				ISNULL(spindle_shaft_with_2locations,Convert(bit,0)) = 
+				Case when @spindle_shaft_with_2locations = '' Or @spindle_shaft_with_2locations IS NULL then Convert(bit,0)
+				else @spindle_shaft_with_2locations end 
 			End
 		else
 			Begin
@@ -3727,6 +3734,10 @@ BEGIN
 				ISNULL(drivenLocationNDE,Convert(bit,0)) = 
 				Case when @drivenLocationNDE = '' Or @drivenLocationNDE IS NULL then Convert(bit,0)
 				else @drivenLocationNDE end 
+				and
+				ISNULL(spindle_shaft_with_2locations,Convert(bit,0)) = 
+				Case when @spindle_shaft_with_2locations = '' Or @spindle_shaft_with_2locations IS NULL then Convert(bit,0)
+				else @spindle_shaft_with_2locations end 
 			End
 END
 GO

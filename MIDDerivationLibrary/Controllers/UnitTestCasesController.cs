@@ -1,4 +1,5 @@
 ﻿using KellermanSoftware.CompareNetObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ using System.Xml.Linq;
 namespace MIDDerivationLibrary.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UnitTestCasesController : ControllerBase
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MIDCodeGenerator.Helper;
@@ -16,6 +17,7 @@ using System.Xml.Linq;
 namespace MIDDerivationLibrary.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class SpecialFaultCodesController : ControllerBase
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MIDCodeGenerator.Helper;
@@ -14,11 +15,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace MIDDerivationLibrary.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class IntermediateController : ControllerBase
     {

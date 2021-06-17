@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MIDCodeGenerator.Helper;
@@ -17,6 +18,7 @@ using static MIDDerivationLibrary.Enums.Coupling1Enums;
 namespace MIDDerivationLibrary.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class Coupling1Controller : ControllerBase
     {

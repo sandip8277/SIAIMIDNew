@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MIDCodeGenerator.Helper;
 using MIDDerivationLibrary.Business.CSDMdefs;
@@ -14,6 +15,7 @@ using System.Xml.Linq;
 namespace MIDDerivationLibrary.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CSDMdefsController : ControllerBase
     {

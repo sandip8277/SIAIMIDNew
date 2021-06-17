@@ -27,6 +27,7 @@ using static MIDDerivationLibrary.Enums.IntermediateEnums;
 namespace MIDDerivationLibrary.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class MIDCodesGeneratorController : ControllerBase
     {
@@ -39,7 +40,6 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
         [Route("GenerateCodes")]
         public ActionResult<MIDCodeDetails> GenerateCodes([FromBody] MIDCodeCreatorRequest model)
         {
@@ -69,7 +69,6 @@ namespace MIDDerivationLibrary.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
         [Route("MIDCodeDeconstruction")]
         public ActionResult<MIDdeconstrutionResponse> MIDCodeDeconstruction([FromBody] MIDCodeDeconstructionRequest model)
         {
